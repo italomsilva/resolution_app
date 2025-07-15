@@ -1,0 +1,207 @@
+import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
+import 'package:provider/provider.dart';
+import 'package:resolution_app/presentation/auth/controllers/auth_controller.dart';
+import 'package:resolution_app/presentation/auth/controllers/register_controller.dart';
+import 'package:resolution_app/repositories/user_repository.dart';
+
+class RegisterPage extends StatefulWidget {
+  const RegisterPage({super.key});
+
+  @override
+  State<RegisterPage> createState() => _RegisterPageState();
+}
+
+class _RegisterPageState extends State<RegisterPage> {
+  @override
+  Widget build(BuildContext context) {
+    final currentTheme = Theme.of(context);
+    return ChangeNotifierProvider(
+      create: (context) => RegisterController(
+        Provider.of<UserRepository>(context, listen: false),
+        Provider.of<AuthController>(context, listen: false),
+      ),
+      child: Builder(
+        builder: (context) {
+          final RegisterController controller = Provider.of<RegisterController>(
+            context,
+            listen: false,
+          );
+          final theme = Theme.of(context);
+          return Scaffold(
+            appBar: AppBar(
+              leading: IconButton(
+                onPressed: () {
+                  context.pop();
+                },
+                icon: Icon(Icons.keyboard_arrow_left_sharp),
+              ),
+              title: Text(
+                "Registrar-se",
+                style: TextStyle(fontWeight: FontWeight.bold),
+              ),
+            ),
+            body: SingleChildScrollView(
+              padding: const EdgeInsets.all(24.0),
+              child: Form(
+                key: controller.formKey,
+                child: Column(
+                  children: [
+                    TextFormField(
+                      controller: controller.nameController,
+                      keyboardType: TextInputType.text,
+                      decoration: const InputDecoration(
+                        labelText: 'Nome',
+                        hintText: 'Nome Completo',
+                        prefixIcon: Icon(Icons.person),
+                      ),
+                      validator: controller.validateName,
+                    ),
+                    const SizedBox(height: 20),
+                    TextFormField(
+                      controller: controller.emailController,
+                      keyboardType: TextInputType.text,
+                      decoration: const InputDecoration(
+                        labelText: 'Email',
+                        hintText: 'email@exemplo.com',
+                        prefixIcon: Icon(Icons.email),
+                      ),
+                      validator: controller.validateEmail,
+                    ),
+                    const SizedBox(height: 20),
+                    TextFormField(
+                      controller: controller.documentController,
+                      keyboardType: TextInputType.text,
+                      decoration: const InputDecoration(
+                        labelText: 'Documento',
+                        hintText: '12345678900',
+                        prefixIcon: Icon(Icons.account_box),
+                      ),
+                      validator: controller.validateDocument,
+                    ),
+                    const SizedBox(height: 20),
+                    TextFormField(
+                      controller: controller.loginController,
+                      keyboardType: TextInputType.text,
+                      decoration: const InputDecoration(
+                        labelText: 'Login',
+                        hintText: 'exemplo01',
+                        prefixIcon: Icon(Icons.account_circle),
+                      ),
+                      validator: controller.validateLogin,
+                    ),
+                    const SizedBox(height: 20),
+                    Consumer<RegisterController>(
+                      builder:
+                          (
+                            BuildContext context,
+                            RegisterController value,
+                            Widget? child,
+                          ) {
+                            return TextFormField(
+                              controller: controller.passwordController,
+                              obscureText: !(controller.isPasswordVisible),
+                              decoration: InputDecoration(
+                                labelText: 'Senha',
+                                hintText: 'Sua senha',
+                                prefixIcon: const Icon(Icons.lock),
+                                suffixIcon: IconButton(
+                                  onPressed: () {
+                                    controller.togglePasswordVisibility();
+                                  },
+                                  icon: Icon(
+                                    controller.isPasswordVisible
+                                        ? Icons.visibility_off
+                                        : Icons.visibility,
+                                  ),
+                                ),
+                              ),
+                              validator: controller.validatePassword,
+                            );
+                          },
+                    ),
+                    const SizedBox(height: 30),
+                    Consumer<RegisterController>(
+                      builder:
+                          (
+                            BuildContext context,
+                            RegisterController value,
+                            Widget? child,
+                          ) {
+                            return Column(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  "Qual o seu tipo de perfil?",
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 15,
+                                  ),
+                                ),
+                                RadioListTile(
+                                  title: Text("Pessoa Física"),
+                                  value: 0,
+                                  groupValue: controller.profileTypeValue,
+                                  onChanged: controller.changeProfileType,
+                                ),
+                                RadioListTile(
+                                  title: Text("Pessoa Jurídica"),
+                                  value: 1,
+                                  groupValue: controller.profileTypeValue,
+                                  onChanged: controller.changeProfileType,
+                                ),
+                                RadioListTile(
+                                  title: Text("Prefeitura"),
+                                  value: 2,
+                                  groupValue: controller.profileTypeValue,
+                                  onChanged: controller.changeProfileType,
+                                ),
+                                RadioListTile(
+                                  title: Text("ONG"),
+                                  value: 3,
+                                  groupValue: controller.profileTypeValue,
+                                  onChanged: controller.changeProfileType,
+                                ),
+                              ],
+                            );
+                          },
+                    ),
+                    SizedBox(
+                      width: double.infinity,
+                      child: Consumer<RegisterController>(
+                        builder: (context, registerController, child) {
+                          return ElevatedButton(
+                            onPressed: registerController.isLoading
+                                ? null
+                                : () {
+                                    controller.resolveLogin(context);
+                                  },
+                            child: registerController.isLoading
+                                ? const CircularProgressIndicator(
+                                    valueColor: AlwaysStoppedAnimation<Color>(
+                                      Colors.white,
+                                    ),
+                                  )
+                                : const Text(
+                                    'Registrar',
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      letterSpacing: 2,
+                                      fontSize: 20,
+                                    ),
+                                  ),
+                          );
+                        },
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          );
+        },
+      ),
+    );
+  }
+}
