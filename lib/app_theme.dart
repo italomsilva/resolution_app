@@ -5,11 +5,14 @@ class AppTheme {
   static const Color _primaryColor = Color(0xFF758BFD);
   static const Color _primaryColorLight = Color.fromRGBO(199, 204, 255, 1);
   static const Color _primaryColorDark = Color(0xFF27187E);
-  static const Color _secondaryLightColor = Color.fromRGBO(235, 236, 248, 1);
+  static const Color _secondaryLightColor = Color.fromARGB(255, 236, 236, 236);
   static const Color _secondaryDarkColor = Color(0xFF1E1E1E);
   static const Color _whiteColor = Color(0xFFF1F2F6);
   static const Color _blackColor = Colors.black;
   static const Color _contrastColor = Color.fromARGB(255, 82, 166, 187);
+
+  static const Color whiteColor = Color(0xFFF1F2F6);
+  static const Color blackColor = Colors.black;
 
   static ThemeData lightTheme = ThemeData(
     splashColor: Color.fromRGBO(219, 221, 245, 1),
@@ -20,7 +23,7 @@ class AppTheme {
     primaryColorDark: _primaryColorDark,
     scaffoldBackgroundColor: _secondaryLightColor,
     bottomNavigationBarTheme: BottomNavigationBarThemeData(
-      backgroundColor: _whiteColor
+      backgroundColor: _whiteColor,
     ),
     colorScheme: ColorScheme.light(
       primary: _primaryColor,
@@ -35,13 +38,17 @@ class AppTheme {
       brightness: Brightness.light,
     ),
     appBarTheme: AppBarTheme(
-      backgroundColor: _primaryColor,
-      foregroundColor: _whiteColor,
+      backgroundColor: _secondaryLightColor,
+      shadowColor: Colors.transparent,
       surfaceTintColor: Colors.transparent,
       elevation: 0.0,
-      shadowColor: Colors.transparent,
       centerTitle: true,
-      iconTheme: IconThemeData(color: _whiteColor),
+      iconTheme: IconThemeData(color: _blackColor),
+      titleTextStyle: TextStyle(
+        color: _blackColor,
+        fontWeight: FontWeight.bold,
+        fontSize: 24.0,
+      ),
     ),
     floatingActionButtonTheme: FloatingActionButtonThemeData(
       backgroundColor: _contrastColor,
@@ -49,7 +56,8 @@ class AppTheme {
     ),
     cardTheme: CardThemeData(
       color: _whiteColor,
-      elevation: 3.0,
+      elevation: 1.0,
+      shadowColor: const Color.fromARGB(57, 0, 0, 0),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.0)),
     ),
     inputDecorationTheme: InputDecorationTheme(
@@ -111,7 +119,7 @@ class AppTheme {
     primaryColorDark: _primaryColor,
     scaffoldBackgroundColor: _blackColor,
     bottomNavigationBarTheme: BottomNavigationBarThemeData(
-      backgroundColor: _blackColor
+      backgroundColor: _blackColor,
     ),
     colorScheme: ColorScheme.dark(
       primary: _primaryColor,
@@ -126,11 +134,17 @@ class AppTheme {
       brightness: Brightness.dark,
     ),
     appBarTheme: const AppBarTheme(
-      backgroundColor: _secondaryDarkColor,
+      backgroundColor: _blackColor,
       foregroundColor: _blackColor,
+      surfaceTintColor: _blackColor,
       elevation: 4.0,
       centerTitle: true,
       iconTheme: IconThemeData(color: _whiteColor),
+      titleTextStyle: TextStyle(
+        color: _whiteColor,
+        fontWeight: FontWeight.bold,
+        fontSize: 24.0,
+      ),
     ),
     floatingActionButtonTheme: FloatingActionButtonThemeData(
       backgroundColor: _contrastColor,
@@ -144,16 +158,16 @@ class AppTheme {
     inputDecorationTheme: InputDecorationTheme(
       prefixIconColor: _primaryColor,
       suffixIconColor: _primaryColor,
-      border: OutlineInputBorder(
+      enabledBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(12.0),
-        borderSide: const BorderSide(color: _primaryColor),
+        borderSide: const BorderSide(color: _primaryColor, width: 2.0),
       ),
       focusedBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(12.0),
         borderSide: const BorderSide(color: _primaryColorLight, width: 2.0),
       ),
       labelStyle: GoogleFonts.inter(color: _primaryColorLight),
-      hintStyle: GoogleFonts.inter(color:_primaryColorLight),
+      hintStyle: GoogleFonts.inter(color: _primaryColorLight),
       fillColor: _secondaryDarkColor,
       filled: true,
     ),

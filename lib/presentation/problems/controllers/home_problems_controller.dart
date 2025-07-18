@@ -1,8 +1,5 @@
-// lib/presentation/problems/controllers/home_problems_controller.dart
-
 import 'package:flutter/material.dart';
 import 'package:resolution_app/dtos/problems/get_home_problems_response.dart';
-import 'package:resolution_app/models/problems.dart';
 import 'package:resolution_app/repositories/problem_repository.dart';
 
 class HomeProblemsController extends ChangeNotifier {
@@ -13,7 +10,7 @@ class HomeProblemsController extends ChangeNotifier {
   List<GetHomeProblemsResponseDto> _problems = [];
   List<GetHomeProblemsResponseDto> get problems => _problems;
 
-  bool _isLoading = false;
+  bool _isLoading = true;
   bool get isLoading => _isLoading;
 
   String? _errorMessage;

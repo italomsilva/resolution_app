@@ -15,6 +15,7 @@ class ProblemRepository {
 
   Future<List<GetHomeProblemsResponseDto>> fetchProblems() async {
     await Future.delayed(const Duration(seconds: 3));
+    _baseUrl;
     return getMockHomeProblems();
   }
 }

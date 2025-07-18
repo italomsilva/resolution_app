@@ -14,11 +14,16 @@ class RegisterController extends ChangeNotifier {
   final TextEditingController documentController = TextEditingController();
   final TextEditingController loginController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
+  final TextEditingController confirmPasswordController =
+      TextEditingController();
   final bool _isLoading = false;
   bool get isLoading => _isLoading;
 
   bool _isPasswordVisible = false;
   bool get isPasswordVisible => _isPasswordVisible;
+
+  bool _isConfirmPasswordVisible = false;
+  bool get isConfirmPasswordVisible => _isConfirmPasswordVisible;
 
   int _profileTypeValue = 1;
   int get profileTypeValue => _profileTypeValue;
@@ -35,9 +40,16 @@ class RegisterController extends ChangeNotifier {
     notifyListeners();
   }
 
+  void toggleConfirmPasswordVisibility() {
+    _isConfirmPasswordVisible = !_isConfirmPasswordVisible;
+    notifyListeners();
+  }
+
   void handleRegister() {}
   void resolveLogin(context) async {}
   String? validateName(String? value) {
+    _authController;
+    _userRepository;
     return null;
   }
 
@@ -58,6 +70,10 @@ class RegisterController extends ChangeNotifier {
   }
 
   String? validatePassword(String? value) {
+    return null;
+  }
+
+  String? validateConfirmPassword(String? value) {
     return null;
   }
 }

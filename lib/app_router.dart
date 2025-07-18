@@ -1,15 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:resolution_app/presentation/auth/controllers/auth_controller.dart';
+import 'package:resolution_app/presentation/auth/controllers/profile_controller.dart';
 import 'package:resolution_app/presentation/auth/pages/login_page.dart';
 import 'package:resolution_app/presentation/auth/pages/profile_page.dart';
 import 'package:resolution_app/presentation/auth/pages/register_page.dart';
 import 'package:resolution_app/presentation/layout/main_scaffold.dart';
+import 'package:resolution_app/presentation/problems/controllers/add_problem_controller.dart';
 import 'package:resolution_app/presentation/problems/controllers/home_problems_controller.dart';
 import 'package:resolution_app/presentation/problems/pages/add_problem_page.dart';
 import 'package:resolution_app/presentation/problems/pages/home_problems_page.dart';
 import 'package:resolution_app/presentation/splash/splash_screen.dart';
 import 'package:resolution_app/repositories/problem_repository.dart';
+import 'package:resolution_app/repositories/user_repository.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:provider/provider.dart';
 
@@ -52,18 +55,11 @@ class AppRouter {
           path: '/register',
           builder: (context, state) => const RegisterPage(),
         ),
-        // ---------------------------------------------------------------------
-        // ALTERAÇÃO 1: Mudar ShellRoute para StatefulShellRoute.indexedStack
-        // Isso é crucial para preservar o estado das abas (páginas e controllers).
         StatefulShellRoute.indexedStack(
           builder: (context, state, navigationShell) {
-            // navigationShell é o widget que gerencia as abas.
-            // Passamos para MainScaffold para que ele controle a navegação interna.
             return MainScaffold(navigationShell: navigationShell);
           },
           branches: [
-            // ALTERAÇÃO 2: Cada grupo de rotas da sua Bottom Navigation Bar
-            // deve ser uma StatefulShellBranch.
             StatefulShellBranch(
               routes: [
                 GoRoute(
@@ -84,8 +80,13 @@ class AppRouter {
                 GoRoute(
                   path: "/add_problem",
                   builder: (context, state) {
-                    // Adicione um controller aqui se AddProblemPage precisar de estado
-                    return const AddProblemPage(); // Adicione 'const' se AddProblemPage for Stateless
+                    return ChangeNotifierProvider<AddProblemController>(
+                      create: (context) => AddProblemController(
+                        Provider.of<ProblemRepository>(context, listen: false),
+                        Provider.of<AuthController>(context, listen: false),
+                      ),
+                      child: AddProblemPage(),
+                    );
                   },
                 ),
               ],
@@ -94,14 +95,21 @@ class AppRouter {
               routes: [
                 GoRoute(
                   path: "/profile",
-                  builder: (context, state) => const ProfilePage(),
+                  builder: (context, state) {
+                    return ChangeNotifierProvider(
+                      create: (context) => ProfileController(
+                        Provider.of<AuthController>(context, listen: false),
+                        Provider.of<UserRepository>(context, listen: false),
+                        Provider.of<ProblemRepository>(context, listen: false),
+                      ),
+                      child: ProfilePage(),
+                    );
+                  },
                 ),
               ],
             ),
-            // Se você tiver outras abas, adicione-as como StatefulShellBranch aqui.
           ],
         ),
-        // ---------------------------------------------------------------------
       ],
 
       redirect: (context, state) {

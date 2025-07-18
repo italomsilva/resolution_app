@@ -1,22 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart'; // Importe GoRouter para StatefulNavigationShell
-import 'package:resolution_app/app_theme.dart'; // Importe seu tema
-
+import 'package:go_router/go_router.dart'; 
 
 class MainScaffold extends StatefulWidget {
   final StatefulNavigationShell navigationShell;
 
-  const MainScaffold({
-    required this.navigationShell, 
-    super.key,
-  });
+  const MainScaffold({required this.navigationShell, super.key});
 
   @override
   State<MainScaffold> createState() => _MainScaffoldState();
 }
 
 class _MainScaffoldState extends State<MainScaffold> {
-
   void _onItemTapped(int index) {
     widget.navigationShell.goBranch(
       index,
@@ -30,7 +24,7 @@ class _MainScaffoldState extends State<MainScaffold> {
     final int selectedIndex = widget.navigationShell.currentIndex;
     return Scaffold(
       body: widget.navigationShell,
-      bottomNavigationBar: BottomNavigationBar( 
+      bottomNavigationBar: BottomNavigationBar(
         elevation: 60.0,
         items: <BottomNavigationBarItem>[
           BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Início'),
@@ -40,7 +34,7 @@ class _MainScaffoldState extends State<MainScaffold> {
           ),
           BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Perfil'),
         ],
-        currentIndex: selectedIndex, 
+        currentIndex: selectedIndex,
         selectedItemColor: theme.primaryColor,
         onTap: _onItemTapped,
       ),

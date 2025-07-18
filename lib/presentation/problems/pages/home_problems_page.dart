@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:resolution_app/dtos/problems/get_home_problems_response.dart';
 import 'package:resolution_app/presentation/problems/controllers/home_problems_controller.dart';
@@ -33,20 +32,13 @@ class _HomeProblemsPageState extends State<HomeProblemsPage> {
 
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        foregroundColor: Colors.transparent,
-        surfaceTintColor: Colors.transparent,
         leading: IconButton(
-          icon: Icon(
-            color: theme.primaryColor,
-            _isSearching ? Icons.close : Icons.search,
-          ), // Ícone de fechar ou lupa
+          icon: Icon(_isSearching ? Icons.close : Icons.search),
           onPressed: () {
             setState(() {
-              _isSearching = !_isSearching; // Alterna o modo de busca
+              _isSearching = !_isSearching;
               if (!_isSearching) {
-                _searchController
-                    .clear(); // Limpa o campo ao sair do modo de busca
+                _searchController.clear();
               }
             });
           },
@@ -59,24 +51,17 @@ class _HomeProblemsPageState extends State<HomeProblemsPage> {
                   contentPadding: EdgeInsets.all(0),
                   filled: false,
                   hintText: 'Pesquisar problemas...',
-                  prefixIcon: Icon(Icons.search, color: theme.primaryColorDark),
+                  prefixIcon: Icon(Icons.search),
                 ),
                 style: TextStyle(fontSize: 18),
-                cursorColor: Theme.of(context).primaryColor,
               )
-            : Text(
-                'Problemas',
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  color: Theme.of(context).primaryColor,
-                ),
-              ),
+            : Text('Problemas', style: TextStyle(fontWeight: FontWeight.bold)),
         centerTitle: false,
         actions: [
           Consumer<HomeProblemsController>(
             builder: (context, controller, child) {
               return IconButton(
-                icon: Icon(Icons.refresh, color: theme.primaryColor),
+                icon: Icon(Icons.refresh),
                 onPressed: controller.isLoading
                     ? null
                     : () {
@@ -206,34 +191,36 @@ class _HomeProblemsPageState extends State<HomeProblemsPage> {
                             ],
                           ),
                           const SizedBox(height: 8.0),
-                          Container(
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: 8.0,
-                              vertical: 4.0,
-                            ),
-                            decoration: BoxDecoration(
-                              color: _getStatusColor(problem.status),
-                              borderRadius: BorderRadius.circular(5.0),
-                            ),
-                            child: Text(
-                              problem.status.textValue,
-                              style: TextStyle(
-                                color: _getStatusTextColor(problem.status),
-                                fontWeight: FontWeight.bold,
-                                fontSize: 12,
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Container(
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 8.0,
+                                  vertical: 4.0,
+                                ),
+                                decoration: BoxDecoration(
+                                  color: _getStatusColor(problem.status),
+                                  borderRadius: BorderRadius.circular(5.0),
+                                ),
+                                child: Text(
+                                  problem.status.textValue,
+                                  style: TextStyle(
+                                    color: _getStatusTextColor(problem.status),
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 12,
+                                  ),
+                                ),
                               ),
-                            ),
+                              Text(
+                                'Criado em: ${problem.createdAt.toLocal().toString().split(' ')[0]}',
+                                style: theme.textTheme.bodySmall?.copyWith(
+                                  color: Colors.grey.shade700,
+                                ),
+                              ),
+                            ],
                           ),
                           const SizedBox(height: 8.0),
-                          Align(
-                            alignment: Alignment.bottomRight,
-                            child: Text(
-                              'Criado em: ${problem.createdAt.toLocal().toString().split(' ')[0]}',
-                              style: theme.textTheme.bodySmall?.copyWith(
-                                color: Colors.grey.shade700,
-                              ),
-                            ),
-                          ),
                         ],
                       ),
                     ),
@@ -250,26 +237,26 @@ class _HomeProblemsPageState extends State<HomeProblemsPage> {
   Color _getStatusColor(ProblemStatus status) {
     switch (status) {
       case ProblemStatus.open:
-        return Colors.orange.shade100;
-      case ProblemStatus.inProgress:
         return Colors.blue.shade100;
+      case ProblemStatus.inProgress:
+        return Colors.orange.shade100;
       case ProblemStatus.resolved:
         return Colors.green.shade100;
       case ProblemStatus.canceled:
-        return Colors.grey.shade300;
+        return Colors.red.shade100;
     }
   }
 
   Color _getStatusTextColor(ProblemStatus status) {
     switch (status) {
       case ProblemStatus.open:
-        return Colors.orange.shade700;
-      case ProblemStatus.inProgress:
         return Colors.blue.shade700;
+      case ProblemStatus.inProgress:
+        return Colors.orange.shade700;
       case ProblemStatus.resolved:
         return Colors.green.shade700;
       case ProblemStatus.canceled:
-        return Colors.grey.shade700;
+        return Colors.red.shade700;
     }
   }
 }

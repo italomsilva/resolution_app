@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
-import 'package:resolution_app/app_theme.dart';
 import 'package:resolution_app/presentation/auth/controllers/auth_controller.dart';
 import 'package:resolution_app/presentation/auth/controllers/login_controller.dart';
+import 'package:resolution_app/presentation/commom_widgets/MyFormButton.dart';
 import 'package:resolution_app/repositories/user_repository.dart';
 
 class LoginPage extends StatefulWidget {
@@ -87,33 +87,16 @@ class _LoginPageState extends State<LoginPage> {
                             },
                       ),
                       const SizedBox(height: 30),
-                      SizedBox(
-                        width: double.infinity,
-                        child: Consumer<LoginController>(
-                          builder: (context, loginController, child) {
-                            return ElevatedButton(
-                              onPressed: loginController.isLoading
-                                  ? null
-                                  : () {
-                                      controller.handleLogin(context);
-                                    },
-                              child: loginController.isLoading
-                                  ? CircularProgressIndicator(
-                                      valueColor: AlwaysStoppedAnimation<Color>(
-                                        theme.primaryColorDark,
-                                      ),
-                                    )
-                                  : const Text(
-                                      'Entrar',
-                                      style: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        letterSpacing: 2,
-                                        fontSize: 20,
-                                      ),
-                                    ),
-                            );
-                          },
-                        ),
+                      Consumer<LoginController>(
+                        builder: (context, value, child) {
+                          return MyFormButton(
+                            text: 'Entrar',
+                            isLoading: controller.isLoading,
+                            onPressed: () {
+                              controller.handleLogin(context);
+                            },
+                          );
+                        },
                       ),
                       const SizedBox(height: 10),
                       TextButton(

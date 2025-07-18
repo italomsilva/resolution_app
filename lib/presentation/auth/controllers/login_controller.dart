@@ -34,7 +34,6 @@ class LoginController extends ChangeNotifier {
     if (!formKey.currentState!.validate()) {
       return;
     }
-
     _setLoading(true);
     final String login = loginController.text;
     final String password = passwordController.text;

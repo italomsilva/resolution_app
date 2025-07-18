@@ -3,6 +3,7 @@ import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:resolution_app/presentation/auth/controllers/auth_controller.dart';
 import 'package:resolution_app/presentation/auth/controllers/register_controller.dart';
+import 'package:resolution_app/presentation/commom_widgets/MyFormButton.dart';
 import 'package:resolution_app/repositories/user_repository.dart';
 
 class RegisterPage extends StatefulWidget {
@@ -15,7 +16,6 @@ class RegisterPage extends StatefulWidget {
 class _RegisterPageState extends State<RegisterPage> {
   @override
   Widget build(BuildContext context) {
-    final currentTheme = Theme.of(context);
     return ChangeNotifierProvider(
       create: (context) => RegisterController(
         Provider.of<UserRepository>(context, listen: false),
@@ -27,7 +27,6 @@ class _RegisterPageState extends State<RegisterPage> {
             context,
             listen: false,
           );
-          final theme = Theme.of(context);
           return Scaffold(
             appBar: AppBar(
               leading: IconButton(
@@ -120,6 +119,38 @@ class _RegisterPageState extends State<RegisterPage> {
                             );
                           },
                     ),
+                    const SizedBox(height: 20),
+                    Consumer<RegisterController>(
+                      builder:
+                          (
+                            BuildContext context,
+                            RegisterController value,
+                            Widget? child,
+                          ) {
+                            return TextFormField(
+                              controller: controller.confirmPasswordController,
+                              obscureText:
+                                  !(controller.isConfirmPasswordVisible),
+                              decoration: InputDecoration(
+                                labelText: 'Confirmar senha',
+                                hintText: '',
+                                prefixIcon: const Icon(Icons.lock),
+                                suffixIcon: IconButton(
+                                  onPressed: () {
+                                    controller
+                                        .toggleConfirmPasswordVisibility();
+                                  },
+                                  icon: Icon(
+                                    controller.isConfirmPasswordVisible
+                                        ? Icons.visibility_off
+                                        : Icons.visibility,
+                                  ),
+                                ),
+                              ),
+                              validator: controller.validateConfirmPassword,
+                            );
+                          },
+                    ),
                     const SizedBox(height: 30),
                     Consumer<RegisterController>(
                       builder:
@@ -171,26 +202,10 @@ class _RegisterPageState extends State<RegisterPage> {
                       width: double.infinity,
                       child: Consumer<RegisterController>(
                         builder: (context, registerController, child) {
-                          return ElevatedButton(
-                            onPressed: registerController.isLoading
-                                ? null
-                                : () {
-                                    controller.resolveLogin(context);
-                                  },
-                            child: registerController.isLoading
-                                ? const CircularProgressIndicator(
-                                    valueColor: AlwaysStoppedAnimation<Color>(
-                                      Colors.white,
-                                    ),
-                                  )
-                                : const Text(
-                                    'Registrar',
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      letterSpacing: 2,
-                                      fontSize: 20,
-                                    ),
-                                  ),
+                          return MyFormButton(
+                            text: "Registrar",
+                            isLoading: controller.isLoading,
+                            onPressed: controller.handleRegister,
                           );
                         },
                       ),
