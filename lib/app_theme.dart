@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:resolution_app/models/enums/problem_status.dart';
 
 class AppTheme {
   static const Color _primaryColor = Color(0xFF758BFD);
@@ -13,6 +14,7 @@ class AppTheme {
 
   static const Color whiteColor = Color(0xFFF1F2F6);
   static const Color blackColor = Colors.black;
+  static const Color neutralColor = Color.fromARGB(55, 134, 134, 134);
 
   static ThemeData lightTheme = ThemeData(
     splashColor: Color.fromRGBO(219, 221, 245, 1),

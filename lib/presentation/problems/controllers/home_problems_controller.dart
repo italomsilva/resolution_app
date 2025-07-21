@@ -10,19 +10,25 @@ class HomeProblemsController extends ChangeNotifier {
   List<GetHomeProblemsResponseDto> _problems = [];
   List<GetHomeProblemsResponseDto> get problems => _problems;
 
+  String? _errorMessage= "Deu problema aq lek";
+  String? get errorMessage => _errorMessage;
+  void _setErrorMessage(String? message) {
+    _errorMessage = message;
+    notifyListeners();
+  }
+
   bool _isLoading = true;
   bool get isLoading => _isLoading;
-
-  String? _errorMessage;
-  String? get errorMessage => _errorMessage;
-
   void _setLoading(bool value) {
     _isLoading = value;
     notifyListeners();
   }
 
-  void _setErrorMessage(String? message) {
-    _errorMessage = message;
+  TextEditingController searchController = TextEditingController();
+  bool _isSearching = false;
+  bool get isSearching => _isSearching;
+  void toggleSearching() {
+    _isSearching = !_isSearching;
     notifyListeners();
   }
 

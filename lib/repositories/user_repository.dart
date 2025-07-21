@@ -69,16 +69,16 @@ class UserRepository {
     // }
   }
 
-  User fetchUserById(a, b) {
+  User fetchUserById(id, token) {
     return User(
-      id: a,
-      name: a,
-      email: a,
-      document: a,
-      profile: b,
-      login: b,
-      password: b,
-      token: b,
+      id: "1123243434345",
+      name: "Italo Monteiro Silva",
+      email: "italo7777@gmail.com",
+      document: "757.491.303-04",
+      profile: ProfileType.individual,
+      login: "aloit085",
+      password: "bomberbibis",
+      token: "jhdfjhsjhfjdshjfhdjsklhjhjhfjhjkhfkdsj",
     );
   }
 }

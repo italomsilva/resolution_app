@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:resolution_app/presentation/auth/controllers/auth_controller.dart';
-import 'package:resolution_app/presentation/auth/controllers/profile_controller.dart';
+import 'package:resolution_app/presentation/auth/controllers/login_controller.dart';
+import 'package:resolution_app/presentation/auth/controllers/my_profile_controller.dart';
+import 'package:resolution_app/presentation/auth/controllers/register_controller.dart';
 import 'package:resolution_app/presentation/auth/pages/login_page.dart';
-import 'package:resolution_app/presentation/auth/pages/profile_page.dart';
+import 'package:resolution_app/presentation/auth/pages/my_profile_page.dart';
 import 'package:resolution_app/presentation/auth/pages/register_page.dart';
 import 'package:resolution_app/presentation/layout/main_scaffold.dart';
 import 'package:resolution_app/presentation/problems/controllers/add_problem_controller.dart';
@@ -50,10 +52,25 @@ class AppRouter {
           path: '/splash',
           builder: (context, state) => const SplashScreen(),
         ),
-        GoRoute(path: '/login', builder: (context, state) => const LoginPage()),
+        GoRoute(
+          path: '/login',
+          builder: (context, state) => ChangeNotifierProvider(
+            create: (context) => LoginController(
+              Provider.of<UserRepository>(context, listen: false),
+              Provider.of<AuthController>(context, listen: false),
+            ),
+            child: LoginPage(),
+          ),
+        ),
         GoRoute(
           path: '/register',
-          builder: (context, state) => const RegisterPage(),
+          builder: (context, state) => ChangeNotifierProvider(
+            create: (context) => RegisterController(
+              Provider.of<UserRepository>(context, listen: false),
+              Provider.of<AuthController>(context, listen: false),
+            ),
+            child: RegisterPage(),
+          ),
         ),
         StatefulShellRoute.indexedStack(
           builder: (context, state, navigationShell) {
@@ -97,12 +114,19 @@ class AppRouter {
                   path: "/profile",
                   builder: (context, state) {
                     return ChangeNotifierProvider(
-                      create: (context) => ProfileController(
-                        Provider.of<AuthController>(context, listen: false),
-                        Provider.of<UserRepository>(context, listen: false),
-                        Provider.of<ProblemRepository>(context, listen: false),
-                      ),
-                      child: ProfilePage(),
+                      create: (context) {
+                        final controller = MyProfileController(
+                          Provider.of<AuthController>(context, listen: false),
+                          Provider.of<UserRepository>(context, listen: false),
+                          Provider.of<ProblemRepository>(
+                            context,
+                            listen: false,
+                          ),
+                        );
+                        controller.loadProfileData();
+                        return controller;
+                      },
+                      child: MyProfilePage(),
                     );
                   },
                 ),
