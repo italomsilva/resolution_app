@@ -1,21 +1,25 @@
 import 'package:flutter/material.dart';
+import 'package:resolution_app/dto/solution/get_my_solutions_response.dart';
 import 'package:resolution_app/mocks/problems_count.dart';
 import 'package:resolution_app/models/enums/profile_type.dart';
 import 'package:resolution_app/models/problems.dart';
 import 'package:resolution_app/models/user.dart';
 import 'package:resolution_app/presentation/auth/controllers/auth_controller.dart';
 import 'package:resolution_app/repositories/problem_repository.dart';
+import 'package:resolution_app/repositories/solution_repository.dart';
 import 'package:resolution_app/repositories/user_repository.dart';
 
 class MyProfileController extends ChangeNotifier {
   final AuthController _authController;
   final UserRepository _userRepository;
   final ProblemRepository _problemRepository;
+  final SolutionRepository _solutionRepository;
   final List<ProblemStatusChartData> dataProblem = getMockProblemChartData();
   MyProfileController(
     this._authController,
     this._userRepository,
     this._problemRepository,
+    this._solutionRepository,
   );
 
   User? _user;
@@ -27,6 +31,9 @@ class MyProfileController extends ChangeNotifier {
 
   List<Problem>? _problems;
   List<Problem>? get problems => _problems;
+
+  List<GetMySolutionsResponseDto>? _solutions;
+  List<GetMySolutionsResponseDto>? get solutions => _solutions;
 
   TextEditingController nameController = TextEditingController();
   TextEditingController documentController = TextEditingController();
@@ -68,6 +75,16 @@ class MyProfileController extends ChangeNotifier {
 
   bool _seeProblems = false;
   bool get seeProblems => _seeProblems;
+
+  bool _solutionsLoading = false;
+  bool get solutionsLoading => _solutionsLoading;
+  void setSolutionsLoading(value) {
+    _solutionsLoading = value;
+    notifyListeners();
+  }
+
+  bool _seeSolutions = false;
+  bool get seeSolutions => _seeSolutions;
 
   Future<User> loadProfileData() async {
     final user = await _authController.currentUser;
@@ -113,7 +130,20 @@ class MyProfileController extends ChangeNotifier {
     notifyListeners();
   }
 
+  void handleSeeSolutions() async {
+    setSolutionsLoading(true);
+    final List<GetMySolutionsResponseDto> solutions = await _solutionRepository
+        .fetchMySolutions();
+    _solutions = solutions;
+    notifyListeners();
+    setSolutionsLoading(false);
+    _seeSolutions = true;
+    notifyListeners();
+  }
+
   void deleteProblem() {}
 
-  void handleRefresh(int value){}
+  void deleteSolution() {}
+
+  void handleRefresh(int value) {}
 }

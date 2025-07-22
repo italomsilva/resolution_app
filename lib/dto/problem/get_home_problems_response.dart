@@ -50,40 +50,4 @@ class GetHomeProblemsResponseDto {
       'solutionsCount': solutionsCount,
     };
   }
-
-  @override
-  String toString() {
-    return 'GetHomeProblemsResponseDto(id: $id, title: $title, description: $description, '
-        'location: $location, status: ${status.value}, createdAt: $createdAt, '
-        'userId: $userId, userLogin: $userLogin, solutionsCount: $solutionsCount)';
-  }
-
-  @override
-  bool operator ==(Object other) {
-    if (identical(this, other)) return true;
-
-    return other is GetHomeProblemsResponseDto &&
-        other.id == id &&
-        other.title == title &&
-        other.description == description &&
-        other.location == location &&
-        other.status == status &&
-        other.createdAt == createdAt &&
-        other.userId == userId &&
-        other.userLogin == userLogin &&
-        other.solutionsCount == solutionsCount;
-  }
-
-  @override
-  int get hashCode {
-    return id.hashCode ^
-        title.hashCode ^
-        description.hashCode ^
-        location.hashCode ^
-        status.hashCode ^
-        createdAt.hashCode ^
-        userId.hashCode ^
-        userLogin.hashCode ^
-        solutionsCount.hashCode;
-  }
 }

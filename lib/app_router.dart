@@ -14,6 +14,7 @@ import 'package:resolution_app/presentation/problems/pages/add_problem_page.dart
 import 'package:resolution_app/presentation/problems/pages/home_problems_page.dart';
 import 'package:resolution_app/presentation/splash/splash_screen.dart';
 import 'package:resolution_app/repositories/problem_repository.dart';
+import 'package:resolution_app/repositories/solution_repository.dart';
 import 'package:resolution_app/repositories/user_repository.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:provider/provider.dart';
@@ -122,6 +123,7 @@ class AppRouter {
                             context,
                             listen: false,
                           ),
+                          Provider.of<SolutionRepository>(context, listen: false),
                         );
                         controller.loadProfileData();
                         return controller;

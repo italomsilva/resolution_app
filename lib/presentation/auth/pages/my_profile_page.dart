@@ -2,8 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:resolution_app/app_theme.dart';
 import 'package:resolution_app/presentation/auth/controllers/my_profile_controller.dart';
-import 'package:resolution_app/presentation/auth/widgets/my_problems_sectioon.dart';
+import 'package:resolution_app/presentation/auth/widgets/my_problems_section.dart';
 import 'package:resolution_app/presentation/auth/widgets/my_profile_section.dart';
+import 'package:resolution_app/presentation/auth/widgets/my_solutions_section.dart';
 
 class MyProfilePage extends StatefulWidget {
   const MyProfilePage({super.key});
@@ -59,7 +60,7 @@ class _MyProfilePageState extends State<MyProfilePage> {
                   children: const [
                     MyProfileSection(),
                     MyProblemsSection(),
-                    Center(child: Text("Conteúdo das Minhas Soluções aqui")),
+                    MySolutionsSection(),
                   ],
                 ),
               ),

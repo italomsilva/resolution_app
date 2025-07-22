@@ -5,6 +5,7 @@ import 'package:resolution_app/app_router.dart';
 import 'package:resolution_app/app_theme.dart';
 import 'package:resolution_app/presentation/auth/controllers/auth_controller.dart';
 import 'package:resolution_app/repositories/problem_repository.dart';
+import 'package:resolution_app/repositories/solution_repository.dart';
 import 'package:resolution_app/repositories/user_repository.dart';
 
 
@@ -29,6 +30,7 @@ class _AppState extends State<App> {
       providers: [
         Provider<UserRepository>(create: (_) => UserRepository()),
         Provider<ProblemRepository>(create: (_) => ProblemRepository()),
+        Provider<SolutionRepository>(create: (_) => SolutionRepository()),
         ChangeNotifierProvider<AuthController>(
           create: (context) => AuthController(
             Provider.of<UserRepository>(context, listen: false),

@@ -1,0 +1,246 @@
+import 'package:resolution_app/dto/solution/get_my_solutions_response.dart'; // Certifique-se do caminho correto
+
+List<GetMySolutionsResponseDto> getMockMySolutions() {
+  return [
+    GetMySolutionsResponseDto(
+      id: 'sol_001',
+      title: 'Reparo Emergencial de Tubulação',
+      description:
+          'Solução proposta para o vazamento principal na Rua das Palmeiras, incluindo troca de 3 metros de tubulação e recapeamento asfáltico da área afetada.',
+      approved: true,
+      createdAt: DateTime.parse('2025-07-20T11:00:00Z'),
+      problemId: 'p001',
+      problemTitle: 'Vazamento Grave na Rede de Água',
+      likes: 21, // Preenchido
+      dislikes: 3, // Preenchido
+    ),
+    GetMySolutionsResponseDto(
+      id: 'sol_002',
+      title: 'Tapa-buraco com Asfalto Quente',
+      description:
+          'Preenchimento e compactação do buraco na Av. Brasil utilizando massa asfáltica quente para durabilidade. Sinalização temporária incluída.',
+      approved: false,
+      createdAt: DateTime.parse('2025-07-19T16:00:00Z'),
+      problemId: 'p002',
+      problemTitle: 'Buraco Perigoso na Avenida Principal',
+      likes: 32,
+      dislikes: 1,
+    ),
+    GetMySolutionsResponseDto(
+      id: 'sol_003',
+      title: 'Substituição de Lâmpada e Reator',
+      description:
+          'Troca da lâmpada de sódio e do reator do poste na Praça da Liberdade. Teste de iluminação noturna garantido.',
+      approved: true,
+      createdAt: DateTime.parse('2025-07-18T20:30:00Z'),
+      problemId: 'p003',
+      problemTitle: 'Poste de Iluminação Pública Apagado',
+      likes: 24,
+      dislikes: 43,
+    ),
+    GetMySolutionsResponseDto(
+      id: 'sol_004',
+      title: 'Mutirão de Limpeza e Conscientização',
+      description:
+          'Organização de mutirão de limpeza com voluntários e campanha de conscientização para descarte correto na Rua do Sol. Instalação de placas.',
+      approved: false,
+      createdAt: DateTime.parse('2025-07-17T10:30:00Z'),
+      problemId: 'p004',
+      problemTitle: 'Descarte Irregular de Lixo e Entulho',
+      likes: 5,
+      dislikes: 0,
+    ),
+    GetMySolutionsResponseDto(
+      id: 'sol_005',
+      title: 'Poda de Galhos Aéreos Protetiva',
+      description:
+          'Poda profissional dos galhos da árvore na Rua das Acácias que estão em contato com a fiação elétrica, seguindo normas de segurança.',
+      approved: true,
+      createdAt: DateTime.parse('2025-07-16T12:30:00Z'),
+      problemId: 'p005',
+      problemTitle: 'Árvore com Galhos Atingindo Fiação Elétrica',
+      likes: 18,
+      dislikes: 2,
+    ),
+    GetMySolutionsResponseDto(
+      id: 'sol_006',
+      title: 'Recuperação de Calçada com Concreto',
+      description:
+          'Reconstrução dos trechos danificados da calçada na Av. Sete de Setembro com concreto de alta resistência e nivelamento para acessibilidade.',
+      approved: true,
+      createdAt: DateTime.parse('2025-07-15T18:00:00Z'),
+      problemId: 'p006',
+      problemTitle: 'Calçada Deteriorada com Obstáculos',
+      likes: 45,
+      dislikes: 3,
+    ),
+    GetMySolutionsResponseDto(
+      id: 'sol_007',
+      title: 'Ajuste de Temporização e Sensores',
+      description:
+          'Reconfiguração da temporização do semáforo e verificação dos sensores de fluxo de tráfego no cruzamento da Rua XV de Novembro.',
+      approved: false,
+      createdAt: DateTime.parse('2025-07-14T09:00:00Z'),
+      problemId: 'p007',
+      problemTitle: 'Semáforo em Ponto Cego com Defeito',
+      likes: 12,
+      dislikes: 1,
+    ),
+    GetMySolutionsResponseDto(
+      id: 'sol_008',
+      title: 'Limpeza e Pintura Anti-grafite',
+      description:
+          'Remoção de pichações e aplicação de tinta anti-grafite no muro do Parque Municipal para maior durabilidade e facilidade de limpeza futura.',
+      approved: true,
+      createdAt: DateTime.parse('2025-07-13T13:00:00Z'),
+      problemId: 'p008',
+      problemTitle: 'Pichações Recorrentes em Muro Público',
+      likes: 30,
+      dislikes: 2,
+    ),
+    GetMySolutionsResponseDto(
+      id: 'sol_009',
+      title: 'Desobstrução e Canalização de Esgoto',
+      description:
+          'Desentupimento e criação de um sistema de canalização provisório para o esgoto na Rua do Riacho, aguardando obra maior de saneamento.',
+      approved: false,
+      createdAt: DateTime.parse('2025-07-12T08:15:00Z'),
+      problemId: 'p009',
+      problemTitle: 'Esgoto Estourado na Rua do Riacho',
+      likes: 8,
+      dislikes: 5,
+    ),
+    GetMySolutionsResponseDto(
+      id: 'sol_010',
+      title: 'Limpeza e Desentupimento de Boca de Lobo',
+      description:
+          'Equipe especializada realizará a limpeza completa e desentupimento da boca de lobo na Rua do Canal, com remoção de todo o lixo acumulado.',
+      approved: true,
+      createdAt: DateTime.parse('2025-07-11T07:00:00Z'),
+      problemId: 'p010',
+      problemTitle: 'Boca de Lobo Entupida e Alagamento',
+      likes: 28,
+      dislikes: 0,
+    ),
+    GetMySolutionsResponseDto(
+      id: 'sol_011',
+      title: 'Manutenção de Rede e Restabelecimento',
+      description:
+          'Equipe da concessionária está realizando manutenção na rede e previsão de restabelecimento do abastecimento em 4h no Bairro Alto.',
+      approved: true,
+      createdAt: DateTime.parse('2025-07-10T10:00:00Z'),
+      problemId: 'p011',
+      problemTitle: 'Falta de Água Repentina no Bairro Alto',
+      likes: 55,
+      dislikes: 10,
+    ),
+    GetMySolutionsResponseDto(
+      id: 'sol_012',
+      title: 'Troca de Lâmpadas em Postes Críticos',
+      description:
+          'Troca de lâmpadas de led de alta potência nos postes críticos da Rua Residencial para melhorar a iluminação e segurança noturna.',
+      approved: true,
+      createdAt: DateTime.parse('2025-07-09T20:00:00Z'),
+      problemId: 'p012',
+      problemTitle: 'Postes Sem Lâmpadas em Rua Residencial',
+      likes: 15,
+      dislikes: 0,
+    ),
+    GetMySolutionsResponseDto(
+      id: 'sol_013',
+      title: 'Remoção de Entulho da Ciclovia',
+      description:
+          'Equipe de limpeza urbana fará a remoção completa do entulho na ciclovia da orla e sinalização para evitar novos descartes.',
+      approved: false,
+      createdAt: DateTime.parse('2025-07-08T11:00:00Z'),
+      problemId: 'p013',
+      problemTitle: 'Entulho Bloqueando Ciclovia',
+      likes: 7,
+      dislikes: 2,
+    ),
+    GetMySolutionsResponseDto(
+      id: 'sol_014',
+      title: 'Fiscalização de Horário de Obras',
+      description:
+          'Aumento da fiscalização na Rua do Sossego com rondas noturnas para garantir o cumprimento da lei do silêncio e horários de obra.',
+      approved: true,
+      createdAt: DateTime.parse('2025-07-07T00:00:00Z'),
+      problemId: 'p014',
+      problemTitle: 'Barulho Excessivo de Obra Após Horário',
+      likes: 25,
+      dislikes: 1,
+    ),
+    GetMySolutionsResponseDto(
+      id: 'sol_015',
+      title: 'Instalação de Novo Abrigo de Ônibus',
+      description:
+          'Projeto para instalação de um novo abrigo de ônibus com cobertura, bancos e lixeira no ponto da Av. Principal.',
+      approved: false,
+      createdAt: DateTime.parse('2025-07-06T15:00:00Z'),
+      problemId: 'p015',
+      problemTitle: 'Ponto de Ônibus sem Abrigo e Assento',
+      likes: 3,
+      dislikes: 0,
+    ),
+    GetMySolutionsResponseDto(
+      id: 'sol_016',
+      title: 'Resgate e Encaminhamento de Animal',
+      description:
+          'Equipe de proteção animal fará o resgate e encaminhamento do cão na Praça das Flores para clínica veterinária para tratamento e adoção.',
+      approved: true,
+      createdAt: DateTime.parse('2025-07-05T10:00:00Z'),
+      problemId: 'p016',
+      problemTitle: 'Cão Abandonado com Ferimentos na Praça',
+      likes: 10,
+      dislikes: 0,
+    ),
+    GetMySolutionsResponseDto(
+      id: 'sol_017',
+      title: 'Sinalização e Multa para Obstrução',
+      description:
+          'Intensificação da sinalização na rampa de acessibilidade do Banco Central e aplicação de multas para veículos estacionados irregularmente.',
+      approved: true,
+      createdAt: DateTime.parse('2025-07-04T13:00:00Z'),
+      problemId: 'p017',
+      problemTitle: 'Rampa de Acessibilidade Obstruída por Veículos',
+      likes: 40,
+      dislikes: 5,
+    ),
+    GetMySolutionsResponseDto(
+      id: 'sol_018',
+      title: 'Restauro de Brinquedos e Nova Pintura',
+      description:
+          'Restauro completo dos brinquedos danificados do parquinho infantil municipal e nova pintura com temas lúdicos e cores vibrantes.',
+      approved: false,
+      createdAt: DateTime.parse('2025-07-03T17:00:00Z'),
+      problemId: 'p018',
+      problemTitle: 'Vandalismo em Parquinho Infantil Municipal',
+      likes: 12,
+      dislikes: 3,
+    ),
+    GetMySolutionsResponseDto(
+      id: 'sol_019',
+      title: 'Fixação de Placa de Sinalização',
+      description:
+          'Fixação imediata da placa indicativa da Rua do Comércio com reforço para evitar novas quedas e garantir a segurança viária.',
+      approved: true,
+      createdAt: DateTime.parse('2025-07-02T12:00:00Z'),
+      problemId: 'p019',
+      problemTitle: 'Placa de Sinalização de Rua Caída',
+      likes: 18,
+      dislikes: 0,
+    ),
+    GetMySolutionsResponseDto(
+      id: 'sol_020',
+      title: 'Investigação e Monitoramento de Emissões',
+      description:
+          'Equipe técnica realizará investigação e monitoramento das emissões da Fábrica Quimex para identificar a origem do odor e propor medidas corretivas.',
+      approved: false,
+      createdAt: DateTime.parse('2025-07-01T21:00:00Z'),
+      problemId: 'p020',
+      problemTitle: 'Odor Forte e Desagradável Vindo de Fábrica',
+      likes: 5,
+      dislikes: 2,
+    ),
+  ];
+}

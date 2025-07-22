@@ -102,7 +102,9 @@ class _MyProfileSectionState extends State<MyProfileSection> {
                 SizedBox(height: 20),
                 MyFormButton(
                   text: "Salvar",
-                  onPressed: controller.handleSubmit,
+                  onPressed: controller.editMode
+                      ? controller.handleSubmit
+                      : null,
                   isLoading: controller.loadSubmit,
                 ),
               ],

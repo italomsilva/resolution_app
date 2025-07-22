@@ -11,17 +11,17 @@ class MyProblemsSection extends StatefulWidget {
   const MyProblemsSection({super.key});
 
   @override
-  State<MyProblemsSection> createState() => _MyProblemsSectioonState();
+  State<MyProblemsSection> createState() => _MyProblemsSectionState();
 }
 
-class _MyProblemsSectioonState extends State<MyProblemsSection> {
+class _MyProblemsSectionState extends State<MyProblemsSection> {
   @override
   Widget build(BuildContext context) {
     return Consumer<MyProfileController>(
       builder: (context, controller, child) {
         final theme = Theme.of(context);
         return Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 5),
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
           child: SingleChildScrollView(
             child: Column(
               children: [
@@ -106,8 +106,7 @@ class _MyProblemsSectioonState extends State<MyProblemsSection> {
                         child: Column(
                           children: [
                             Row(
-                              mainAxisAlignment:
-                                  MainAxisAlignment.spaceBetween,
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 Expanded(
                                   child: Text(
@@ -115,9 +114,7 @@ class _MyProblemsSectioonState extends State<MyProblemsSection> {
                                     maxLines: 1,
                                     overflow: TextOverflow.ellipsis,
                                     style: theme.textTheme.titleMedium
-                                        ?.copyWith(
-                                          fontWeight: FontWeight.bold,
-                                        ),
+                                        ?.copyWith(fontWeight: FontWeight.bold),
                                   ),
                                 ),
                                 IconButton(
@@ -128,17 +125,15 @@ class _MyProblemsSectioonState extends State<MyProblemsSection> {
                               ],
                             ),
                             Row(
-                              mainAxisAlignment:
-                                  MainAxisAlignment.spaceBetween,
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 MyContainerProblemStatus(
                                   problemStatus: problem.status,
                                 ),
                                 Text(
-                                  problem.createdAt
-                                      .toLocal()
-                                      .toString()
-                                      .split(' ')[0],
+                                  problem.createdAt.toLocal().toString().split(
+                                    ' ',
+                                  )[0],
                                   style: theme.textTheme.bodySmall,
                                 ),
                               ],

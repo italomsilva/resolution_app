@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:resolution_app/app_theme.dart';
-import 'package:resolution_app/dtos/problems/get_home_problems_response.dart';
+import 'package:resolution_app/dto/problem/get_home_problems_response.dart';
 import 'package:resolution_app/presentation/commom_widgets/my_container_problem_status.dart';
 import 'package:resolution_app/presentation/commom_widgets/my_error_widget.dart';
 import 'package:resolution_app/presentation/commom_widgets/my_loading_widget.dart';

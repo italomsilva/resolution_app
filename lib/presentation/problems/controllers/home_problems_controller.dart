@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:resolution_app/dtos/problems/get_home_problems_response.dart';
+import 'package:resolution_app/dto/problem/get_home_problems_response.dart';
 import 'package:resolution_app/repositories/problem_repository.dart';
 
 class HomeProblemsController extends ChangeNotifier {

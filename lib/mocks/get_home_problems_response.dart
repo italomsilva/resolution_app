@@ -1,4 +1,4 @@
-import 'package:resolution_app/dtos/problems/get_home_problems_response.dart';
+import 'package:resolution_app/dto/problem/get_home_problems_response.dart';
 import 'package:resolution_app/models/enums/problem_status.dart';
 
 List<GetHomeProblemsResponseDto> getMockHomeProblems() {

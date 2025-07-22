@@ -62,6 +62,7 @@ class AppTheme {
       shadowColor: const Color.fromARGB(57, 0, 0, 0),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.0)),
     ),
+    dividerTheme: DividerThemeData(color: neutralColor, thickness: 2),
     inputDecorationTheme: InputDecorationTheme(
       enabledBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(12.0),
