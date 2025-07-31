@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:resolution_app/dto/solution/get_my_solutions_response.dart';
+import 'package:resolution_app/dto/solution/get_solutions_reactions.dart';
 import 'package:resolution_app/mocks/problems_count.dart';
 import 'package:resolution_app/models/enums/profile_type.dart';
 import 'package:resolution_app/models/problems.dart';
@@ -28,6 +29,8 @@ class MyProfileController extends ChangeNotifier {
     _user = user;
     notifyListeners();
   }
+
+  List<SolutionFeedbackChartData>? dataSolutions = null;
 
   List<Problem>? _problems;
   List<Problem>? get problems => _problems;
@@ -105,6 +108,8 @@ class MyProfileController extends ChangeNotifier {
     _isLoading = false;
     notifyListeners();
     initControllers();
+    dataSolutions = await getMockSolutionsReactionsData();
+    notifyListeners();
     return user;
   }
 

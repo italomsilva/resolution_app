@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:resolution_app/app_theme.dart';
 import 'package:resolution_app/presentation/auth/controllers/my_profile_controller.dart';
+import 'package:resolution_app/presentation/auth/widgets/indicator_graph.dart';
+import 'package:resolution_app/presentation/auth/widgets/line_chart.dart';
 import 'package:resolution_app/presentation/commom_widgets/MyFormButton.dart';
 
 class MySolutionsSection extends StatefulWidget {
@@ -22,6 +23,45 @@ class _MySolutionsSectionState extends State<MySolutionsSection> {
           child: SingleChildScrollView(
             child: Column(
               children: [
+                Card(
+                  child: Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: Column(
+                      children: [
+                        Text(
+                          "Estatísticas das minhas Soluções mais recentes",
+                          style: theme.textTheme.titleLarge?.copyWith(
+                            fontWeight: FontWeight.bold,
+                          ),
+                          textAlign: TextAlign.center,
+                        ),
+                        SizedBox(height: 20),
+                        SizedBox(
+                          height: 250,
+                          child: MyLineChart(
+                            data: controller.dataSolutions ?? [],
+                          ),
+                        ),
+                        const SizedBox(height: 30),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            IndicatorGraph(
+                              color: theme.primaryColorDark,
+                              text: 'Likes',
+                            ),
+                            const SizedBox(width: 20),
+                            IndicatorGraph(
+                              color: theme.colorScheme.error,
+                              text: 'Dislikes',
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                SizedBox(height: 20),
                 controller.seeSolutions == false
                     ? MyFormButton(
                         text: "Ver minhas Soluções",
