@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:resolution_app/dto/problem/get_home_problems_response.dart';
 import 'package:resolution_app/repositories/problem_repository.dart';
 
@@ -10,7 +11,7 @@ class HomeProblemsController extends ChangeNotifier {
   List<GetHomeProblemsResponseDto> _problems = [];
   List<GetHomeProblemsResponseDto> get problems => _problems;
 
-  String? _errorMessage= "Deu problema aq lek";
+  String? _errorMessage = "Deu problema aq lek";
   String? get errorMessage => _errorMessage;
   void _setErrorMessage(String? message) {
     _errorMessage = message;
@@ -45,5 +46,9 @@ class HomeProblemsController extends ChangeNotifier {
     } finally {
       _setLoading(false);
     }
+  }
+
+  void handleProblemCard(BuildContext context, String problemId) {
+    context.push('/problem/$problemId');
   }
 }

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:resolution_app/models/enums/problem_status.dart';
 
 class AppTheme {
   static const Color _primaryColor = Color(0xFF758BFD);

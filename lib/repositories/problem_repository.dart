@@ -21,10 +21,20 @@ class ProblemRepository {
     return getMockHomeProblems();
   }
 
-    Future<List<Problem>> fetchMyProblems() async {
+  Future<List<Problem>> fetchMyProblems() async {
     await Future.delayed(const Duration(seconds: 3));
     _baseUrl;
     return getMockMyProblems();
   }
 
+  Future<GetHomeProblemsResponseDto?> fetchProblemById(String problemId) async {
+    await Future.delayed(Duration(seconds: 3));
+    final problems = getMockHomeProblems();
+    for (var i = 0; i < problems.length; i++) {
+      if (problems[i].id == problemId) {
+        return problems[i];
+      }
+    }
+    return null;
+  }
 }

@@ -8,10 +8,10 @@ class IndicatorGraph extends StatelessWidget {
 
   const IndicatorGraph({
     super.key,
-    required Color this.color,
-    required String this.text,
-    bool this.isSquare = false,
-    double this.size = 14,
+    required this.color,
+    required this.text,
+    this.isSquare = false,
+    this.size = 14,
   });
 
   @override

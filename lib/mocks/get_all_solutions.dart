@@ -1,9 +1,12 @@
+import 'dart:math';
+
+import 'package:resolution_app/dto/solution/get_all_solutions.dart';
 import 'package:resolution_app/mocks/get_my_problems.dart';
 import 'package:resolution_app/models/solution.dart'; // Importe sua classe Solution
 import 'package:resolution_app/models/problems.dart'; // Importe sua classe Problem
 
-List<Solution> getMockAllSolutions() {
-  final List<Solution> allSolutions = [];
+List<GetAllSolutionsResponseDto> getMockAllSolutions() {
+  final List<GetAllSolutionsResponseDto> allSolutions = [];
   final List<Problem> problems = getMockMyProblems();
 
   int solutionCounter = 1;
@@ -12,8 +15,7 @@ List<Solution> getMockAllSolutions() {
     for (int i = 1; i <= 10; i++) {
       final String solutionId =
           's${solutionCounter.toString().padLeft(4, '0')}';
-      final String solutionTitle =
-          'Solução #${i} para ${problem.title.substring(0, problem.title.length > 30 ? 30 : problem.title.length)}...';
+      final String solutionTitle = 'Solução #${i} para ${problem.title}';
       final String solutionDescription =
           'Proposta detalhada para resolver "${problem.title}". Envolve etapas de avaliação, reparo e acompanhamento da solução. Custo estimado inclui mão de obra e materiais.';
       final double estimatedCost = (100.0 + (i * 50) + (solutionCounter % 100))
@@ -24,7 +26,7 @@ List<Solution> getMockAllSolutions() {
       );
 
       allSolutions.add(
-        Solution(
+        GetAllSolutionsResponseDto(
           id: solutionId,
           title: solutionTitle,
           description: solutionDescription,
@@ -33,6 +35,10 @@ List<Solution> getMockAllSolutions() {
           createdAt: solutionCreatedAt,
           problemId: problem.id,
           userId: problem.userId,
+          problemTitle: problem.title,
+          userLogin: 'User_${problem.userId}',
+          likes: Random().nextInt(251),
+          dislikes: Random().nextInt(251),
         ),
       );
       solutionCounter++;

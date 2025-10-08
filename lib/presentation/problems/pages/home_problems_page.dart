@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:resolution_app/app_theme.dart';
 import 'package:resolution_app/dto/problem/get_home_problems_response.dart';
 import 'package:resolution_app/presentation/commom_widgets/my_container_problem_status.dart';
 import 'package:resolution_app/presentation/commom_widgets/my_error_widget.dart';
 import 'package:resolution_app/presentation/commom_widgets/my_loading_widget.dart';
 import 'package:resolution_app/presentation/problems/controllers/home_problems_controller.dart';
-import 'package:resolution_app/models/enums/problem_status.dart';
 
 class HomeProblemsPage extends StatefulWidget {
   const HomeProblemsPage({super.key});
@@ -105,7 +103,7 @@ class _HomeProblemsPageState extends State<HomeProblemsPage> {
                       child: InkWell(
                         splashColor: theme.splashColor,
                         onTap: () {
-                          print("Idclicado");
+                          controller.handleProblemCard(context, problem.id);
                         },
                         child: Padding(
                           padding: const EdgeInsets.all(16.0),

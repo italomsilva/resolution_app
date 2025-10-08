@@ -19,9 +19,15 @@ class AddProblemController extends ChangeNotifier {
   final TextEditingController descriptionController = TextEditingController();
   final TextEditingController locationController = TextEditingController();
 
-  String? validateTitle(String? value) {}
-  String? validateDescription(String? value) {}
-  String? validateLocation(String? value) {}
+  String? validateTitle(String? value) {
+    return null;
+  }
+  String? validateDescription(String? value) {
+    return null;
+  }
+  String? validateLocation(String? value) {
+    return null;
+  }
 
   Future<void> handleCreate(BuildContext context) async {
     setLoading(true);

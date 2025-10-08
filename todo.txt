@@ -1,0 +1,1 @@
+- add prop na solution pra saber se eu curtir e mudar cor de like e dislike

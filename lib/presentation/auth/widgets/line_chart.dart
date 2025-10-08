@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:resolution_app/app_theme.dart';
 import 'package:resolution_app/dto/solution/get_solutions_reactions.dart';
-import 'package:resolution_app/presentation/auth/widgets/indicator_graph.dart';
 
 class MyLineChart extends StatefulWidget {
   final List<SolutionFeedbackChartData> data;

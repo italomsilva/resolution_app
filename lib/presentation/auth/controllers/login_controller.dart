@@ -69,6 +69,8 @@ class LoginController extends ChangeNotifier {
   }
 
   String? validateLogin(String? value) {
+    return null;
+  
     // if (value == null || value.isEmpty) {
     //   return 'Preencha este campo';
     // }
@@ -83,6 +85,8 @@ class LoginController extends ChangeNotifier {
   }
 
   String? validatePassword(String? value) {
+    return null;
+  
     // if (value == null || value.isEmpty) {
     //   return 'Preencha este campo';
     // }

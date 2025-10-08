@@ -1,3 +1,4 @@
+
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:resolution_app/presentation/auth/controllers/auth_controller.dart';
@@ -10,8 +11,10 @@ import 'package:resolution_app/presentation/auth/pages/register_page.dart';
 import 'package:resolution_app/presentation/layout/main_scaffold.dart';
 import 'package:resolution_app/presentation/problems/controllers/add_problem_controller.dart';
 import 'package:resolution_app/presentation/problems/controllers/home_problems_controller.dart';
+import 'package:resolution_app/presentation/problems/controllers/problem_controller.dart';
 import 'package:resolution_app/presentation/problems/pages/add_problem_page.dart';
 import 'package:resolution_app/presentation/problems/pages/home_problems_page.dart';
+import 'package:resolution_app/presentation/problems/pages/problem_page.dart';
 import 'package:resolution_app/presentation/splash/splash_screen.dart';
 import 'package:resolution_app/repositories/problem_repository.dart';
 import 'package:resolution_app/repositories/solution_repository.dart';
@@ -73,6 +76,24 @@ class AppRouter {
             child: RegisterPage(),
           ),
         ),
+        GoRoute(
+          path: '/problem/:problemId',
+          builder: (context, state) {
+            final problemId = state.pathParameters['problemId'];
+            return ChangeNotifierProvider(
+              create: (context) {
+                final controller = ProblemController(
+                  Provider.of<ProblemRepository>(context, listen: false),
+                  Provider.of<SolutionRepository>(context, listen: false)
+                );
+                controller.fetchProblem(problemId ?? '');
+                controller.verifyIfIsMyProblem();
+                return controller;
+              },
+              child: ProblemPage(problemId: problemId ?? ''),
+            );
+          },
+        ),
         StatefulShellRoute.indexedStack(
           builder: (context, state, navigationShell) {
             return MainScaffold(navigationShell: navigationShell);
@@ -123,7 +144,10 @@ class AppRouter {
                             context,
                             listen: false,
                           ),
-                          Provider.of<SolutionRepository>(context, listen: false),
+                          Provider.of<SolutionRepository>(
+                            context,
+                            listen: false,
+                          ),
                         );
                         controller.loadProfileData();
                         return controller;
