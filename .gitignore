@@ -47,3 +47,11 @@ app.*.map.json
 
 .env
 *.env
+
+# Arquivos de SDK/Ferramentas Locais (Comum para Android)
+**/cmdline-tools.zip
+.DS_Store
+
+# Outros arquivos binários grandes que não devem ser versionados
+*.zip
+*.tar
