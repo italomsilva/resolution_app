@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:resolution_app/dto/solution/get_all_solutions.dart';
 import 'package:resolution_app/mocks/get_my_problems.dart';
+import 'package:resolution_app/models/enums/solution_reaction.dart';
 import 'package:resolution_app/models/solution.dart'; // Importe sua classe Solution
 import 'package:resolution_app/models/problems.dart'; // Importe sua classe Problem
 
@@ -39,6 +40,7 @@ List<GetAllSolutionsResponseDto> getMockAllSolutions() {
           userLogin: 'User_${problem.userId}',
           likes: Random().nextInt(251),
           dislikes: Random().nextInt(251),
+          myReaction: SolutionReaction.fromInt(Random().nextInt(3)),
         ),
       );
       solutionCounter++;

@@ -41,7 +41,7 @@ class ProblemController extends ChangeNotifier {
   }
 
   void verifyIfIsMyProblem() {
-    _isMyProblem = false;
+    _isMyProblem =  true;
     notifyListeners();
   }
 
@@ -70,5 +70,36 @@ class ProblemController extends ChangeNotifier {
 
   void handleDeleteProblem() {}
 
-  void reactSolution(SolutionReaction reaction){}
+  void reactSolution(String solutionId, SolutionReaction newReaction) {
+    final newSolutions = solutions.map((sol) {
+      if (sol.id == solutionId) {
+        int newLikes = sol.likes;
+        int newDislikes = sol.dislikes;
+        newReaction = sol.myReaction == newReaction
+            ? SolutionReaction.none
+            : newReaction;
+
+        if (sol.myReaction == SolutionReaction.like) {
+          newLikes--;
+        } else if (sol.myReaction == SolutionReaction.dislike) {
+          newDislikes--;
+        }
+        if (newReaction == SolutionReaction.like) {
+          newLikes++;
+        } else if (newReaction == SolutionReaction.dislike) {
+          newDislikes++;
+        }
+
+        return sol.copyWith(
+          likes: newLikes,
+          dislikes: newDislikes,
+          myReaction: newReaction,
+        );
+      }
+      return sol;
+    }).toList();
+
+    _solutions = newSolutions;
+    notifyListeners();
+  }
 }

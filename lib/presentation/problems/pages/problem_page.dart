@@ -135,6 +135,7 @@ class _ProblemPageState extends State<ProblemPage> {
                             ),
                           ],
                         ),
+                        // controller.isMyProblem?SizedBox(): AddSolutionPage
                       ],
                     ),
                     SizedBox(height: 16),
@@ -212,35 +213,44 @@ class _ProblemPageState extends State<ProblemPage> {
                   color: Colors.grey.shade700,
                 ),
               ),
+              Row(
+                children: [
+                  IconButton(
+                    onPressed: () {
+                      controller.reactSolution(
+                        solution.id,
+                        SolutionReaction.like,
+                      );
+                    },
+                    icon: Icon(
+                      solution.myReaction == SolutionReaction.like
+                          ? Icons.thumb_up_alt
+                          : Icons.thumb_up_alt_outlined,
+                      color: theme.primaryColor,
+                    ),
+                  ),
+                  Text(solution.likes.toString()),
+                  Spacer(),
+                  IconButton(
+                    onPressed: () {
+                      controller.reactSolution(
+                        solution.id,
+                        SolutionReaction.dislike,
+                      );
+                    },
+                    icon: Icon(
+                      solution.myReaction == SolutionReaction.dislike
+                          ? Icons.thumb_down_alt
+                          : Icons.thumb_down_alt_outlined,
+                      color: theme.colorScheme.error,
+                    ),
+                  ),
+                  Text(solution.dislikes.toString()),
+                ],
+              ),
               controller.isMyProblem
                   ? MyFormButton(text: "Aprovar Solução")
-                  : Row(
-                      children: [
-                        IconButton(
-                          onPressed: () {
-                            controller.reactSolution(SolutionReaction.like);
-                          },
-                          icon: Icon(
-                            controller.reaction == SolutionReaction.like
-                                ? Icons.thumb_up_alt
-                                : Icons.thumb_up_alt_outlined,
-                          ),
-                        ),
-                        Text(solution.likes.toString()),
-                        Spacer(),
-                        IconButton(
-                          onPressed: () {
-                            controller.reactSolution(SolutionReaction.dislike);
-                          },
-                          icon: Icon(
-                            controller.reaction == SolutionReaction.dislike
-                                ? Icons.thumb_down_alt
-                                : Icons.thumb_down_alt_outlined,
-                          ),
-                        ),
-                        Text(solution.dislikes.toString()),
-                      ],
-                    ),
+                  : SizedBox(),
             ],
           ),
         );

@@ -1,3 +1,5 @@
+import 'package:resolution_app/models/enums/solution_reaction.dart';
+
 class GetAllSolutionsResponseDto {
   final String id;
   final String title;
@@ -11,6 +13,7 @@ class GetAllSolutionsResponseDto {
   final String userLogin;
   final int likes;
   final int dislikes;
+  SolutionReaction myReaction;
 
   GetAllSolutionsResponseDto({
     required this.id,
@@ -25,6 +28,7 @@ class GetAllSolutionsResponseDto {
     required this.userLogin,
     required this.likes,
     required this.dislikes,
+    required this.myReaction,
   });
 
   factory GetAllSolutionsResponseDto.fromJson(Map<String, dynamic> json) {
@@ -41,6 +45,7 @@ class GetAllSolutionsResponseDto {
       userLogin: json['user_login'] as String,
       likes: json['likes'] as int,
       dislikes: json['dislikes'] as int,
+      myReaction: json['my_reaction'] as SolutionReaction,
     );
   }
 
@@ -58,6 +63,39 @@ class GetAllSolutionsResponseDto {
       'user_login': userLogin,
       'likes': likes,
       'dislikes': dislikes,
+      'my_reaction': myReaction,
     };
+  }
+
+   GetAllSolutionsResponseDto copyWith({
+    String? id,
+    String? title,
+    String? description,
+    double? estimatedCost,
+    bool? approved,
+    DateTime? createdAt,
+    String? problemId,
+    String? problemTitle,
+    String? userId,
+    String? userLogin,
+    int? likes,
+    int? dislikes,
+    SolutionReaction? myReaction,
+  }) {
+    return GetAllSolutionsResponseDto(
+      id: id ?? this.id,
+      title: title ?? this.title,
+      description: description ?? this.description,
+      estimatedCost: estimatedCost ?? this.estimatedCost,
+      approved: approved ?? this.approved,
+      createdAt: createdAt ?? this.createdAt,
+      problemId: problemId ?? this.problemId,
+      problemTitle: problemTitle ?? this.problemTitle,
+      userId: userId ?? this.userId,
+      userLogin: userLogin ?? this.userLogin,
+      likes: likes ?? this.likes, 
+      dislikes: dislikes ?? this.dislikes,
+      myReaction: myReaction ?? this.myReaction, 
+    );
   }
 }

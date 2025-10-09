@@ -6,4 +6,11 @@ enum SolutionReaction {
   final int value;
 
   const SolutionReaction(this.value);
+
+  factory SolutionReaction.fromInt(int intValue) {
+    return SolutionReaction.values.firstWhere(
+      (e) => e.value == intValue,
+      orElse: () => SolutionReaction.none,
+    );
+  }
 }
