@@ -41,7 +41,7 @@ class ProblemController extends ChangeNotifier {
   }
 
   void verifyIfIsMyProblem() {
-    _isMyProblem =  true;
+    _isMyProblem =  false;
     notifyListeners();
   }
 

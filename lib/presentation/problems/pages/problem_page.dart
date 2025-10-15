@@ -46,7 +46,6 @@ class _ProblemPageState extends State<ProblemPage> {
                         "Cancelar",
                         "Deletar",
                       );
-
                       if (await confirmDelete) {
                         controller.handleDeleteProblem;
                       }
@@ -135,7 +134,17 @@ class _ProblemPageState extends State<ProblemPage> {
                             ),
                           ],
                         ),
-                        // controller.isMyProblem?SizedBox(): AddSolutionPage
+                        SizedBox(height: 16),
+                        controller.isMyProblem
+                            ? SizedBox()
+                            : MyFormButton(
+                                text: "Propor Solução",
+                                onPressed: () {
+                                  context.push(
+                                    "/problem/${controller.problem?.id}/add-solution",
+                                  );
+                                },
+                              ),
                       ],
                     ),
                     SizedBox(height: 16),

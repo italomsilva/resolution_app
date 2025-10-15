@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:resolution_app/presentation/auth/controllers/auth_controller.dart';
@@ -15,6 +14,8 @@ import 'package:resolution_app/presentation/problems/controllers/problem_control
 import 'package:resolution_app/presentation/problems/pages/add_problem_page.dart';
 import 'package:resolution_app/presentation/problems/pages/home_problems_page.dart';
 import 'package:resolution_app/presentation/problems/pages/problem_page.dart';
+import 'package:resolution_app/presentation/solutions/controllers/add_solution_controller.dart';
+import 'package:resolution_app/presentation/solutions/pages/add_solution_page.dart';
 import 'package:resolution_app/presentation/splash/splash_screen.dart';
 import 'package:resolution_app/repositories/problem_repository.dart';
 import 'package:resolution_app/repositories/solution_repository.dart';
@@ -84,7 +85,7 @@ class AppRouter {
               create: (context) {
                 final controller = ProblemController(
                   Provider.of<ProblemRepository>(context, listen: false),
-                  Provider.of<SolutionRepository>(context, listen: false)
+                  Provider.of<SolutionRepository>(context, listen: false),
                 );
                 controller.fetchProblem(problemId ?? '');
                 controller.verifyIfIsMyProblem();
@@ -93,6 +94,20 @@ class AppRouter {
               child: ProblemPage(problemId: problemId ?? ''),
             );
           },
+          routes: [
+            GoRoute(
+              path: '/add-solution',
+              builder: (context, state) => ChangeNotifierProvider(
+                create: (context) {
+                  final controller = AddSolutionController(
+                    Provider.of<SolutionRepository>(context, listen: false),
+                  );
+                  return controller;
+                },
+                child: AddSolutionPage(),
+              ),
+            ),
+          ],
         ),
         StatefulShellRoute.indexedStack(
           builder: (context, state, navigationShell) {
