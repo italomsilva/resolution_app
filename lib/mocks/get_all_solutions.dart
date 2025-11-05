@@ -16,7 +16,7 @@ List<GetAllSolutionsResponseDto> getMockAllSolutions() {
     for (int i = 1; i <= 10; i++) {
       final String solutionId =
           's${solutionCounter.toString().padLeft(4, '0')}';
-      final String solutionTitle = 'Solução #${i} para ${problem.title}';
+      final String solutionTitle = 'Solução #$i para ${problem.title}';
       final String solutionDescription =
           'Proposta detalhada para resolver "${problem.title}". Envolve etapas de avaliação, reparo e acompanhamento da solução. Custo estimado inclui mão de obra e materiais.';
       final double estimatedCost = (100.0 + (i * 50) + (solutionCounter % 100))

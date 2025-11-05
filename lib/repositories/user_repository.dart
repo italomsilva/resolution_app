@@ -1,84 +1,127 @@
+import 'dart:convert';
+
+import 'package:http/http.dart' as http;
+import 'package:resolution_app/dto/user/register_user_dto.dart';
 import 'package:resolution_app/models/enums/profile_type.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:resolution_app/models/user.dart';
 
-class LoginException implements Exception {
+class UserException implements Exception {
   final String message;
-  LoginException(this.message);
+  UserException(this.message);
 
   @override
-  String toString() => 'LoginException: $message';
+  String toString() => 'UserException: $message';
 }
 
 class UserRepository {
   final String _baseUrl = dotenv.get('BASE_BACKEND_URL');
 
   Future<User?> login(String login, String password) async {
-    // await Future.delayed(const Duration(seconds: 3));
+    final url = Uri.parse('$_baseUrl/sign-in');
 
-    _baseUrl;
-
-    if (login == 'aaaaaaaa' && password == '11111111') {
-      return User(
-        id: 'jdfghkjgdkjfgkgfkdsg',
-        name: 'Aloit',
-        email: 'aloit085@gmail.com',
-        document: '12345678900',
-        profile: ProfileType.individual,
-        login: 'aloit085',
-        password: '1234',
-        token: 'jdhfkghdgkfhgdhgjfgjkdgfhghdfghjdg',
+    try {
+      final response = await http.post(
+        url,
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+          'go-api-key': dotenv.get('API_KEY_VALUE'),
+        },
+        body: jsonEncode(<String, String>{
+          'login': login,
+          'password': password,
+        }),
       );
+
+      final Map<String, dynamic> responseData = jsonDecode(response.body);
+      if (response.statusCode == 200) {
+        return User.fromJson(responseData["data"]);
+      } else if ((response.statusCode == 401) &&
+          (responseData["message"] == "Invalid login or password")) {
+        throw UserException(
+          'Credenciais inválidas. Verifique seu login e senha.',
+        );
+      } else {
+        print(responseData["message"]);
+        throw UserException("Login falhou: Servidor ou Problema de conexão");
+      }
+    } catch (e) {
+      if (e is UserException) {
+        rethrow;
+      }
+      throw UserException("Login falhou: Erro inesperado no Login");
     }
-    return null;
-    // final url = Uri.parse('$_baseUrl/auth/login');
-
-    // try {
-    //   final response = await http.post(
-    //     url,
-    //     headers: <String, String>{
-    //       'Content-Type': 'application/json; charset=UTF-8',
-    //     },
-    //     body: jsonEncode(<String, String>{
-    //       'login': login,
-    //       'password': password,
-    //     }),
-    //   );
-
-    //   if (response.statusCode == 200) {
-    //     final Map<String, dynamic> responseData = jsonDecode(response.body);
-    //     return User.fromJson(responseData);
-    //   } else if (response.statusCode == 401) {
-    //     throw LoginException(
-    //       'Credenciais inválidas. Verifique seu login e senha.',
-    //     );
-    //   } else {
-    //     throw LoginException(
-    //       'Falha ao fazer login. Tente novamente mais tarde.',
-    //     );
-    //   }
-    // } catch (e) {
-    //   print('Erro de rede ou inesperado durante o login: $e');
-
-    //   if (e is LoginException) {
-    //     rethrow;
-    //   }
-    //   throw LoginException(
-    //     'Não foi possível conectar ao servidor. Verifique sua conexão.',
-    //   );
-    // }
   }
 
-  User fetchUserById(id, token) {
-    return User(
-      id: "1123243434345",
-      name: "Italo Monteiro Silva",
-      email: "italo7777@gmail.com",
-      document: "757.491.303-04",
-      profile: ProfileType.individual,
-      login: "aloit085",
-      password: "bomberbibis",
-      token: "jhdfjhsjhfjdshjfhdjsklhjhjhfjhjkhfkdsj",
-    );
+  Future<User> fetchUserById(id, token) async {
+    final url = Uri.parse("$_baseUrl/user/$id");
+
+    try {
+      final response = await http.get(
+        url,
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+          'go-api-key': dotenv.get('API_KEY_VALUE'),
+        },
+      );
+      final Map<String, dynamic> responseData = jsonDecode(response.body);
+      if (response.statusCode == 200) {
+        return User.fromJson(responseData["data"]);
+      } else {
+        throw UserException(
+          'GetUserById: erro ao buscar usuario pelo Id. Erro: ${responseData["message"]}',
+        );
+      }
+    } catch (e) {
+      print("GetUserById: erro ao buscar usuario pelo Id: $e");
+
+      if (e is UserException) {
+        rethrow;
+      }
+      throw UserException(
+        'Não foi possível conectar ao servidor. Verifique sua conexão.',
+      );
+    }
+  }
+
+  Future<User?> create(RegisterUserRequestDto user) async {
+    final url = Uri.parse("$_baseUrl/sign-up");
+
+    try {
+      final response = await http.post(
+        url,
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+          'go-api-key': dotenv.get('API_KEY_VALUE'),
+        },
+        body: jsonEncode(<String, dynamic>{
+          'name': user.name,
+          'email': user.email,
+          'document': user.document,
+          'profile': user.profile.value,
+          'login': user.login,
+          'password': user.password,
+        }),
+      );
+      final Map<String, dynamic> responseData = jsonDecode(response.body);
+      if (response.statusCode == 201) {
+        return User.fromJson(responseData["data"]);
+      } else if (response.statusCode == 409) {
+        if (responseData["message"] == "Login already in use") {
+          throw UserException("Erro no Cadastro: Este Login já está em uso");
+        } else if (responseData["message"] == "Document already in use") {
+          throw UserException(
+            "Erro no Cadastro: Este documento já está em uso",
+          );
+        }
+      } else{
+        throw UserException("Cadastro falhou: Servidor ou Problema de conexão");
+      }
+    } catch (e) {
+      if (e is UserException) {
+        rethrow;
+      }
+      throw UserException("Cadastro falhou: Erro inesperado no Cadastro $e");
+    }
   }
 }

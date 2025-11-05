@@ -45,9 +45,9 @@ class AuthController extends ChangeNotifier {
       );
       try {
         final fetchedUser = _userRepository.fetchUserById(userId, token);
-        _setLoggedInUser(fetchedUser);
+        _setLoggedInUser(fetchedUser as User?);
         print('Auto-login bem-sucedido com dados reais!');
-      } on LoginException catch (e) {
+      } on UserException catch (e) {
         print('Falha na validação do token ou busca de usuário: ${e.message}');
         await logout();
       } catch (e) {

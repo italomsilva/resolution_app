@@ -13,11 +13,11 @@ class AddSolutionController extends ChangeNotifier {
     notifyListeners();
   }
 
-  final TextEditingController titleController = new TextEditingController();
+  final TextEditingController titleController = TextEditingController();
   final TextEditingController descriptionController =
-      new TextEditingController();
+      TextEditingController();
   final TextEditingController estimatedCostController =
-      new TextEditingController();
+      TextEditingController();
 
   void handleSubmit() async {
     setLoadingSubmit(true);

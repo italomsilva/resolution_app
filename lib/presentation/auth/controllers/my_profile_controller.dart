@@ -30,7 +30,7 @@ class MyProfileController extends ChangeNotifier {
     notifyListeners();
   }
 
-  List<SolutionFeedbackChartData>? dataSolutions = null;
+  List<SolutionFeedbackChartData>? dataSolutions;
 
   List<Problem>? _problems;
   List<Problem>? get problems => _problems;
@@ -53,7 +53,7 @@ class MyProfileController extends ChangeNotifier {
     }
   }
 
-  String? _errorMessage = null;
+  String? _errorMessage;
   String? get errorMessage => _errorMessage;
 
   bool _isLoading = true;
@@ -90,7 +90,7 @@ class MyProfileController extends ChangeNotifier {
   bool get seeSolutions => _seeSolutions;
 
   Future<User> loadProfileData() async {
-    final user = await _authController.currentUser;
+    final user = _authController.currentUser;
     if (user == null) {
       _isLoading = false;
       return User(

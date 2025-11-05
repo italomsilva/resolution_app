@@ -162,7 +162,7 @@ class AppRouter {
                           Provider.of<SolutionRepository>(
                             context,
                             listen: false,
-                          ),
+                          )
                         );
                         controller.loadProfileData();
                         return controller;

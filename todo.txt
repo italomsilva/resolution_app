@@ -1,1 +1,1 @@
-- add solution page
+- validators register form

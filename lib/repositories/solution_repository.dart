@@ -3,7 +3,6 @@ import 'package:resolution_app/dto/solution/get_all_solutions.dart';
 import 'package:resolution_app/dto/solution/get_my_solutions_response.dart';
 import 'package:resolution_app/mocks/get_all_solutions.dart';
 import 'package:resolution_app/mocks/get_my_solutions.dart';
-import 'package:resolution_app/models/solution.dart';
 
 class SolutionRepositoryException implements Exception {
   final String message;

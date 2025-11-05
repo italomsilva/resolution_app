@@ -47,7 +47,6 @@ class MyErrorWidget extends StatelessWidget {
                   onPressed: () {
                     context.go(redirectPath!);
                   },
-                  child: Text(buttonText),
                   style: ElevatedButton.styleFrom(
                     padding: const EdgeInsets.symmetric(
                       horizontal: 30,
@@ -55,6 +54,7 @@ class MyErrorWidget extends StatelessWidget {
                     ),
                     textStyle: const TextStyle(fontSize: 16),
                   ),
+                  child: Text(buttonText),
                 ),
             ],
           ),

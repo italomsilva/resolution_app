@@ -33,12 +33,8 @@ class ProblemController extends ChangeNotifier {
     notifyListeners();
   }
 
-  SolutionReaction _reaction = SolutionReaction.none;
+  final SolutionReaction _reaction = SolutionReaction.none;
   SolutionReaction get reaction => _reaction;
-
-  void handleBack(BuildContext context) {
-    context.pop();
-  }
 
   void verifyIfIsMyProblem() {
     _isMyProblem =  false;

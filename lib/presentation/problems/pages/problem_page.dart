@@ -28,7 +28,7 @@ class _ProblemPageState extends State<ProblemPage> {
           builder: (context, controller, child) => IconButton(
             icon: Icon(Icons.keyboard_arrow_left),
             onPressed: () {
-              controller.handleBack(context);
+              context.pop();
             },
           ),
         ),
@@ -173,14 +173,15 @@ class _ProblemPageState extends State<ProblemPage> {
   ) {
     if (controller.solutionsLoading) {
       return MyLoadingWidget();
-    } else
+    } else {
       final solutions = controller.solutions;
+    }
     return ListView.builder(
       shrinkWrap: true,
       physics: NeverScrollableScrollPhysics(),
-      itemCount: controller.solutions?.length ?? 0,
+      itemCount: controller.solutions.length ?? 0,
       itemBuilder: (context, index) {
-        final solution = controller.solutions?[index];
+        final solution = controller.solutions[index];
         if (solution == null) {
           return SizedBox();
         }
