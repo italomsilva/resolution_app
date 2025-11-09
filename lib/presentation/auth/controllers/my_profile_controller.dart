@@ -127,7 +127,7 @@ class MyProfileController extends ChangeNotifier {
 
   void handleSeeProblems() async {
     setProblemsLoading(true);
-    final List<Problem> problems = await _problemRepository.fetchMyProblems();
+    final List<Problem> problems = await _problemRepository.fetchMyProblems(user!.token);
     _problems = problems;
     notifyListeners();
     setProblemsLoading(false);

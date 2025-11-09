@@ -1,1 +1,2 @@
-- validators register form
+- pesquisa na home
+- todas as funçoes tela principal

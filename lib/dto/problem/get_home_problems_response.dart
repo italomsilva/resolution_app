@@ -30,10 +30,10 @@ class GetHomeProblemsResponseDto {
       description: json['description'] as String,
       location: json['location'] as String,
       status: ProblemStatus.fromInt(json['status'] as int),
-      createdAt: DateTime.parse(json['createdAt'] as String),
-      userId: json['userId'] as String,
-      userLogin: json['userLogin'] as String,
-      solutionsCount: json['solutionsCount'] as int,
+      createdAt: DateTime.parse(json['created_at'] as String),
+      userId: json['user_id'] as String,
+      userLogin: json['user_login'] as String,
+      solutionsCount: json['solutions_count'] as int,
     );
   }
 

@@ -1,4 +1,7 @@
+import 'dart:convert';
+
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:http/http.dart' as http;
 import 'package:resolution_app/dto/problem/get_home_problems_response.dart';
 import 'package:resolution_app/mocks/get_home_problems_response.dart';
 import 'package:resolution_app/mocks/get_my_problems.dart';
@@ -15,16 +18,104 @@ class ProblemRepositoryException implements Exception {
 class ProblemRepository {
   final String _baseUrl = dotenv.get('BASE_BACKEND_URL');
 
-  Future<List<GetHomeProblemsResponseDto>> fetchProblems() async {
-    await Future.delayed(const Duration(seconds: 3));
-    _baseUrl;
-    return getMockHomeProblems();
+  Future<List<GetHomeProblemsResponseDto>> fetchProblems({
+    String? token,
+  }) async {
+    final url = Uri.parse('$_baseUrl/problems/app');
+    try {
+      final response = await http.get(
+        url,
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+          'go-api-key': dotenv.get('API_KEY_VALUE'),
+          'req-token': "Bearer ${token}",
+        },
+      );
+
+      final Map<String, dynamic> responseData = jsonDecode(response.body);
+      if (response.statusCode == 200) {
+        final result = responseData["data"] as List<dynamic>;
+        return result
+            .map((e) => GetHomeProblemsResponseDto.fromJson(e))
+            .toList();
+      } else {
+        print(responseData);
+        throw ProblemRepositoryException(
+          "Falha ao buscar problemas: Servidor ou Problema de conexão",
+        );
+      }
+    } catch (e) {
+      if (e is ProblemRepositoryException) {
+        rethrow;
+      }
+      throw ProblemRepositoryException("Erro inesperado ao buscar problemas");
+    }
   }
 
-  Future<List<Problem>> fetchMyProblems() async {
-    await Future.delayed(const Duration(seconds: 3));
-    _baseUrl;
-    return getMockMyProblems();
+  Future<List<Problem>> fetchMyProblems(String token) async {
+    final url = Uri.parse('$_baseUrl/problems/user');
+    try {
+      final response = await http.get(
+        url,
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+          'go-api-key': dotenv.get('API_KEY_VALUE'),
+          'req-token': "Bearer ${token}",
+        },
+      );
+
+      final Map<String, dynamic> responseData = jsonDecode(response.body);
+      if (response.statusCode == 200) {
+        final result = responseData["data"] as List<dynamic>;
+        return result.map((e) => Problem.fromJson(e)).toList();
+      } else {
+        print(responseData);
+        throw ProblemRepositoryException(
+          "Falha ao buscar problemas: Servidor ou Problema de conexão",
+        );
+      }
+    } catch (e) {
+      if (e is ProblemRepositoryException) {
+        rethrow;
+      }
+      throw ProblemRepositoryException("Erro inesperado ao buscar problemas");
+    }
+  }
+
+  Future<bool> createProblem(
+    String token,
+    String title,
+    String description,
+    String location,
+  ) async {
+    final url = Uri.parse('$_baseUrl/problem');
+    try {
+      final response = await http.post(
+        url,
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+          'go-api-key': dotenv.get('API_KEY_VALUE'),
+          'req-token': "Bearer ${token}",
+        },
+        body: jsonEncode({
+          'title': title,
+          'description': description,
+          'location': location,
+        }),
+      );
+      if (response.statusCode == 201) {
+        return true;
+      } else {
+        throw ProblemRepositoryException(
+          "Falha ao adicionar problema: Servidor ou Problema de conexão",
+        );
+      }
+    } catch (e) {
+      if (e is ProblemRepositoryException) {
+        rethrow;
+      }
+      throw ProblemRepositoryException("Erro inesperado ao buscar problemas");
+    }
   }
 
   Future<GetHomeProblemsResponseDto?> fetchProblemById(String problemId) async {

@@ -20,21 +20,55 @@ class AddProblemController extends ChangeNotifier {
   final TextEditingController locationController = TextEditingController();
 
   String? validateTitle(String? value) {
+    if (value == null || value.isEmpty) {
+      return 'Preencha este campo';
+    }
+
     return null;
   }
+
   String? validateDescription(String? value) {
+    if (value == null || value.isEmpty) {
+      return 'Preencha este campo';
+    }
+
     return null;
   }
+
   String? validateLocation(String? value) {
+    if (value == null || value.isEmpty) {
+      return 'Preencha este campo';
+    }
+
     return null;
   }
 
   Future<void> handleCreate(BuildContext context) async {
     setLoading(true);
-    final navshel = context
-        .findAncestorWidgetOfExactType<StatefulNavigationShell>();
-    await Future.delayed(Duration(seconds: 3));
+    final createProblem = await _problemRepository.createProblem(
+      _authController.currentUser!.token,
+      titleController.text,
+      descriptionController.text,
+      locationController.text,
+    );
     setLoading(false);
-    navshel!.goBranch(0);
+    if (createProblem) {
+      if (context.mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text("Problema criado com sucesso!"),
+          ),
+        );
+        context.go('/problems');
+      }
+    } else {
+      if (context.mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text("Falha ao criar problema. Tente novamente."),
+          ),
+        );
+      }
+    }
   }
 }
