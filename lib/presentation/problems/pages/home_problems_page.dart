@@ -30,6 +30,8 @@ class _HomeProblemsPageState extends State<HomeProblemsPage> {
     final theme = Theme.of(context);
     return Consumer<HomeProblemsController>(
       builder: (context, controller, child) {
+        final List<GetHomeProblemsResponseDto> displayList =
+            controller.filteredProblems;
         return Scaffold(
           appBar: AppBar(
             leading: IconButton(
@@ -37,9 +39,6 @@ class _HomeProblemsPageState extends State<HomeProblemsPage> {
               onPressed: () {
                 setState(() {
                   controller.toggleSearching();
-                  if (!controller.isSearching) {
-                    controller.searchController.clear();
-                  }
                 });
               },
             ),
@@ -67,7 +66,7 @@ class _HomeProblemsPageState extends State<HomeProblemsPage> {
                     ? null
                     : () {
                         controller.fetchProblems();
-                        controller.searchController.clear();
+                        controller.toggleSearching();
                       },
               ),
             ],
@@ -87,10 +86,10 @@ class _HomeProblemsPageState extends State<HomeProblemsPage> {
                 return MyErrorWidget(baseMessage: "Nenhum Problema Encontrado");
               } else {
                 return ListView.builder(
-                  itemCount: controller.problems.length,
+                  itemCount: displayList.length,
                   itemBuilder: (context, index) {
                     final GetHomeProblemsResponseDto problem =
-                        controller.problems[index];
+                        displayList[index];
                     return Card(
                       margin: const EdgeInsets.symmetric(
                         horizontal: 16.0,

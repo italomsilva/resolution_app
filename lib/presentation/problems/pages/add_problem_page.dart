@@ -29,9 +29,13 @@ class _MyWidgetState extends State<AddProblemPage> {
         title: Text("Adicionar Problema"),
         centerTitle: false,
         actions: [
-          IconButton(
-            onPressed: () {},
-            icon: Icon(Icons.cleaning_services_rounded),
+          Consumer<AddProblemController>(
+            builder: (context, controller, child) {
+              return IconButton(
+                onPressed: controller.clearForm,
+                icon: Icon(Icons.cleaning_services_rounded),
+              );
+            },
           ),
         ],
       ),

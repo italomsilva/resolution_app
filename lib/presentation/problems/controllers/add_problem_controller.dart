@@ -71,4 +71,11 @@ class AddProblemController extends ChangeNotifier {
       }
     }
   }
+
+  void clearForm() {
+    titleController.clear();
+    descriptionController.clear();
+    locationController.clear();
+    notifyListeners();
+  }
 }
