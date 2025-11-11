@@ -37,15 +37,17 @@ class ProblemController extends ChangeNotifier {
   SolutionReaction get reaction => _reaction;
 
   void verifyIfIsMyProblem() {
-    _isMyProblem =  false;
+    _isMyProblem = false;
     notifyListeners();
   }
 
   void fetchSolutions() async {
     _setSolutionsLoading(true);
-    final fetchedSolutions = await _solutionRepository.fetchSolutions();
-    _solutions = fetchedSolutions;
-    notifyListeners();
+    if (problem != null) {
+      final fetchedSolutions = await _solutionRepository.fetchSolutions();
+      _solutions = fetchedSolutions;
+      notifyListeners();
+    }
     _setSolutionsLoading(false);
   }
 

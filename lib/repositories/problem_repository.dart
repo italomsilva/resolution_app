@@ -119,13 +119,31 @@ class ProblemRepository {
   }
 
   Future<GetHomeProblemsResponseDto?> fetchProblemById(String problemId) async {
-    await Future.delayed(Duration(seconds: 3));
-    final problems = getMockHomeProblems();
-    for (var i = 0; i < problems.length; i++) {
-      if (problems[i].id == problemId) {
-        return problems[i];
-      }
+      final url = Uri.parse('$_baseUrl/problem/app/$problemId');
+      try {
+        final response = await http.get(
+          url,
+          headers: <String, String>{
+            'Content-Type': 'application/json; charset=UTF-8',
+            'go-api-key': dotenv.get('API_KEY_VALUE'),
+          },
+        );
+
+        final Map<String, dynamic> responseData = jsonDecode(response.body);
+        if (response.statusCode == 200) {
+          final result = responseData["data"] as Map<String, dynamic>;
+          return GetHomeProblemsResponseDto.fromJson(result);
+        } else {
+          print(responseData);
+          throw ProblemRepositoryException(
+            "Falha ao buscar problema: Servidor ou Problema de conexão",
+          );
+        }
+      } catch (e) {
+        if (e is ProblemRepositoryException) {
+          rethrow;
+        }
+        throw ProblemRepositoryException("Erro inesperado ao buscar problema");
     }
-    return null;
   }
 }

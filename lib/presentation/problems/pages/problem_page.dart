@@ -28,7 +28,9 @@ class _ProblemPageState extends State<ProblemPage> {
           builder: (context, controller, child) => IconButton(
             icon: Icon(Icons.keyboard_arrow_left),
             onPressed: () {
-              context.pop();
+              if (!controller.isLoading && !controller.solutionsLoading) {
+                context.pop();
+              }
             },
           ),
         ),
