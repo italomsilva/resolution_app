@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:resolution_app/dto/user/register_user_dto.dart';
+import 'package:resolution_app/dto/user/register_user_request_dto.dart';
 import 'package:resolution_app/models/enums/profile_type.dart';
 import 'package:resolution_app/models/user.dart';
 import 'package:resolution_app/presentation/auth/controllers/auth_controller.dart';

@@ -42,6 +42,7 @@ class MyProfileController extends ChangeNotifier {
   TextEditingController documentController = TextEditingController();
   TextEditingController emailController = TextEditingController();
   TextEditingController loginController = TextEditingController();
+  TextEditingController passwordController = TextEditingController();
 
   void initControllers() {
     final currentUser = user;
@@ -91,34 +92,54 @@ class MyProfileController extends ChangeNotifier {
 
   Future<User> loadProfileData() async {
     final user = _authController.currentUser;
-    if (user == null) {
+    final userFromDb = await _userRepository.fetchUserById(
+      _authController.currentUser!.id,
+      _authController.currentUser!.token,
+    );
+
+    if (userFromDb != null) {
+      _authController.login(userFromDb);
+      _setUser(userFromDb);
       _isLoading = false;
-      return User(
-        id: "",
-        name: "",
-        email: "",
-        document: "",
-        profile: ProfileType.unknown,
-        login: "",
-        password: "",
-        token: "",
-      );
+      notifyListeners();
+      initControllers();
     }
-    _setUser(user);
-    _isLoading = false;
-    notifyListeners();
-    initControllers();
-    dataSolutions = await getMockSolutionsReactionsData();
-    notifyListeners();
-    return user;
+    return userFromDb;
   }
 
-  void handleEdit() {
-    _editMode = !editMode;
+  void setEditMode({bool? value}) {
+    _editMode = value ?? !_editMode;
     notifyListeners();
   }
 
-  void handleLogout() {}
+  void handleEditProfileSubmit() async {
+    final User? userUpdated = await _userRepository.update(
+      token: user!.token,
+      name: nameController.text == user!.name ? null : nameController.text,
+      login: loginController.text == user!.login ? null : loginController.text,
+      password: passwordController.text,
+    );
+    if (userUpdated != null) {
+      _setUser(
+        User(
+          id: user!.id,
+          name: nameController.text,
+          email: user!.email,
+          document: user!.document,
+          profile: user!.profile,
+          login: loginController.text,
+          password: user!.password,
+          token: user!.token,
+        ),
+      );
+      setEditMode(value: false);
+      _authController.login(userUpdated);
+    }
+  }
+
+  void handleLogout() {
+    _authController.logout(clearData: true);
+  }
   void handleSubmit() async {
     setLoadSubmit(true);
     await Future.delayed(Duration(seconds: 3));
@@ -127,7 +148,9 @@ class MyProfileController extends ChangeNotifier {
 
   void handleSeeProblems() async {
     setProblemsLoading(true);
-    final List<Problem> problems = await _problemRepository.fetchMyProblems(user!.token);
+    final List<Problem> problems = await _problemRepository.fetchMyProblems(
+      user!.token,
+    );
     _problems = problems;
     notifyListeners();
     setProblemsLoading(false);

@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:resolution_app/presentation/auth/controllers/my_profile_controller.dart';
 import 'package:resolution_app/presentation/commom_widgets/MyFormButton.dart';
+import 'package:resolution_app/presentation/commom_widgets/my_confirm_action.dart';
+import 'package:resolution_app/presentation/commom_widgets/my_confirm_dialog.dart';
 import 'package:resolution_app/presentation/commom_widgets/my_error_widget.dart';
 import 'package:resolution_app/presentation/commom_widgets/my_loading_widget.dart';
 
@@ -33,7 +35,7 @@ class _MyProfileSectionState extends State<MyProfileSection> {
                 Align(
                   alignment: Alignment.topLeft,
                   child: IconButton(
-                    onPressed: controller.handleEdit,
+                    onPressed: (){controller.setEditMode();},
                     icon: Icon(
                       size: theme.textTheme.headlineLarge?.fontSize,
                       color: theme.primaryColorDark,
@@ -103,7 +105,21 @@ class _MyProfileSectionState extends State<MyProfileSection> {
                 MyFormButton(
                   text: "Salvar",
                   onPressed: controller.editMode
-                      ? controller.handleSubmit
+                      ? () async {
+                          final String? password = await myConfirmDialogMessage(
+                            context: context,
+                            title: "Confirmar Alterações",
+                            message:
+                                "Digite sua senha para confirmar as alterações.",
+                            cancelMessage: "Cancelar",
+                            confirmMessage: "Salvar",
+                            labelText: "Senha",
+                            passwordController: controller.passwordController,
+                          );
+                          if (password !=null){
+                            controller.handleEditProfileSubmit();
+                          }
+                        }
                       : null,
                   isLoading: controller.loadSubmit,
                 ),

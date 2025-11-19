@@ -1,2 +1,5 @@
-- todas as funçoes tela principal
-- travar no carregamentod problema
+- my profile page: ver meus problemas/soluções
+- my profile page: deletar meus problemas/soluções
+- problem page: botoes funcionais e modo de edição
+- problem page: se solução for minha editar
+-  refatorar auth and user logic

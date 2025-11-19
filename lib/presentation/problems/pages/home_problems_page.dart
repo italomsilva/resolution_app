@@ -66,7 +66,6 @@ class _HomeProblemsPageState extends State<HomeProblemsPage> {
                     ? null
                     : () {
                         controller.fetchProblems();
-                        controller.toggleSearching();
                       },
               ),
             ],

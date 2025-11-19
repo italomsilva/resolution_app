@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 import 'package:http/http.dart' as http;
-import 'package:resolution_app/dto/user/register_user_dto.dart';
+import 'package:resolution_app/dto/user/register_user_request_dto.dart';
 import 'package:resolution_app/models/enums/profile_type.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:resolution_app/models/user.dart';
@@ -114,7 +114,7 @@ class UserRepository {
             "Erro no Cadastro: Este documento já está em uso",
           );
         }
-      } else{
+      } else {
         throw UserException("Cadastro falhou: Servidor ou Problema de conexão");
       }
     } catch (e) {
@@ -122,6 +122,44 @@ class UserRepository {
         rethrow;
       }
       throw UserException("Cadastro falhou: Erro inesperado no Cadastro $e");
+    }
+  }
+
+  Future<User?> update({
+    required String token,
+    String? name,
+    String? login,
+    required String password,
+  }) async {
+    final url = Uri.parse("$_baseUrl/user");
+
+    try {
+      final response = await http.put(
+        url,
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+          'go-api-key': dotenv.get('API_KEY_VALUE'),
+          'req-token': "Bearer ${token}",
+        },
+        body: jsonEncode(<String, dynamic>{
+          if (name != null) 'name': name,
+          if (login != null) 'login': login,
+          'password': password,
+        }),
+      );
+      final Map<String, dynamic> responseData = jsonDecode(response.body);
+      if (response.statusCode == 200) {
+        return responseData["data"] != null
+            ? User.fromJson(responseData["data"])
+            : null;
+      } else {
+        throw UserException("Atualização falhou: ${responseData["message"]}");
+      }
+    } catch (e) {
+      if (e is UserException) {
+        rethrow;
+      }
+      throw UserException("Atualização falhou: Erro inesperado na atualização");
     }
   }
 }
