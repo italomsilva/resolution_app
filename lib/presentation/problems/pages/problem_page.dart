@@ -38,20 +38,32 @@ class _ProblemPageState extends State<ProblemPage> {
           Consumer<ProblemController>(
             builder: (context, controller, child) =>
                 controller.isMyProblem == true
-                ? IconButton(
-                    icon: Icon(Icons.delete),
-                    onPressed: () async {
-                      final Future<bool> confirmDelete = myConfirmActionMessage(
-                        context,
-                        "Confirmar exclusão",
-                        "Deseja realmente excluir este problema? Esta ação não pode ser desfeita",
-                        "Cancelar",
-                        "Deletar",
-                      );
-                      if (await confirmDelete) {
-                        controller.handleDeleteProblem;
-                      }
-                    },
+                ? Row(
+                    children: [
+                      IconButton(icon: Icon(Icons.edit), onPressed: () { 
+                        if (!controller.isLoading && !controller.solutionsLoading) {
+                          context.push(
+                            "/problem/${controller.problem?.id}/edit",
+                          );
+                        } 
+                      },),
+                      IconButton(
+                        icon: Icon(Icons.delete),
+                        onPressed: () async {
+                          final Future<bool>
+                          confirmDelete = myConfirmActionMessage(
+                            context,
+                            "Confirmar exclusão",
+                            "Deseja realmente excluir este problema? Esta ação não pode ser desfeita",
+                            "Cancelar",
+                            "Deletar",
+                          );
+                          if (await confirmDelete) {
+                            controller.handleDeleteProblem;
+                          }
+                        },
+                      ),
+                    ],
                   )
                 : Spacer(),
           ),

@@ -1,4 +1,5 @@
 import 'package:resolution_app/models/enums/problem_status.dart';
+import 'package:resolution_app/models/problems.dart';
 
 class GetHomeProblemsResponseDto {
   final String id;
@@ -49,5 +50,17 @@ class GetHomeProblemsResponseDto {
       'userLogin': userLogin,
       'solutionsCount': solutionsCount,
     };
+  }
+
+  Problem toProblem() {
+    return Problem(
+      id: id,
+      title: title,
+      description: description,
+      location: location,
+      status: status,
+      createdAt: createdAt,
+      userId: userId,
+    );
   }
 }

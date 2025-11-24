@@ -1,35 +1,34 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
+import 'package:resolution_app/models/enums/problem_status.dart';
+import 'package:resolution_app/models/problems.dart';
 import 'package:resolution_app/presentation/commom_widgets/MyFormButton.dart';
 import 'package:resolution_app/presentation/problems/controllers/add_problem_controller.dart';
+import 'package:resolution_app/presentation/problems/controllers/edit_problem_controller.dart';
 
-class AddProblemPage extends StatefulWidget {
-  const AddProblemPage({super.key});
+class EditProblemPage extends StatefulWidget {
+  const EditProblemPage({super.key});
 
   @override
-  State<AddProblemPage> createState() => _MyWidgetState();
+  State<EditProblemPage> createState() => _MyWidgetState();
 }
 
-class _MyWidgetState extends State<AddProblemPage> {
+class _MyWidgetState extends State<EditProblemPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
           onPressed: () {
-            final navShel = context
-                .findAncestorWidgetOfExactType<StatefulNavigationShell>();
-            if (navShel != null) {
-              navShel.goBranch(0);
-            }
+            context.pop();
           },
           icon: Icon(Icons.keyboard_arrow_left),
         ),
-        title: Text("Adicionar Problema"),
+        title: Text("Editar Problema"),
         centerTitle: false,
         actions: [
-          Consumer<AddProblemController>(
+          Consumer<EditProblemController>(
             builder: (context, controller, child) {
               return IconButton(
                 onPressed: controller.clearForm,
@@ -39,7 +38,7 @@ class _MyWidgetState extends State<AddProblemPage> {
           ),
         ],
       ),
-      body: Consumer<AddProblemController>(
+      body: Consumer<EditProblemController>(
         builder: (context, controller, child) {
           return SingleChildScrollView(
             padding: EdgeInsets.all(24.0),
@@ -61,38 +60,65 @@ class _MyWidgetState extends State<AddProblemPage> {
                       keyboardType: TextInputType.multiline,
                       decoration: const InputDecoration(
                         labelText: 'Descrição Detalhada',
-                        hintText:
-                            'Digite aqui os detalhes completos do problema...',
-                        alignLabelWithHint: true,
                       ),
                     ),
                     SizedBox(height: 10),
                     TextFormField(
                       decoration: InputDecoration(
                         labelText: 'Endereço',
-                        hintText: 'Ex: Número - Rua - Bairro - Cidade - Estado',
                       ),
                       controller: controller.locationController,
                       validator: controller.validateLocation,
+                    ),
+                    SizedBox(height: 10),
+                    Text(
+                      "Alterar Status do Problema",
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 15,
+                      ),
+                    ),
+                    RadioGroup(
+                      groupValue: controller.problemStatus,
+                      onChanged: controller.changeProblemStatus,
+                      child: Column(
+                        children: [
+                          RadioListTile(
+                            title: Text("Aberto"),
+                            value: ProblemStatus.open,
+                          ),
+                          RadioListTile(
+                            title: Text("Em Andamento"),
+                            value: ProblemStatus.inProgress,
+                          ),
+                          RadioListTile(
+                            title: Text("Resolvido"),
+                            value: ProblemStatus.resolved,
+                          ),
+                          RadioListTile(
+                            title: Text("Cancelado"),
+                            value: ProblemStatus.canceled,
+                          ),
+                        ],
+                      ),
                     ),
                     SizedBox(height: 20),
                     MyFormButton(
                       text: "Salvar",
                       onPressed: () async {
-                        final sucess = await controller.handleCreate(context);
+                        final sucess = await controller.handleSubmit();
                         if (sucess) {
                           ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(
-                              content: Text("Problema criado com sucesso!"),
+                            SnackBar(
+                              content: Text("Problema atualizado com sucesso!"),
                             ),
                           );
-                          context.go('/problems');
+                          context.pop();
+                          context.pop();
                         } else {
                           ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(
-                              content: Text(
-                                "Falha ao criar problema. Tente novamente.",
-                              ),
+                            SnackBar(
+                              content: Text("Erro ao atualizar o problema."),
                             ),
                           );
                         }

@@ -43,7 +43,7 @@ class AddProblemController extends ChangeNotifier {
     return null;
   }
 
-  Future<void> handleCreate(BuildContext context) async {
+  Future<bool> handleCreate(BuildContext context) async {
     setLoading(true);
     final createProblem = await _problemRepository.createProblem(
       _authController.currentUser!.token,
@@ -52,24 +52,7 @@ class AddProblemController extends ChangeNotifier {
       locationController.text,
     );
     setLoading(false);
-    if (createProblem) {
-      if (context.mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text("Problema criado com sucesso!"),
-          ),
-        );
-        context.go('/problems');
-      }
-    } else {
-      if (context.mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text("Falha ao criar problema. Tente novamente."),
-          ),
-        );
-      }
-    }
+    return createProblem;
   }
 
   void clearForm() {

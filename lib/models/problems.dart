@@ -42,4 +42,24 @@ class Problem {
       'user_id': userId,
     };
   }
+
+  Problem copyWith({
+    String? id,
+    String? title,
+    String? description,
+    String? location,
+    ProblemStatus? status,
+    DateTime? createdAt,
+    String? userId,
+  }) {
+    return Problem(
+      id: id ?? this.id,
+      title: title ?? this.title,
+      description: description ?? this.description,
+      location: location ?? this.location,
+      status: status ?? this.status,
+      createdAt: createdAt ?? this.createdAt,
+      userId: userId ?? this.userId,
+    );
+  }
 }

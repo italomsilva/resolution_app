@@ -4,13 +4,19 @@ import 'package:resolution_app/dto/problem/get_home_problems_response.dart';
 import 'package:resolution_app/dto/solution/get_all_solutions.dart';
 import 'package:resolution_app/models/enums/solution_reaction.dart';
 import 'package:resolution_app/models/solution.dart';
+import 'package:resolution_app/presentation/auth/controllers/auth_controller.dart';
 import 'package:resolution_app/repositories/problem_repository.dart';
 import 'package:resolution_app/repositories/solution_repository.dart';
 
 class ProblemController extends ChangeNotifier {
   final ProblemRepository _problemRepository;
   final SolutionRepository _solutionRepository;
-  ProblemController(this._problemRepository, this._solutionRepository);
+  final AuthController _authController;
+  ProblemController(
+    this._problemRepository,
+    this._solutionRepository,
+    this._authController,
+  );
   GetHomeProblemsResponseDto? _problem;
   GetHomeProblemsResponseDto? get problem => _problem;
   List<GetAllSolutionsResponseDto> _solutions = [];
@@ -37,7 +43,8 @@ class ProblemController extends ChangeNotifier {
   SolutionReaction get reaction => _reaction;
 
   void verifyIfIsMyProblem() {
-    _isMyProblem = false;
+    final userId = _authController.currentUser?.id;
+    _isMyProblem = (userId == problem?.userId) ? true : false;
     notifyListeners();
   }
 
@@ -58,6 +65,7 @@ class ProblemController extends ChangeNotifier {
       );
       _problem = fetchedProblems;
       notifyListeners();
+      verifyIfIsMyProblem();
       fetchSolutions();
     } finally {
       _setLoading(false);

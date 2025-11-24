@@ -9,9 +9,11 @@ import 'package:resolution_app/presentation/auth/pages/my_profile_page.dart';
 import 'package:resolution_app/presentation/auth/pages/register_page.dart';
 import 'package:resolution_app/presentation/layout/main_scaffold.dart';
 import 'package:resolution_app/presentation/problems/controllers/add_problem_controller.dart';
+import 'package:resolution_app/presentation/problems/controllers/edit_problem_controller.dart';
 import 'package:resolution_app/presentation/problems/controllers/home_problems_controller.dart';
 import 'package:resolution_app/presentation/problems/controllers/problem_controller.dart';
 import 'package:resolution_app/presentation/problems/pages/add_problem_page.dart';
+import 'package:resolution_app/presentation/problems/pages/edit_problem_page.dart';
 import 'package:resolution_app/presentation/problems/pages/home_problems_page.dart';
 import 'package:resolution_app/presentation/problems/pages/problem_page.dart';
 import 'package:resolution_app/presentation/solutions/controllers/add_solution_controller.dart';
@@ -81,14 +83,15 @@ class AppRouter {
           path: '/problem/:problemId',
           builder: (context, state) {
             final problemId = state.pathParameters['problemId'];
+            final userId = prefs.getString('user_id') ?? '';
             return ChangeNotifierProvider(
               create: (context) {
                 final controller = ProblemController(
                   Provider.of<ProblemRepository>(context, listen: false),
                   Provider.of<SolutionRepository>(context, listen: false),
+                  Provider.of<AuthController>(context, listen: false),
                 );
                 controller.fetchProblem(problemId ?? '');
-                controller.verifyIfIsMyProblem();
                 return controller;
               },
               child: ProblemPage(problemId: problemId ?? ''),
@@ -162,7 +165,7 @@ class AppRouter {
                           Provider.of<SolutionRepository>(
                             context,
                             listen: false,
-                          )
+                          ),
                         );
                         controller.loadProfileData();
                         return controller;
@@ -174,6 +177,23 @@ class AppRouter {
               ],
             ),
           ],
+        ),
+        GoRoute(
+          path: '/problem/:problemId/edit',
+          builder: (context, state) {
+            final problemId = state.pathParameters['problemId'];
+            return ChangeNotifierProvider(
+              create: (context) {
+                final controller = EditProblemController(
+                  Provider.of<ProblemRepository>(context, listen: false),
+                  Provider.of<AuthController>(context, listen: false),
+                );
+                controller.fetchProblem(problemId ?? '');
+                return controller;
+              },
+              child: EditProblemPage(),
+            );
+          },
         ),
       ],
 

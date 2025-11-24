@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
 import 'package:resolution_app/dto/problem/get_home_problems_response.dart';
+import 'package:resolution_app/dto/problem/update_problem_request.dart';
 import 'package:resolution_app/mocks/get_home_problems_response.dart';
 import 'package:resolution_app/mocks/get_my_problems.dart';
 import 'package:resolution_app/models/problems.dart';
@@ -144,6 +145,36 @@ class ProblemRepository {
           rethrow;
         }
         throw ProblemRepositoryException("Erro inesperado ao buscar problema");
+    }
+  }
+
+  Future<bool> updateProblem(
+    String token,
+    UpdateProblemRequest updateRequest,
+  ) async {
+    final url = Uri.parse('$_baseUrl/problem');
+    try {
+      final response = await http.put(
+        url,
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+          'go-api-key': dotenv.get('API_KEY_VALUE'),
+          'req-token': "Bearer ${token}",
+        },
+        body: jsonEncode(updateRequest.toJson()),
+      );
+      if (response.statusCode == 200) {
+        return true;
+      } else {
+        throw ProblemRepositoryException(
+          "Falha ao atualizar problema: Servidor ou Problema de conexão",
+        );
+      }
+    } catch (e) {
+      if (e is ProblemRepositoryException) {
+        rethrow;
+      }
+      throw ProblemRepositoryException("Erro inesperado ao atualizar problema");
     }
   }
 }
