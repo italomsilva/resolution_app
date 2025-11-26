@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:resolution_app/dto/problem/get_home_problems_response.dart';
 import 'package:resolution_app/dto/solution/get_all_solutions.dart';
+import 'package:resolution_app/dto/solution/react_solution_request.dart';
 import 'package:resolution_app/models/enums/solution_reaction.dart';
 import 'package:resolution_app/models/solution.dart';
 import 'package:resolution_app/presentation/auth/controllers/auth_controller.dart';
@@ -29,6 +30,13 @@ class ProblemController extends ChangeNotifier {
     notifyListeners();
   }
 
+  bool _approvedIsLoading = false;
+  bool get approvedIsLoading => _approvedIsLoading;
+  void _setApprovedLoading(bool value) {
+    _approvedIsLoading = value;
+    notifyListeners();
+  }
+
   bool _isMyProblem = true;
   bool get isMyProblem => _isMyProblem;
 
@@ -51,7 +59,10 @@ class ProblemController extends ChangeNotifier {
   void fetchSolutions() async {
     _setSolutionsLoading(true);
     if (problem != null) {
-      final fetchedSolutions = await _solutionRepository.fetchSolutions();
+      final fetchedSolutions = await _solutionRepository.fetchSolutions(
+        _authController.currentUser!.token,
+        problem!.id,
+      );
       _solutions = fetchedSolutions;
       notifyListeners();
     }
@@ -74,9 +85,18 @@ class ProblemController extends ChangeNotifier {
     notifyListeners();
   }
 
-  void handleDeleteProblem() {}
+  Future<bool> handleDeleteProblem() async {
+    if (problem != null) {
+      final bool result = await _problemRepository.deleteProblem(
+        _authController.currentUser!.token,
+        problem!.id,
+      );
+      return result;
+    }
+    return false;
+  }
 
-  void reactSolution(String solutionId, SolutionReaction newReaction) {
+  void reactSolution(String solutionId, SolutionReaction newReaction) async {
     final newSolutions = solutions.map((sol) {
       if (sol.id == solutionId) {
         int newLikes = sol.likes;
@@ -104,8 +124,34 @@ class ProblemController extends ChangeNotifier {
       }
       return sol;
     }).toList();
-
+    final requestDto = new ReactSolutionRequestDto(
+      solutionId: solutionId,
+      reaction: newReaction,
+    );
+    await _solutionRepository.reactSolution(
+      _authController.currentUser!.token,
+      requestDto,
+    );
     _solutions = newSolutions;
     notifyListeners();
+  }
+
+  void handleApproved(GetAllSolutionsResponseDto solution, String problemID) async {
+    _setApprovedLoading(true);
+    final bool result = await _solutionRepository.approveSolution(
+      _authController.currentUser!.token,
+      solution.id,
+      problem!.id,
+    );
+    if (result) {
+      _solutions = _solutions.map((sol) {
+        if (sol.id == solution.id) {
+          return sol.copyWith(approved: true);
+        }
+        return sol.copyWith(approved: false);
+      }).toList();
+      notifyListeners();
+    }
+    _setApprovedLoading(false);
   }
 }

@@ -36,7 +36,7 @@ class GetAllSolutionsResponseDto {
       id: json['id'] as String,
       title: json['title'] as String,
       description: json['description'] as String,
-      estimatedCost: json['estimated_cost'] as double,
+      estimatedCost: double.parse(json['estimated_cost'].toString()),
       approved: json['approved'] as bool,
       createdAt: DateTime.parse(json['created_at'] as String),
       problemId: json['problem_id'] as String,
@@ -45,7 +45,7 @@ class GetAllSolutionsResponseDto {
       userLogin: json['user_login'] as String,
       likes: json['likes'] as int,
       dislikes: json['dislikes'] as int,
-      myReaction: json['my_reaction'] as SolutionReaction,
+      myReaction: SolutionReaction.fromInt(json['my_reaction'] as int),
     );
   }
 
@@ -67,7 +67,7 @@ class GetAllSolutionsResponseDto {
     };
   }
 
-   GetAllSolutionsResponseDto copyWith({
+  GetAllSolutionsResponseDto copyWith({
     String? id,
     String? title,
     String? description,
@@ -93,9 +93,9 @@ class GetAllSolutionsResponseDto {
       problemTitle: problemTitle ?? this.problemTitle,
       userId: userId ?? this.userId,
       userLogin: userLogin ?? this.userLogin,
-      likes: likes ?? this.likes, 
+      likes: likes ?? this.likes,
       dislikes: dislikes ?? this.dislikes,
-      myReaction: myReaction ?? this.myReaction, 
+      myReaction: myReaction ?? this.myReaction,
     );
   }
 }

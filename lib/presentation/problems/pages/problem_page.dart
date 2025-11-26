@@ -40,13 +40,17 @@ class _ProblemPageState extends State<ProblemPage> {
                 controller.isMyProblem == true
                 ? Row(
                     children: [
-                      IconButton(icon: Icon(Icons.edit), onPressed: () { 
-                        if (!controller.isLoading && !controller.solutionsLoading) {
-                          context.push(
-                            "/problem/${controller.problem?.id}/edit",
-                          );
-                        } 
-                      },),
+                      IconButton(
+                        icon: Icon(Icons.edit),
+                        onPressed: () {
+                          if (!controller.isLoading &&
+                              !controller.solutionsLoading) {
+                            context.push(
+                              "/problem/${controller.problem?.id}/edit",
+                            );
+                          }
+                        },
+                      ),
                       IconButton(
                         icon: Icon(Icons.delete),
                         onPressed: () async {
@@ -59,7 +63,26 @@ class _ProblemPageState extends State<ProblemPage> {
                             "Deletar",
                           );
                           if (await confirmDelete) {
-                            controller.handleDeleteProblem;
+                            final sucess = await controller
+                                .handleDeleteProblem();
+                            if (sucess) {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(
+                                  content: Text(
+                                    "Problema deletado com sucesso!",
+                                  ),
+                                ),
+                              );
+                              context.pop();
+                            } else {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(
+                                  content: Text(
+                                    "Erro ao deletar o problema. Tente novamente mais tarde.",
+                                  ),
+                                ),
+                              );
+                            }
                           }
                         },
                       ),
@@ -273,7 +296,13 @@ class _ProblemPageState extends State<ProblemPage> {
                 ],
               ),
               controller.isMyProblem
-                  ? MyFormButton(text: "Aprovar Solução")
+                  ? MyFormButton(
+                      text: "Aprovar Solução",
+                      isLoading: controller.approvedIsLoading,
+                      onPressed: () {
+                        controller.handleApproved(solution, widget.problemId);
+                      },
+                    )
                   : SizedBox(),
             ],
           ),

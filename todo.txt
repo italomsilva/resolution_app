@@ -1,3 +1,5 @@
+- react solutions e aprovar solutions
+
 - my profile page: ver meus problemas/soluções
 - my profile page: deletar meus problemas/soluções
 - problem page: botoes funcionais e modo de edição

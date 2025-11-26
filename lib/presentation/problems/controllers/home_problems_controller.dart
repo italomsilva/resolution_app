@@ -58,6 +58,7 @@ void toggleSearching() {
             problem.userLogin.toLowerCase().contains(query) ||
             problem.location.toLowerCase().contains(query);
       }).toList();
+      _filteredProblems.sort((a, b) => b.createdAt.compareTo(a.createdAt));
     }
     notifyListeners();
   }
