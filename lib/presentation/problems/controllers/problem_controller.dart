@@ -63,6 +63,15 @@ class ProblemController extends ChangeNotifier {
         _authController.currentUser!.token,
         problem!.id,
       );
+      fetchedSolutions.sort((a, b) {
+        if (b.approved && !a.approved) {
+          return 1;
+        } else if (!b.approved && a.approved) {
+          return -1;
+        }
+
+        return b.likes.compareTo(a.likes);
+      });
       _solutions = fetchedSolutions;
       notifyListeners();
     }
@@ -136,7 +145,10 @@ class ProblemController extends ChangeNotifier {
     notifyListeners();
   }
 
-  void handleApproved(GetAllSolutionsResponseDto solution, String problemID) async {
+  void handleApproved(
+    GetAllSolutionsResponseDto solution,
+    String problemID,
+  ) async {
     _setApprovedLoading(true);
     final bool result = await _solutionRepository.approveSolution(
       _authController.currentUser!.token,
@@ -144,12 +156,7 @@ class ProblemController extends ChangeNotifier {
       problem!.id,
     );
     if (result) {
-      _solutions = _solutions.map((sol) {
-        if (sol.id == solution.id) {
-          return sol.copyWith(approved: true);
-        }
-        return sol.copyWith(approved: false);
-      }).toList();
+      fetchSolutions();
       notifyListeners();
     }
     _setApprovedLoading(false);

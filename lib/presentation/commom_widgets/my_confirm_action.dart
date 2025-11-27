@@ -7,6 +7,7 @@ Future<bool> myConfirmActionMessage(
   String cancelMessage,
   String confirmMessage,
 ) async {
+  final theme = Theme.of(context);
   final result = await showDialog<bool>(
     context: context,
     builder: (BuildContext dialogContext) {
@@ -18,15 +19,31 @@ Future<bool> myConfirmActionMessage(
             onPressed: () {
               Navigator.of(dialogContext).pop(false);
             },
-            child: Text(cancelMessage),
+            child: Text(
+              cancelMessage,
+              style: theme.textTheme.bodyLarge?.copyWith(
+                color: theme.colorScheme.primary,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
           ),
-
           TextButton(
-            style: TextButton.styleFrom(),
+            style: TextButton.styleFrom(
+              backgroundColor: theme.primaryColor,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(8.0),
+              ),
+            ),
             onPressed: () {
               Navigator.of(dialogContext).pop(true);
             },
-            child: Text(confirmMessage),
+            child: Text(
+              confirmMessage,
+              style: theme.textTheme.bodyLarge?.copyWith(
+                color: theme.colorScheme.onPrimary,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
           ),
         ],
       );

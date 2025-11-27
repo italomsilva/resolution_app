@@ -228,13 +228,34 @@ class _ProblemPageState extends State<ProblemPage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
-                textAlign: TextAlign.left,
-                solution.userLogin,
-                style: theme.textTheme.bodyMedium?.copyWith(
-                  fontWeight: FontWeight.bold,
-                  color: theme.primaryColorDark,
-                ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    solution.userLogin,
+                    textAlign: TextAlign.left,
+                    style: theme.textTheme.bodyMedium?.copyWith(
+                      fontWeight: FontWeight.bold,
+                      color: theme.primaryColorDark,
+                    ),
+                  ),
+                  solution.approved
+                      ? Container(
+                          padding: EdgeInsets.symmetric(
+                            horizontal: 12,
+                            vertical: 4,
+                          ),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(20),
+                            color: theme.primaryColorLight,
+                          ),
+                          child: Icon(
+                            Icons.verified,
+                            color: theme.primaryColor,
+                          ),
+                        )
+                      : Spacer(),
+                ],
               ),
               Text(
                 solution.title,
@@ -295,12 +316,21 @@ class _ProblemPageState extends State<ProblemPage> {
                   Text(solution.dislikes.toString()),
                 ],
               ),
-              controller.isMyProblem
+              controller.isMyProblem && !solution.approved
                   ? MyFormButton(
                       text: "Aprovar Solução",
                       isLoading: controller.approvedIsLoading,
-                      onPressed: () {
-                        controller.handleApproved(solution, widget.problemId);
+                      onPressed: () async {
+                        final confirm = myConfirmActionMessage(
+                          context,
+                          "Aprovar Solução?",
+                          "Deseja realemente aprovar esta solução?\nTitulo: ${solution.title} \n\nEsta ação não pode ser defeita.",
+                          "Cancelar",
+                          "Aprovar",
+                        );
+                        if (await confirm) {
+                          controller.handleApproved(solution, widget.problemId);
+                        }
                       },
                     )
                   : SizedBox(),
