@@ -5,8 +5,10 @@ import 'package:http/http.dart' as http;
 import 'package:resolution_app/dto/solution/get_all_solutions.dart';
 import 'package:resolution_app/dto/solution/get_my_solutions_response.dart';
 import 'package:resolution_app/dto/solution/react_solution_request.dart';
+import 'package:resolution_app/dto/solution/update_solution_request_dto.dart';
 import 'package:resolution_app/mocks/get_all_solutions.dart';
 import 'package:resolution_app/mocks/get_my_solutions.dart';
+import 'package:resolution_app/models/solution.dart';
 
 class SolutionRepositoryException implements Exception {
   final String message;
@@ -104,4 +106,88 @@ class SolutionRepository {
       );
     }
   }
+
+  Future<Solution?> fetchSolutionById(String solutionId) async {
+    final url = Uri.parse('$_baseUrl/solutions/$solutionId');
+    try {
+      final response = await http.get(
+        url,
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+          'go-api-key': dotenv.get('API_KEY_VALUE'),
+        },
+      );
+      if (response.statusCode == 200) {
+        final Map<String, dynamic> responseData = jsonDecode(response.body);
+        final solutionData = responseData["data"];
+        return Solution.fromJson(solutionData);
+      } else {
+        throw SolutionRepositoryException(
+          "Falha ao buscar solução: Servidor ou Problema de conexão",
+        );
+      }
+    } catch (e) {
+      if (e is SolutionRepositoryException) {
+        rethrow;
+      }
+    }
+  }
+
+    Future<bool> updateSolution(
+    String token,
+    UpdateSolutionRequestDto updateRequest,
+  ) async {
+    final url = Uri.parse('$_baseUrl/solution');
+    try {
+      final response = await http.put(
+        url,
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+          'go-api-key': dotenv.get('API_KEY_VALUE'),
+          'req-token': "Bearer ${token}",
+        },
+        body: jsonEncode(updateRequest.toJson()),
+      );
+      if (response.statusCode == 200) {
+        return true;
+      } else {
+        throw SolutionRepositoryException(
+          "Falha ao atualizar solução: Servidor ou Problema de conexão",
+        );
+      }
+    } catch (e) {
+      if (e is SolutionRepositoryException) {
+        rethrow;
+      }
+      throw SolutionRepositoryException("Erro inesperado ao atualizar solução");
+    }
+  }
+
+  Future<bool> deleteSolution(String token, String solutionId) async {
+    final url = Uri.parse('$_baseUrl/solution');
+    try {
+      final response = await http.delete(
+        url,
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+          'go-api-key': dotenv.get('API_KEY_VALUE'),
+          'req-token': "Bearer ${token}",
+        },
+        body: jsonEncode({'id': solutionId}),
+      );
+      if (response.statusCode == 200) {
+        return true;
+      } else {
+        throw SolutionRepositoryException(
+          "Falha ao deletar solução: Servidor ou Problema de conexão",
+        );
+      }
+    } catch (e) {
+      if (e is SolutionRepositoryException) {
+        rethrow;
+      }
+      return false;
+    }
+  }
+
 }

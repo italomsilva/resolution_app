@@ -24,9 +24,9 @@ class Solution {
       id: json['id'] as String,
       title: json['title'] as String,
       description: json['description'] as String,
-      estimatedCost: json['estimated_cost'] as double,
+      estimatedCost: double.parse(json['estimated_cost'].toString()),
       approved: json['approved'] as bool,
-      createdAt: json['created_at'] as DateTime,
+      createdAt: DateTime.parse(json['created_at'] as String),
       problemId: json['problem_id'] as String,
       userId: json['user_id'] as String,
     );

@@ -232,29 +232,40 @@ class _ProblemPageState extends State<ProblemPage> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    solution.userLogin,
+                    "${solution.userLogin} ${solution.userId == controller.userId ? " (Você)" : ""}",
                     textAlign: TextAlign.left,
                     style: theme.textTheme.bodyMedium?.copyWith(
                       fontWeight: FontWeight.bold,
                       color: theme.primaryColorDark,
                     ),
                   ),
-                  solution.approved
-                      ? Container(
-                          padding: EdgeInsets.symmetric(
-                            horizontal: 12,
-                            vertical: 4,
-                          ),
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(20),
-                            color: theme.primaryColorLight,
-                          ),
-                          child: Icon(
-                            Icons.verified,
-                            color: theme.primaryColor,
-                          ),
-                        )
-                      : Spacer(),
+                  Row(
+                    children: [
+                      solution.userId == controller.userId && !solution.approved
+                          ? IconButton(onPressed: () {
+                            context.push(
+                              "/solution/${solution.id}/edit",
+                            );
+                          }, icon: Icon(Icons.edit))
+                          : SizedBox.shrink(),
+                      solution.approved
+                          ? Container(
+                              padding: EdgeInsets.symmetric(
+                                horizontal: 12,
+                                vertical: 4,
+                              ),
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(20),
+                                color: theme.primaryColorLight,
+                              ),
+                              child: Icon(
+                                Icons.verified,
+                                color: theme.primaryColor,
+                              ),
+                            )
+                          : SizedBox.shrink(),
+                    ],
+                  ),
                 ],
               ),
               Text(

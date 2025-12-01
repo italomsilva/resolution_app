@@ -23,6 +23,8 @@ class ProblemController extends ChangeNotifier {
   List<GetAllSolutionsResponseDto> _solutions = [];
   List<GetAllSolutionsResponseDto> get solutions => _solutions;
 
+  String? get userId => _authController.currentUser?.id;
+
   bool _isLoading = true;
   bool get isLoading => _isLoading;
   void _setLoading(bool value) {

@@ -17,7 +17,9 @@ import 'package:resolution_app/presentation/problems/pages/edit_problem_page.dar
 import 'package:resolution_app/presentation/problems/pages/home_problems_page.dart';
 import 'package:resolution_app/presentation/problems/pages/problem_page.dart';
 import 'package:resolution_app/presentation/solutions/controllers/add_solution_controller.dart';
+import 'package:resolution_app/presentation/solutions/controllers/edit_solution_controller.dart';
 import 'package:resolution_app/presentation/solutions/pages/add_solution_page.dart';
+import 'package:resolution_app/presentation/solutions/pages/edit_solution_page.dart';
 import 'package:resolution_app/presentation/splash/splash_screen.dart';
 import 'package:resolution_app/repositories/problem_repository.dart';
 import 'package:resolution_app/repositories/solution_repository.dart';
@@ -192,6 +194,23 @@ class AppRouter {
                 return controller;
               },
               child: EditProblemPage(),
+            );
+          },
+        ),
+        GoRoute(
+          path: '/solution/:solutionId/edit',
+          builder: (context, state) {
+            final solutionId = state.pathParameters['solutionId'];
+            return ChangeNotifierProvider(
+              create: (context) {
+                final controller = EditSolutionController(
+                  Provider.of<AuthController>(context, listen: false),
+                  Provider.of<SolutionRepository>(context, listen:  false),
+                );
+                controller.fetchSolution(solutionId ?? '');
+                return controller;
+              },
+              child: EditSolutionPage(),
             );
           },
         ),
