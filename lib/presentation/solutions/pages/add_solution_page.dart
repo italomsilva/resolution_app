@@ -15,44 +15,51 @@ class AddSolutionPage extends StatefulWidget {
 class _AddSolutionPageState extends State<AddSolutionPage> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: Text("Propor Solução")),
-      body: Consumer<AddSolutionController>(
-        builder: (context, controller, child) => Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16),
-          child: Column(
-            children: [
-              TextFormField(
-                controller: controller.titleController,
-                decoration: InputDecoration(labelText: "Titulo"),
-              ),
-              SizedBox(height: 16),
-              TextFormField(
-                controller: controller.descriptionController,
-                decoration: InputDecoration(labelText: "Descrição"),
-              ),
-              SizedBox(height: 16),
-              TextFormField(
-                controller: controller.estimatedCostController,
-                keyboardType: TextInputType.number,
-                inputFormatters: [
-                  FilteringTextInputFormatter.allow(RegExp(r'[0-9,]+')),
-                ],
-                decoration: InputDecoration(labelText: "Custo estimado"),
-              ),
-              SizedBox(height: 16),
-              MyFormButton(
-                text: "Salvar",
-                onPressed: (){
-                  controller.handleSubmit();
-                  context.pop();
-                },
-                isLoading: controller.loadingSubmit,
+    return Consumer<AddSolutionController>(
+      builder: (context, controller, child) {
+        return Scaffold(
+          appBar: AppBar(
+            title: Text("Propor Solução"),
+            actions: [
+              IconButton(
+                onPressed: controller.clearForm,
+                icon: Icon(Icons.cleaning_services_rounded),
               ),
             ],
           ),
-        ),
-      ),
+          body: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+            child: Column(
+              children: [
+                TextFormField(
+                  controller: controller.titleController,
+                  decoration: InputDecoration(labelText: "Titulo"),
+                ),
+                SizedBox(height: 16),
+                TextFormField(
+                  controller: controller.descriptionController,
+                  decoration: InputDecoration(labelText: "Descrição"),
+                ),
+                SizedBox(height: 16),
+                TextFormField(
+                  controller: controller.estimatedCostController,
+                  validator: controller.validateEstimatedCost,
+                  decoration: InputDecoration(labelText: "Custo estimado"),
+                ),
+                SizedBox(height: 16),
+                MyFormButton(
+                  text: "Salvar",
+                  onPressed: () {
+                    controller.handleSubmit();
+                    context.pop();
+                  },
+                  isLoading: controller.loadingSubmit,
+                ),
+              ],
+            ),
+          ),
+        );
+      },
     );
   }
 }

@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
+import 'package:resolution_app/dto/solution/create_solution_request_dto.dart';
 import 'package:resolution_app/dto/solution/get_all_solutions.dart';
 import 'package:resolution_app/dto/solution/get_my_solutions_response.dart';
 import 'package:resolution_app/dto/solution/react_solution_request.dart';
@@ -20,6 +21,38 @@ class SolutionRepositoryException implements Exception {
 
 class SolutionRepository {
   final String _baseUrl = dotenv.get('BASE_BACKEND_URL');
+
+  Future<bool> createSolution(
+    String token,
+    CreateSolutionRequestDto createRequest,
+  ) async {
+    final url = Uri.parse('$_baseUrl/solution');
+    try {
+      final response = await http.post(
+        url,
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+          'go-api-key': dotenv.get('API_KEY_VALUE'),
+          'req-token': "Bearer $token",
+        },
+        body: jsonEncode(createRequest.toJson()),
+      );
+      final Map<String, dynamic> responseData = jsonDecode(response.body);
+      if (response.statusCode == 201) {
+        return true;
+      } else {
+        throw SolutionRepositoryException(
+          "Falha ao buscar soluções: Servidor ou Problema de conexão",
+        );
+      }
+
+    } catch (e) {
+      if (e is SolutionRepositoryException) {
+        rethrow;
+      }
+      return false;
+    }
+  }
 
   Future<List<GetAllSolutionsResponseDto>> fetchSolutions(
     String token,
@@ -133,7 +166,7 @@ class SolutionRepository {
     }
   }
 
-    Future<bool> updateSolution(
+  Future<bool> updateSolution(
     String token,
     UpdateSolutionRequestDto updateRequest,
   ) async {
@@ -189,5 +222,4 @@ class SolutionRepository {
       return false;
     }
   }
-
 }

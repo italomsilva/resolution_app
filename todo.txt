@@ -1,4 +1,3 @@
-- problem page: se solução for minha editar
 - add olution
 -  class validator
 - my profile page

@@ -104,8 +104,11 @@ class AppRouter {
               path: '/add-solution',
               builder: (context, state) => ChangeNotifierProvider(
                 create: (context) {
+                  final problemId = state.pathParameters['problemId'];
                   final controller = AddSolutionController(
                     Provider.of<SolutionRepository>(context, listen: false),
+                    Provider.of<AuthController>(context, listen: false),
+                    problemId!
                   );
                   return controller;
                 },
