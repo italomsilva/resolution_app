@@ -74,6 +74,7 @@ class _MyProfileSectionState extends State<MyProfileSection> {
                     children: [
                       TextFormField(
                         controller: controller.nameController,
+                        validator: controller.validateField,
                         decoration: InputDecoration(
                           prefixIcon: Icon(Icons.person_outline_rounded),
                           enabled: controller.editMode,
@@ -83,6 +84,7 @@ class _MyProfileSectionState extends State<MyProfileSection> {
                       SizedBox(height: 10),
                       TextFormField(
                         controller: controller.documentController,
+                        validator: controller.validateField,
                         decoration: InputDecoration(
                           prefixIcon: Icon(Icons.badge_outlined),
                           enabled: false,
@@ -92,6 +94,7 @@ class _MyProfileSectionState extends State<MyProfileSection> {
                       SizedBox(height: 10),
                       TextFormField(
                         controller: controller.loginController,
+                        validator: controller.validateField,
                         decoration: InputDecoration(
                           prefixIcon: Icon(Icons.login),
                           enabled: controller.editMode,
@@ -101,6 +104,7 @@ class _MyProfileSectionState extends State<MyProfileSection> {
                       SizedBox(height: 10),
                       TextFormField(
                         controller: controller.emailController,
+                        validator: controller.validateField,
                         decoration: InputDecoration(
                           prefixIcon: Icon(Icons.mail),
                           enabled: false,

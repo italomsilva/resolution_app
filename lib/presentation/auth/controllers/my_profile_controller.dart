@@ -177,4 +177,10 @@ class MyProfileController extends ChangeNotifier {
   void deleteSolution() {}
 
   void handleRefresh(int value) {}
+
+  String? validateField(String? value) {
+    if (value == null || value.isEmpty) {
+      return 'Preencha este campo';
+    }
+  }
 }

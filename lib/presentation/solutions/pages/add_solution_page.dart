@@ -35,11 +35,13 @@ class _AddSolutionPageState extends State<AddSolutionPage> {
                 children: [
                   TextFormField(
                     controller: controller.titleController,
+                    validator: controller.validateField,
                     decoration: InputDecoration(labelText: "Titulo"),
                   ),
                   SizedBox(height: 16),
                   TextFormField(
                     controller: controller.descriptionController,
+                    validator: controller.validateField,
                     decoration: InputDecoration(labelText: "Descrição"),
                   ),
                   SizedBox(height: 16),

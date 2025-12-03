@@ -111,4 +111,10 @@ class EditSolutionController extends ChangeNotifier {
     }
     return null;
   }
+
+  String? validateField(String? value) {
+    if (value == null || value.isEmpty) {
+      return 'Preencha este campo';
+    }
+  }
 }
