@@ -43,6 +43,7 @@ class _MyWidgetState extends State<EditProblemPage> {
           return SingleChildScrollView(
             padding: EdgeInsets.all(24.0),
             child: Form(
+              key: controller.formKey,
               child: Center(
                 child: Column(
                   children: [
@@ -64,9 +65,7 @@ class _MyWidgetState extends State<EditProblemPage> {
                     ),
                     SizedBox(height: 10),
                     TextFormField(
-                      decoration: InputDecoration(
-                        labelText: 'Endereço',
-                      ),
+                      decoration: InputDecoration(labelText: 'Endereço'),
                       controller: controller.locationController,
                       validator: controller.validateLocation,
                     ),
@@ -106,6 +105,9 @@ class _MyWidgetState extends State<EditProblemPage> {
                     MyFormButton(
                       text: "Salvar",
                       onPressed: () async {
+                        if (!controller.formKey.currentState!.validate()) {
+                          return;
+                        }
                         final sucess = await controller.handleSubmit();
                         if (sucess) {
                           ScaffoldMessenger.of(context).showSnackBar(

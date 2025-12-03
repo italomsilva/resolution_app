@@ -90,6 +90,8 @@ class MyProfileController extends ChangeNotifier {
   bool _seeSolutions = false;
   bool get seeSolutions => _seeSolutions;
 
+  final GlobalKey<FormState> profileFormKey = GlobalKey<FormState>();
+
   Future<User> loadProfileData() async {
     final user = _authController.currentUser;
     final userFromDb = await _userRepository.fetchUserById(
@@ -140,6 +142,7 @@ class MyProfileController extends ChangeNotifier {
   void handleLogout() {
     _authController.logout(clearData: true);
   }
+
   void handleSubmit() async {
     setLoadSubmit(true);
     await Future.delayed(Duration(seconds: 3));

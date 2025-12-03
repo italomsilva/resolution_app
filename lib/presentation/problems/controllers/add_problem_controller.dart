@@ -15,6 +15,8 @@ class AddProblemController extends ChangeNotifier {
     notifyListeners();
   }
 
+  final GlobalKey<FormState> formKey = GlobalKey<FormState>();
+
   final TextEditingController titleController = TextEditingController();
   final TextEditingController descriptionController = TextEditingController();
   final TextEditingController locationController = TextEditingController();

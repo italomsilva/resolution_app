@@ -44,6 +44,7 @@ class _MyWidgetState extends State<AddProblemPage> {
           return SingleChildScrollView(
             padding: EdgeInsets.all(24.0),
             child: Form(
+              key: controller.formKey,
               child: Center(
                 child: Column(
                   children: [
@@ -79,6 +80,9 @@ class _MyWidgetState extends State<AddProblemPage> {
                     MyFormButton(
                       text: "Salvar",
                       onPressed: () async {
+                        if (!controller.formKey.currentState!.validate()) {
+                          return;
+                        }
                         final sucess = await controller.handleCreate(context);
                         if (sucess) {
                           ScaffoldMessenger.of(context).showSnackBar(

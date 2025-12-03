@@ -35,7 +35,9 @@ class _MyProfileSectionState extends State<MyProfileSection> {
                 Align(
                   alignment: Alignment.topLeft,
                   child: IconButton(
-                    onPressed: (){controller.setEditMode();},
+                    onPressed: () {
+                      controller.setEditMode();
+                    },
                     icon: Icon(
                       size: theme.textTheme.headlineLarge?.fontSize,
                       color: theme.primaryColorDark,
@@ -66,62 +68,76 @@ class _MyProfileSectionState extends State<MyProfileSection> {
                   style: theme.textTheme.titleMedium,
                 ),
                 SizedBox(height: 30),
-                TextFormField(
-                  controller: controller.nameController,
-                  decoration: InputDecoration(
-                    prefixIcon: Icon(Icons.person_outline_rounded),
-                    enabled: controller.editMode,
-                    label: controller.editMode ? Text("Nome") : null,
+                Form(
+                  key: controller.profileFormKey,
+                  child: Column(
+                    children: [
+                      TextFormField(
+                        controller: controller.nameController,
+                        decoration: InputDecoration(
+                          prefixIcon: Icon(Icons.person_outline_rounded),
+                          enabled: controller.editMode,
+                          label: controller.editMode ? Text("Nome") : null,
+                        ),
+                      ),
+                      SizedBox(height: 10),
+                      TextFormField(
+                        controller: controller.documentController,
+                        decoration: InputDecoration(
+                          prefixIcon: Icon(Icons.badge_outlined),
+                          enabled: false,
+                          label: controller.editMode ? Text("Documento") : null,
+                        ),
+                      ),
+                      SizedBox(height: 10),
+                      TextFormField(
+                        controller: controller.loginController,
+                        decoration: InputDecoration(
+                          prefixIcon: Icon(Icons.login),
+                          enabled: controller.editMode,
+                          label: controller.editMode ? Text("Login") : null,
+                        ),
+                      ),
+                      SizedBox(height: 10),
+                      TextFormField(
+                        controller: controller.emailController,
+                        decoration: InputDecoration(
+                          prefixIcon: Icon(Icons.mail),
+                          enabled: false,
+                          label: controller.editMode ? Text("Email") : null,
+                        ),
+                      ),
+                      SizedBox(height: 20),
+                      MyFormButton(
+                        text: "Salvar",
+                        onPressed: controller.editMode
+                            ? () async {
+                                if (!controller.profileFormKey.currentState!
+                                    .validate()) {
+                                  return;
+                                }
+
+                                final String?
+                                password = await myConfirmDialogMessage(
+                                  context: context,
+                                  title: "Confirmar Alterações",
+                                  message:
+                                      "Digite sua senha para confirmar as alterações.",
+                                  cancelMessage: "Cancelar",
+                                  confirmMessage: "Salvar",
+                                  labelText: "Senha",
+                                  passwordController:
+                                      controller.passwordController,
+                                );
+                                if (password != null) {
+                                  controller.handleEditProfileSubmit();
+                                }
+                              }
+                            : null,
+                        isLoading: controller.loadSubmit,
+                      ),
+                    ],
                   ),
-                ),
-                SizedBox(height: 10),
-                TextFormField(
-                  controller: controller.documentController,
-                  decoration: InputDecoration(
-                    prefixIcon: Icon(Icons.badge_outlined),
-                    enabled: false,
-                    label: controller.editMode ? Text("Documento") : null,
-                  ),
-                ),
-                SizedBox(height: 10),
-                TextFormField(
-                  controller: controller.loginController,
-                  decoration: InputDecoration(
-                    prefixIcon: Icon(Icons.login),
-                    enabled: controller.editMode,
-                    label: controller.editMode ? Text("Login") : null,
-                  ),
-                ),
-                SizedBox(height: 10),
-                TextFormField(
-                  controller: controller.emailController,
-                  decoration: InputDecoration(
-                    prefixIcon: Icon(Icons.mail),
-                    enabled: false,
-                    label: controller.editMode ? Text("Email") : null,
-                  ),
-                ),
-                SizedBox(height: 20),
-                MyFormButton(
-                  text: "Salvar",
-                  onPressed: controller.editMode
-                      ? () async {
-                          final String? password = await myConfirmDialogMessage(
-                            context: context,
-                            title: "Confirmar Alterações",
-                            message:
-                                "Digite sua senha para confirmar as alterações.",
-                            cancelMessage: "Cancelar",
-                            confirmMessage: "Salvar",
-                            labelText: "Senha",
-                            passwordController: controller.passwordController,
-                          );
-                          if (password !=null){
-                            controller.handleEditProfileSubmit();
-                          }
-                        }
-                      : null,
-                  isLoading: controller.loadSubmit,
                 ),
               ],
             ),

@@ -63,50 +63,55 @@ class _EditSolutionPageState extends State<EditSolutionPage> {
             ),
             body: Padding(
               padding: const EdgeInsets.all(16.0),
-              child: Column(
-                children: [
-                  TextFormField(
-                    decoration: InputDecoration(label: Text('Titulo')),
-                    maxLines: null,
-                    controller: controller.titleController,
-                  ),
-                  SizedBox(height: 16),
-                  TextFormField(
-                    decoration: InputDecoration(label: Text('Titulo')),
-                    maxLines: null,
-                    controller: controller.descriptionController,
-                  ),
-                  SizedBox(height: 16),
-                  TextFormField(
-                    decoration: InputDecoration(label: Text('Titulo'),),
-                    controller: controller.estimatedCostController,
-                    validator: controller.validateEstimatedCost,
-                  ),
-                  SizedBox(height: 16),
-                  MyFormButton(
-                    text: 'Salvar',
-                    isLoading: controller.isLoadingSubmit,
-                    onPressed: () async {
-                      bool sucess = await controller.handleSubmit();
-                      if (sucess) {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(
-                            content: Text("Alterações salvas"),
-                          ),
-                        );
-                        context.pop();
-                      } else {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(
-                            content: Text(
-                              "Erro ao alterar. Faça login novamente",
+              child: Form(
+                key: controller.formKey,
+                child: Column(
+                  children: [
+                    TextFormField(
+                      decoration: InputDecoration(label: Text('Titulo')),
+                      maxLines: null,
+                      controller: controller.titleController,
+                    ),
+                    SizedBox(height: 16),
+                    TextFormField(
+                      decoration: InputDecoration(label: Text('Titulo')),
+                      maxLines: null,
+                      controller: controller.descriptionController,
+                    ),
+                    SizedBox(height: 16),
+                    TextFormField(
+                      decoration: InputDecoration(label: Text('Titulo')),
+                      controller: controller.estimatedCostController,
+                      validator: controller.validateEstimatedCost,
+                    ),
+                    SizedBox(height: 16),
+                    MyFormButton(
+                      text: 'Salvar',
+                      isLoading: controller.isLoadingSubmit,
+                      onPressed: () async {
+                        if (!controller.formKey.currentState!.validate()) {
+                          return;
+                        }
+
+                        bool sucess = await controller.handleSubmit();
+                        if (sucess) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(content: Text("Alterações salvas")),
+                          );
+                          context.pop();
+                        } else {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(
+                              content: Text(
+                                "Erro ao alterar. Faça login novamente",
+                              ),
                             ),
-                          ),
-                        );
-                      }
-                    },
-                  ),
-                ],
+                          );
+                        }
+                      },
+                    ),
+                  ],
+                ),
               ),
             ),
           );

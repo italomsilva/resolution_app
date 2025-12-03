@@ -21,6 +21,8 @@ class EditProblemController extends ChangeNotifier {
     notifyListeners();
   }
 
+  final GlobalKey<FormState> formKey = GlobalKey<FormState>();
+
   void fetchProblem(String problemId) async {
     try {
       final fetchedProblem = await _problemRepository.fetchProblemById(
@@ -102,6 +104,7 @@ class EditProblemController extends ChangeNotifier {
     setLoading(false);
     return updateProblem;
   }
+
   void clearForm() {
     titleController.clear();
     descriptionController.clear();

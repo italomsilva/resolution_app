@@ -29,33 +29,39 @@ class _AddSolutionPageState extends State<AddSolutionPage> {
           ),
           body: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16),
-            child: Column(
-              children: [
-                TextFormField(
-                  controller: controller.titleController,
-                  decoration: InputDecoration(labelText: "Titulo"),
-                ),
-                SizedBox(height: 16),
-                TextFormField(
-                  controller: controller.descriptionController,
-                  decoration: InputDecoration(labelText: "Descrição"),
-                ),
-                SizedBox(height: 16),
-                TextFormField(
-                  controller: controller.estimatedCostController,
-                  validator: controller.validateEstimatedCost,
-                  decoration: InputDecoration(labelText: "Custo estimado"),
-                ),
-                SizedBox(height: 16),
-                MyFormButton(
-                  text: "Salvar",
-                  onPressed: () {
-                    controller.handleSubmit();
-                    context.pop();
-                  },
-                  isLoading: controller.loadingSubmit,
-                ),
-              ],
+            child: Form(
+              key: controller.formKey,
+              child: Column(
+                children: [
+                  TextFormField(
+                    controller: controller.titleController,
+                    decoration: InputDecoration(labelText: "Titulo"),
+                  ),
+                  SizedBox(height: 16),
+                  TextFormField(
+                    controller: controller.descriptionController,
+                    decoration: InputDecoration(labelText: "Descrição"),
+                  ),
+                  SizedBox(height: 16),
+                  TextFormField(
+                    controller: controller.estimatedCostController,
+                    validator: controller.validateEstimatedCost,
+                    decoration: InputDecoration(labelText: "Custo estimado"),
+                  ),
+                  SizedBox(height: 16),
+                  MyFormButton(
+                    text: "Salvar",
+                    onPressed: () {
+                      if (!controller.formKey.currentState!.validate()) {
+                        return;
+                      }
+                      controller.handleSubmit();
+                      context.pop();
+                    },
+                    isLoading: controller.loadingSubmit,
+                  ),
+                ],
+              ),
             ),
           ),
         );
