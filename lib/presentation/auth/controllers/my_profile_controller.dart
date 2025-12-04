@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:resolution_app/dto/problem/stats_count_problem_status_response.dart';
 import 'package:resolution_app/dto/solution/get_my_solutions_response.dart';
 import 'package:resolution_app/dto/solution/get_solutions_reactions.dart';
 import 'package:resolution_app/mocks/problems_count.dart';
@@ -15,7 +16,7 @@ class MyProfileController extends ChangeNotifier {
   final UserRepository _userRepository;
   final ProblemRepository _problemRepository;
   final SolutionRepository _solutionRepository;
-  final List<ProblemStatusChartData> dataProblem = getMockProblemChartData();
+
   MyProfileController(
     this._authController,
     this._userRepository,
@@ -30,6 +31,7 @@ class MyProfileController extends ChangeNotifier {
     notifyListeners();
   }
 
+  List<StatsCountProblemStatusResponse> problemStats = [];
   List<SolutionFeedbackChartData>? dataSolutions;
 
   List<Problem>? _problems;
@@ -105,8 +107,20 @@ class MyProfileController extends ChangeNotifier {
       _isLoading = false;
       notifyListeners();
       initControllers();
+      loadProblemStats();
+      notifyListeners();
     }
     return userFromDb;
+  }
+
+  void loadProblemStats() async {
+    problemStats = await _problemRepository.statsCountProblemStatus(
+      _authController.currentUser!.token,
+    );
+    if (problemStats?.isEmpty == true) {
+      problemStats = [];
+      notifyListeners();
+    }
   }
 
   void setEditMode({bool? value}) {
@@ -172,7 +186,13 @@ class MyProfileController extends ChangeNotifier {
     notifyListeners();
   }
 
-  void deleteProblem() {}
+  Future<bool> deleteProblem(String problemId) async {
+    final bool result = await _problemRepository.deleteProblem(
+      _authController.currentUser!.token,
+      problemId,
+    );
+    return result;
+  }
 
   void deleteSolution() {}
 

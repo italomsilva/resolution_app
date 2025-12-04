@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:resolution_app/app_theme.dart';
-import 'package:resolution_app/mocks/problems_count.dart';
+import 'package:resolution_app/dto/problem/stats_count_problem_status_response.dart';
 
 class ProblemStatusDonutChart extends StatefulWidget {
-  final List<ProblemStatusChartData> data;
+  final List<StatsCountProblemStatusResponse> data;
   final String centerText;
   final TextStyle? centerTextStyle;
 

@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:resolution_app/models/problems.dart';
 import 'package:resolution_app/presentation/auth/controllers/my_profile_controller.dart';
 import 'package:resolution_app/presentation/auth/widgets/donut_chart.dart';
 import 'package:resolution_app/presentation/auth/widgets/indicator_graph.dart';
 import 'package:resolution_app/presentation/commom_widgets/MyFormButton.dart';
+import 'package:resolution_app/presentation/commom_widgets/my_confirm_action.dart';
 import 'package:resolution_app/presentation/commom_widgets/my_container_problem_status.dart';
 
 class MyProblemsSection extends StatefulWidget {
@@ -51,8 +53,9 @@ class _MyProblemsSectionState extends State<MyProblemsSection> {
                               height: 120,
                               width: 120,
                               child: ProblemStatusDonutChart(
-                                data: controller.dataProblem,
-                                centerText: '55',
+                                data: controller.problemStats,
+                                centerText: controller.problemStats.length
+                                    .toString(),
                               ),
                             ),
                           ],
@@ -67,7 +70,7 @@ class _MyProblemsSectionState extends State<MyProblemsSection> {
                               Wrap(
                                 spacing: 12.0,
                                 runSpacing: 8.0,
-                                children: controller.dataProblem.map((
+                                children: controller.problemStats!.map((
                                   dataItem,
                                 ) {
                                   return IndicatorGraph(
@@ -117,10 +120,58 @@ class _MyProblemsSectionState extends State<MyProblemsSection> {
                                         ?.copyWith(fontWeight: FontWeight.bold),
                                   ),
                                 ),
-                                IconButton(
-                                  onPressed: controller.deleteProblem,
-                                  icon: Icon(Icons.delete_forever),
-                                  color: theme.colorScheme.error,
+                                Row(
+                                  children: [
+                                    IconButton(
+                                      onPressed: () {
+                                        context.push(
+                                          "/problem/${problem.id}/edit",
+                                        );
+                                      },
+                                      icon: Icon(Icons.edit),
+                                    ),
+                                    IconButton(
+                                      icon: Icon(Icons.delete_forever),
+                                      color: theme.colorScheme.error,
+                                      onPressed: () async {
+                                        final Future<bool>
+                                        confirmDelete = myConfirmActionMessage(
+                                          context,
+                                          "Confirmar exclusão",
+                                          "Deseja realmente excluir este problema? Esta ação não pode ser desfeita",
+                                          "Cancelar",
+                                          "Deletar",
+                                        );
+                                        if (await confirmDelete) {
+                                          final sucess = await controller
+                                              .deleteProblem(problem.id);
+                                          if (sucess) {
+                                            ScaffoldMessenger.of(
+                                              context,
+                                            ).showSnackBar(
+                                              SnackBar(
+                                                content: Text(
+                                                  "Problema deletado com sucesso!",
+                                                ),
+                                              ),
+                                            );
+                                            controller.handleSeeProblems();
+                                            controller.loadProblemStats();
+                                          } else {
+                                            ScaffoldMessenger.of(
+                                              context,
+                                            ).showSnackBar(
+                                              SnackBar(
+                                                content: Text(
+                                                  "Erro ao deletar o problema. Tente novamente mais tarde.",
+                                                ),
+                                              ),
+                                            );
+                                          }
+                                        }
+                                      },
+                                    ),
+                                  ],
                                 ),
                               ],
                             ),

@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
 import 'package:resolution_app/dto/problem/get_home_problems_response.dart';
+import 'package:resolution_app/dto/problem/stats_count_problem_status_response.dart';
 import 'package:resolution_app/dto/problem/update_problem_request.dart';
 import 'package:resolution_app/mocks/get_home_problems_response.dart';
 import 'package:resolution_app/mocks/get_my_problems.dart';
@@ -208,4 +209,35 @@ class ProblemRepository {
       return false;
     }
   }
+
+    Future<List<StatsCountProblemStatusResponse>> statsCountProblemStatus(String token) async {
+    final url = Uri.parse('$_baseUrl/problem/stats/problem-status');
+    try {
+      final response = await http.get(
+        url,
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+          'go-api-key': dotenv.get('API_KEY_VALUE'),
+          'req-token': "Bearer ${token}",
+        },
+      );
+
+      final Map<String, dynamic> responseData = jsonDecode(response.body);
+      if (response.statusCode == 200) {
+        final result = responseData["data"] as List<dynamic>;
+        return result.map((e) => StatsCountProblemStatusResponse.fromJson(e)).toList();
+      } else {
+        print(responseData);
+        throw ProblemRepositoryException(
+          "Falha ao buscar estatisticas: Servidor ou Problema de conexão",
+        );
+      }
+    } catch (e) {
+      if (e is ProblemRepositoryException) {
+        rethrow;
+      }
+      throw ProblemRepositoryException("Erro inesperado ao buscar estatisticas");
+    }
+  }
+
 }

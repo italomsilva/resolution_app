@@ -90,6 +90,7 @@ class _MyWidgetState extends State<AddProblemPage> {
                               content: Text("Problema criado com sucesso!"),
                             ),
                           );
+                          controller.clearForm();
                           context.go('/problems');
                         } else {
                           ScaffoldMessenger.of(context).showSnackBar(

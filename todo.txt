@@ -1,5 +1,3 @@
-- add olution
--  class validator
 - my profile page
 - logica de recarregar na problem page
 -  refatorar auth and user logic
