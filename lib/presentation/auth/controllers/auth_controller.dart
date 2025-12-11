@@ -102,6 +102,8 @@ class AuthController extends ChangeNotifier {
       await prefs.remove(_tokenExpirationKey);
     }
     _setLoggedInUser(null);
+    _isLoggedIn = false;
+    notifyListeners();
     _setLoading(false);
     print('Usuário deslogado e dados limpos.');
   }

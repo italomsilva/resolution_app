@@ -73,7 +73,9 @@ class ProblemRepository {
       final Map<String, dynamic> responseData = jsonDecode(response.body);
       if (response.statusCode == 200) {
         final result = responseData["data"] as List<dynamic>;
-        return result.map((e) => Problem.fromJson(e)).toList();
+        final problems = result.map((e) => Problem.fromJson(e)).toList();
+        problems.sort((a, b) => b.createdAt.compareTo(a.createdAt));
+        return problems;
       } else {
         print(responseData);
         throw ProblemRepositoryException(
@@ -210,7 +212,9 @@ class ProblemRepository {
     }
   }
 
-    Future<List<StatsCountProblemStatusResponse>> statsCountProblemStatus(String token) async {
+  Future<List<StatsCountProblemStatusResponse>> statsCountProblemStatus(
+    String token,
+  ) async {
     final url = Uri.parse('$_baseUrl/problem/stats/problem-status');
     try {
       final response = await http.get(
@@ -225,7 +229,9 @@ class ProblemRepository {
       final Map<String, dynamic> responseData = jsonDecode(response.body);
       if (response.statusCode == 200) {
         final result = responseData["data"] as List<dynamic>;
-        return result.map((e) => StatsCountProblemStatusResponse.fromJson(e)).toList();
+        return result
+            .map((e) => StatsCountProblemStatusResponse.fromJson(e))
+            .toList();
       } else {
         print(responseData);
         throw ProblemRepositoryException(
@@ -236,8 +242,9 @@ class ProblemRepository {
       if (e is ProblemRepositoryException) {
         rethrow;
       }
-      throw ProblemRepositoryException("Erro inesperado ao buscar estatisticas");
+      throw ProblemRepositoryException(
+        "Erro inesperado ao buscar estatisticas",
+      );
     }
   }
-
 }

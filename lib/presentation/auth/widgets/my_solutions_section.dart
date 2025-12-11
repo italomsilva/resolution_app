@@ -4,6 +4,8 @@ import 'package:resolution_app/presentation/auth/controllers/my_profile_controll
 import 'package:resolution_app/presentation/auth/widgets/indicator_graph.dart';
 import 'package:resolution_app/presentation/auth/widgets/line_chart.dart';
 import 'package:resolution_app/presentation/commom_widgets/MyFormButton.dart';
+import 'package:resolution_app/presentation/commom_widgets/my_confirm_action.dart';
+import 'package:resolution_app/presentation/commom_widgets/my_loading_widget.dart';
 
 class MySolutionsSection extends StatefulWidget {
   const MySolutionsSection({super.key});
@@ -36,12 +38,14 @@ class _MySolutionsSectionState extends State<MySolutionsSection> {
                           textAlign: TextAlign.center,
                         ),
                         SizedBox(height: 20),
-                        SizedBox(
-                          height: 250,
-                          child: MyLineChart(
-                            data: controller.dataSolutions ?? [],
-                          ),
-                        ),
+                        controller.solutionStatsLoading
+                            ? MyLoadingWidget()
+                            : SizedBox(
+                                height: 250,
+                                child: MyLineChart(
+                                  data: controller.dataSolutions,
+                                ),
+                              ),
                         const SizedBox(height: 30),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.start,
@@ -120,7 +124,33 @@ class _MySolutionsSectionState extends State<MySolutionsSection> {
                                       )
                                     : VerticalDivider()),
                                 IconButton(
-                                  onPressed: controller.deleteSolution,
+                                  onPressed: () async {
+                                    final Future<bool>
+                                    confirmDelete = myConfirmActionMessage(
+                                      context,
+                                      "Confirmar exclusão",
+                                      "Deseja realmente excluir esta solução? Esta ação não pode ser desfeita",
+                                      "Cancelar",
+                                      "Deletar",
+                                    );
+                                    if (await confirmDelete) {
+                                      final sucess = await controller
+                                          .deleteSolution(solution.id);
+                                      if (sucess) {
+                                        ScaffoldMessenger.of(
+                                          context,
+                                        ).showSnackBar(
+                                          SnackBar(
+                                            content: Text(
+                                              "Solução deletado com sucesso!",
+                                            ),
+                                          ),
+                                        );
+                                        controller.handleSeeSolutions();
+                                        controller.loadSolutionStats();
+                                      }
+                                    }
+                                  },
                                   icon: Icon(Icons.delete_forever),
                                   color: theme.colorScheme.error,
                                 ),
@@ -139,14 +169,14 @@ class _MySolutionsSectionState extends State<MySolutionsSection> {
                                   crossAxisAlignment: CrossAxisAlignment.center,
                                   children: [
                                     Icon(
-                                      Icons.thumb_up_alt_outlined,
+                                      Icons.thumb_up_alt,
                                       color: theme.primaryColor,
                                     ),
                                     SizedBox(width: 4),
                                     Text(solution.likes.toString()),
                                     SizedBox(height: 20, width: 24),
                                     Icon(
-                                      Icons.thumb_down_alt_outlined,
+                                      Icons.thumb_down_alt,
                                       color: theme.colorScheme.error,
                                     ),
                                     SizedBox(width: 4),

@@ -4,7 +4,7 @@ import 'package:resolution_app/dto/solution/get_solutions_reactions.dart';
 import 'package:resolution_app/presentation/auth/widgets/indicator_graph.dart';
 
 class SolutionFeedbackBarChart extends StatefulWidget {
-  final List<SolutionFeedbackChartData> data;
+  final List<StatsCountSolutionsReactionsResponse> data;
 
   const SolutionFeedbackBarChart({super.key, required this.data});
 

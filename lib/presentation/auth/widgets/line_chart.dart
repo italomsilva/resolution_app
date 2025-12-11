@@ -4,7 +4,7 @@ import 'package:resolution_app/app_theme.dart';
 import 'package:resolution_app/dto/solution/get_solutions_reactions.dart';
 
 class MyLineChart extends StatefulWidget {
-  final List<SolutionFeedbackChartData> data;
+  final List<StatsCountSolutionsReactionsResponse> data;
 
   const MyLineChart({super.key, required this.data});
 

@@ -32,7 +32,7 @@ class MyProfileController extends ChangeNotifier {
   }
 
   List<StatsCountProblemStatusResponse> problemStats = [];
-  List<SolutionFeedbackChartData>? dataSolutions;
+  List<StatsCountSolutionsReactionsResponse> dataSolutions = [];
 
   List<Problem>? _problems;
   List<Problem>? get problems => _problems;
@@ -62,6 +62,18 @@ class MyProfileController extends ChangeNotifier {
   bool _isLoading = true;
   bool get isLoading => _isLoading;
 
+  bool _problemStatsLoading = true;
+  bool get problemStatsLoading => _problemStatsLoading;
+  bool _solutionStatsLoading = true;
+  bool get solutionStatsLoading => _solutionStatsLoading;
+
+  bool _isDisposed = false;
+  void _safeNotifyListeners() {
+    if (!_isDisposed) {
+      notifyListeners();
+    }
+  }
+
   bool _editMode = false;
   bool get editMode => _editMode;
 
@@ -69,14 +81,14 @@ class MyProfileController extends ChangeNotifier {
   bool get loadSubmit => _loadSubmit;
   void setLoadSubmit(value) {
     _loadSubmit = value;
-    notifyListeners();
+    _safeNotifyListeners();
   }
 
   bool _problemsLoading = false;
   bool get problemsLoading => _problemsLoading;
   void setProblemsLoading(value) {
     _problemsLoading = value;
-    notifyListeners();
+    _safeNotifyListeners();
   }
 
   bool _seeProblems = false;
@@ -86,7 +98,7 @@ class MyProfileController extends ChangeNotifier {
   bool get solutionsLoading => _solutionsLoading;
   void setSolutionsLoading(value) {
     _solutionsLoading = value;
-    notifyListeners();
+    _safeNotifyListeners();
   }
 
   bool _seeSolutions = false;
@@ -105,27 +117,46 @@ class MyProfileController extends ChangeNotifier {
       _authController.login(userFromDb);
       _setUser(userFromDb);
       _isLoading = false;
-      notifyListeners();
+      _safeNotifyListeners();
       initControllers();
       loadProblemStats();
-      notifyListeners();
+      loadSolutionStats();
+      _safeNotifyListeners();
     }
     return userFromDb;
   }
 
   void loadProblemStats() async {
+    _problemStatsLoading = true;
+    _safeNotifyListeners();
     problemStats = await _problemRepository.statsCountProblemStatus(
       _authController.currentUser!.token,
     );
-    if (problemStats?.isEmpty == true) {
+    if (problemStats.isEmpty == true) {
       problemStats = [];
-      notifyListeners();
+      _safeNotifyListeners();
     }
+    _problemStatsLoading = false;
+    _safeNotifyListeners();
+  }
+
+  void loadSolutionStats() async {
+    _solutionStatsLoading = true;
+    _safeNotifyListeners();
+    dataSolutions = [];
+    if (dataSolutions.isEmpty == true) {
+      dataSolutions = await _solutionRepository.statsCountSolutionsReactions(
+        _authController.currentUser!.token,
+      );
+      _safeNotifyListeners();
+    }
+    _solutionStatsLoading = false;
+    _safeNotifyListeners();
   }
 
   void setEditMode({bool? value}) {
     _editMode = value ?? !_editMode;
-    notifyListeners();
+    _safeNotifyListeners();
   }
 
   void handleEditProfileSubmit() async {
@@ -157,33 +188,27 @@ class MyProfileController extends ChangeNotifier {
     _authController.logout(clearData: true);
   }
 
-  void handleSubmit() async {
-    setLoadSubmit(true);
-    await Future.delayed(Duration(seconds: 3));
-    setLoadSubmit(false);
-  }
-
   void handleSeeProblems() async {
     setProblemsLoading(true);
     final List<Problem> problems = await _problemRepository.fetchMyProblems(
       user!.token,
     );
     _problems = problems;
-    notifyListeners();
+    _safeNotifyListeners();
     setProblemsLoading(false);
     _seeProblems = true;
-    notifyListeners();
+    _safeNotifyListeners();
   }
 
   void handleSeeSolutions() async {
     setSolutionsLoading(true);
     final List<GetMySolutionsResponseDto> solutions = await _solutionRepository
-        .fetchMySolutions();
+        .fetchMySolutions(_authController.currentUser!.token);
     _solutions = solutions;
-    notifyListeners();
+    _safeNotifyListeners();
     setSolutionsLoading(false);
     _seeSolutions = true;
-    notifyListeners();
+    _safeNotifyListeners();
   }
 
   Future<bool> deleteProblem(String problemId) async {
@@ -194,7 +219,13 @@ class MyProfileController extends ChangeNotifier {
     return result;
   }
 
-  void deleteSolution() {}
+  Future<bool> deleteSolution(String solutionId) async {
+    final bool result = await _solutionRepository.deleteSolution(
+      _authController.currentUser!.token,
+      solutionId,
+    );
+    return result;
+  }
 
   void handleRefresh(int value) {}
 
@@ -202,5 +233,11 @@ class MyProfileController extends ChangeNotifier {
     if (value == null || value.isEmpty) {
       return 'Preencha este campo';
     }
+  }
+
+  @override
+  void dispose() {
+    _isDisposed = true;
+    super.dispose();
   }
 }
