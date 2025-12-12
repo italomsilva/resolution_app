@@ -1,3 +1,2 @@
-- my profile page
-- logica de recarregar na problem page
--  refatorar auth and user logic
+- refatorar auth and user logic
+- reload sempre q entrar na home
