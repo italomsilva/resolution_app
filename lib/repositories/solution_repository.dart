@@ -276,9 +276,6 @@ class SolutionRepository {
         );
       }
     } catch (e) {
-      if (e is SolutionRepositoryException) {
-        rethrow;
-      }
       return [];
     }
   }

@@ -80,7 +80,7 @@ class AuthController extends ChangeNotifier {
     _setLoading(true);
     final prefs = await SharedPreferences.getInstance();
     
-    final tokenExpirationTime = DateTime.now().add(const Duration(minutes: 10)); 
+    final tokenExpirationTime = DateTime.now().add(const Duration(days: 28)); 
     
     await prefs.setString(_userTokenKey, user.token);
     await prefs.setString(_userIdKey, user.id);

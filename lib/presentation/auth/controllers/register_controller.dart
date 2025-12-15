@@ -29,7 +29,7 @@ class RegisterController extends ChangeNotifier {
   bool _isConfirmPasswordVisible = false;
   bool get isConfirmPasswordVisible => _isConfirmPasswordVisible;
 
-  int _profileTypeValue = 1;
+  int _profileTypeValue = 3;
   int get profileTypeValue => _profileTypeValue;
 
   void changeProfileType(int? value) {

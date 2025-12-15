@@ -161,17 +161,17 @@ class _RegisterPageState extends State<RegisterPage> {
                                   children: [
                                     RadioListTile(
                                       title: Text("Pessoa Física"),
-                                      value: 0,
+                                      value: 3,
                                     ),
                                     RadioListTile(
                                       title: Text("Pessoa Jurídica"),
-                                      value: 1,
+                                      value: 0,
                                     ),
                                     RadioListTile(
                                       title: Text("Prefeitura"),
                                       value: 2,
                                     ),
-                                    RadioListTile(title: Text("ONG"), value: 3),
+                                    RadioListTile(title: Text("ONG"), value: 1),
                                   ],
                                 ),
                               ),

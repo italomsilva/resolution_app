@@ -116,7 +116,6 @@ class _MyWidgetState extends State<EditProblemPage> {
                             ),
                           );
                           context.pop();
-                          context.pop();
                         } else {
                           ScaffoldMessenger.of(context).showSnackBar(
                             SnackBar(

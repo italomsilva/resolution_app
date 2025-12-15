@@ -78,6 +78,8 @@ Com a API rodando, siga os passos abaixo:
     BASE_BACKEND_URL = (http://sua.url)
     API_KEY_VALUE = (sua apikey)
     ```
+    Atenção: Se sua API está em `http://localhost:PORTA` no arquivo .env do APP declare como `http://10.0.2.2:PORTA`
+
 5.  Execute o aplicativo:
     ```bash
     flutter run
@@ -88,7 +90,7 @@ Com a API rodando, siga os passos abaixo:
 
 Caso queira apenas testar o aplicativo sem rodar o código fonte, você pode baixar a versão mais recente aqui: (funciona apenas com a api no padrão)
 
-🔗 **[Link do App](https://github.com/italomsilva/resolution_app/release)**
+🔗 **[Link do App](https://github.com/italomsilva/resolution_app/tree/main/release)**
 
 ---
 

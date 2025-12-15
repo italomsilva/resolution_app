@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:resolution_app/app_theme.dart';
 import 'package:resolution_app/presentation/auth/controllers/my_profile_controller.dart';
@@ -36,7 +37,10 @@ class _MyProfilePageState extends State<MyProfilePage> {
                 icon: Icon(Icons.refresh),
               ),
               IconButton(
-                onPressed: controller.handleLogout,
+                onPressed: () {
+                  controller.handleLogout();
+                  context.go("/");
+                },
                 icon: Icon(Icons.logout),
               ),
             ],

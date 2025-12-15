@@ -239,12 +239,7 @@ class ProblemRepository {
         );
       }
     } catch (e) {
-      if (e is ProblemRepositoryException) {
-        rethrow;
-      }
-      throw ProblemRepositoryException(
-        "Erro inesperado ao buscar estatisticas",
-      );
+      return [];
     }
   }
 }
