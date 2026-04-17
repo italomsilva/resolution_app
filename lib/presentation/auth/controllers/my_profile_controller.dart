@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:resolution_app/dto/problem/stats_count_problem_status_response.dart';
 import 'package:resolution_app/dto/solution/get_my_solutions_response.dart';
 import 'package:resolution_app/dto/solution/get_solutions_reactions.dart';
-import 'package:resolution_app/mocks/problems_count.dart';
-import 'package:resolution_app/models/enums/profile_type.dart';
 import 'package:resolution_app/models/problems.dart';
 import 'package:resolution_app/models/user.dart';
 import 'package:resolution_app/presentation/auth/controllers/auth_controller.dart';
@@ -238,6 +236,11 @@ class MyProfileController extends ChangeNotifier {
   @override
   void dispose() {
     _isDisposed = true;
+    nameController.dispose();
+    documentController.dispose();
+    emailController.dispose();
+    loginController.dispose();
+    passwordController.dispose();
     super.dispose();
   }
 }

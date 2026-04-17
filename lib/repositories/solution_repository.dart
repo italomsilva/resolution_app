@@ -8,8 +8,6 @@ import 'package:resolution_app/dto/solution/get_my_solutions_response.dart';
 import 'package:resolution_app/dto/solution/get_solutions_reactions.dart';
 import 'package:resolution_app/dto/solution/react_solution_request.dart';
 import 'package:resolution_app/dto/solution/update_solution_request_dto.dart';
-import 'package:resolution_app/mocks/get_all_solutions.dart';
-import 'package:resolution_app/mocks/get_my_solutions.dart';
 import 'package:resolution_app/models/solution.dart';
 
 class SolutionRepositoryException implements Exception {

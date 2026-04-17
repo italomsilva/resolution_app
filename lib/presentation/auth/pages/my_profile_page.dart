@@ -14,19 +14,43 @@ class MyProfilePage extends StatefulWidget {
   State<MyProfilePage> createState() => _MyProfilePageState();
 }
 
-class _MyProfilePageState extends State<MyProfilePage> {
+class _MyProfilePageState extends State<MyProfilePage>
+    with SingleTickerProviderStateMixin {
+  late TabController _tabController;
+
   @override
   void initState() {
     super.initState();
+    _tabController = TabController(length: 3, vsync: this);
+    _tabController.addListener(_handleTabSelection);
+  }
+
+  void _handleTabSelection() {
+    if (_tabController.indexIsChanging) {
+      final controller = Provider.of<MyProfileController>(context, listen: false);
+      if (_tabController.index == 1) {
+        controller.handleSeeProblems();
+      } else if (_tabController.index == 2) {
+        controller.handleSeeSolutions();
+      } else if (_tabController.index == 0) {
+        controller.loadProfileData();
+      }
+    }
+  }
+
+  @override
+  void dispose() {
+    _tabController.removeListener(_handleTabSelection);
+    _tabController.dispose();
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     final ThemeData theme = Theme.of(context);
 
-    return DefaultTabController(
-      initialIndex: 0,
-      length: 3,
+    return TabBarView_Wrapper(
+      tabController: _tabController,
       child: Consumer<MyProfileController>(
         builder: (context, controller, child) => Scaffold(
           appBar: AppBar(
@@ -45,6 +69,7 @@ class _MyProfilePageState extends State<MyProfilePage> {
               ),
             ],
             bottom: TabBar(
+              controller: _tabController,
               dividerColor: AppTheme.neutralColor,
               dividerHeight: 2,
               tabs: const [
@@ -61,6 +86,7 @@ class _MyProfilePageState extends State<MyProfilePage> {
             children: [
               Expanded(
                 child: TabBarView(
+                  controller: _tabController,
                   children: const [
                     MyProfileSection(),
                     MyProblemsSection(),
@@ -73,5 +99,17 @@ class _MyProfilePageState extends State<MyProfilePage> {
         ),
       ),
     );
+  }
+}
+
+class TabBarView_Wrapper extends StatelessWidget {
+  final TabController tabController;
+  final Widget child;
+  const TabBarView_Wrapper(
+      {required this.tabController, required this.child, super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return child;
   }
 }

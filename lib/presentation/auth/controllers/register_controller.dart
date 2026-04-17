@@ -140,4 +140,15 @@ class RegisterController extends ChangeNotifier {
     }
     return null;
   }
+
+  @override
+  void dispose() {
+    nameController.dispose();
+    emailController.dispose();
+    documentController.dispose();
+    loginController.dispose();
+    passwordController.dispose();
+    confirmPasswordController.dispose();
+    super.dispose();
+  }
 }

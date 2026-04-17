@@ -63,4 +63,12 @@ class AddProblemController extends ChangeNotifier {
     locationController.clear();
     notifyListeners();
   }
+
+  @override
+  void dispose() {
+    titleController.dispose();
+    descriptionController.dispose();
+    locationController.dispose();
+    super.dispose();
+  }
 }

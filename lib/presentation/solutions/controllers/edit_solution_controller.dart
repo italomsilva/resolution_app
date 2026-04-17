@@ -117,4 +117,12 @@ class EditSolutionController extends ChangeNotifier {
       return 'Preencha este campo';
     }
   }
+
+  @override
+  void dispose() {
+    titleController.dispose();
+    descriptionController.dispose();
+    estimatedCostController.dispose();
+    super.dispose();
+  }
 }
