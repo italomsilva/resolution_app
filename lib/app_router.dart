@@ -10,7 +10,6 @@ import 'package:resolution_app/presentation/auth/pages/register_page.dart';
 import 'package:resolution_app/presentation/layout/main_scaffold.dart';
 import 'package:resolution_app/presentation/problems/controllers/add_problem_controller.dart';
 import 'package:resolution_app/presentation/problems/controllers/edit_problem_controller.dart';
-import 'package:resolution_app/presentation/problems/controllers/home_problems_controller.dart';
 import 'package:resolution_app/presentation/problems/controllers/problem_controller.dart';
 import 'package:resolution_app/presentation/problems/pages/add_problem_page.dart';
 import 'package:resolution_app/presentation/problems/pages/edit_problem_page.dart';
@@ -30,6 +29,7 @@ import 'package:provider/provider.dart';
 class AppRouter {
   static late final GoRouter _router;
   static bool _isInitialized = false;
+  static final RouteObserver<ModalRoute<void>> routeObserver = RouteObserver<ModalRoute<void>>();
 
   static GoRouter get router {
     return _router;
@@ -56,6 +56,8 @@ class AppRouter {
 
     _router = GoRouter(
       initialLocation: initialRoute,
+      refreshListenable: authController,
+      observers: [routeObserver],
       routes: [
         GoRoute(
           path: '/splash',
@@ -127,12 +129,7 @@ class AppRouter {
                 GoRoute(
                   path: '/problems',
                   builder: (context, state) {
-                    return ChangeNotifierProvider<HomeProblemsController>(
-                      create: (context) => HomeProblemsController(
-                        Provider.of<ProblemRepository>(context, listen: false),
-                      ),
-                      child: const HomeProblemsPage(),
-                    );
+                    return const HomeProblemsPage();
                   },
                 ),
               ],

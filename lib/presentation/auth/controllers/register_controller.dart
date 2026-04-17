@@ -66,7 +66,7 @@ class RegisterController extends ChangeNotifier {
       if (!context.mounted) return;
 
       if (user != null) {
-        _authController.login(user);
+        await _authController.login(user);
         if (context.mounted) {
           context.go('/problems');
         }

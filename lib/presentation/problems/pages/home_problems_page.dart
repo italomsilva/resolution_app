@@ -5,6 +5,7 @@ import 'package:resolution_app/presentation/commom_widgets/my_container_problem_
 import 'package:resolution_app/presentation/commom_widgets/my_error_widget.dart';
 import 'package:resolution_app/presentation/commom_widgets/my_loading_widget.dart';
 import 'package:resolution_app/presentation/problems/controllers/home_problems_controller.dart';
+import 'package:resolution_app/app_router.dart';
 
 class HomeProblemsPage extends StatefulWidget {
   const HomeProblemsPage({super.key});
@@ -13,16 +14,32 @@ class HomeProblemsPage extends StatefulWidget {
   State<HomeProblemsPage> createState() => _HomeProblemsPageState();
 }
 
-class _HomeProblemsPageState extends State<HomeProblemsPage> {
+class _HomeProblemsPageState extends State<HomeProblemsPage> with RouteAware {
   @override
   void initState() {
     super.initState();
-    Future.microtask(() {
-      Provider.of<HomeProblemsController>(
-        context,
-        listen: false,
-      ).fetchProblems();
-    });
+    Future.microtask(() => _refresh());
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    AppRouter.routeObserver.subscribe(this, ModalRoute.of(context) as PageRoute);
+  }
+
+  @override
+  void dispose() {
+    AppRouter.routeObserver.unsubscribe(this);
+    super.dispose();
+  }
+
+  @override
+  void didPopNext() {
+    _refresh();
+  }
+
+  void _refresh() {
+    Provider.of<HomeProblemsController>(context, listen: false).fetchProblems();
   }
 
   @override

@@ -5,8 +5,13 @@ import 'package:resolution_app/app_router.dart';
 import 'package:resolution_app/app_theme.dart';
 import 'package:resolution_app/presentation/auth/controllers/auth_controller.dart';
 import 'package:resolution_app/repositories/problem_repository.dart';
+import 'package:resolution_app/repositories/mocks/problem_repository_mock.dart';
 import 'package:resolution_app/repositories/solution_repository.dart';
+import 'package:resolution_app/repositories/mocks/solution_repository_mock.dart';
 import 'package:resolution_app/repositories/user_repository.dart';
+import 'package:resolution_app/repositories/mocks/user_repository_mock.dart';
+import 'package:resolution_app/presentation/problems/controllers/home_problems_controller.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 
 class App extends StatefulWidget {
@@ -28,12 +33,29 @@ class _AppState extends State<App> {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        Provider<UserRepository>(create: (_) => UserRepository()),
-        Provider<ProblemRepository>(create: (_) => ProblemRepository()),
-        Provider<SolutionRepository>(create: (_) => SolutionRepository()),
+        Provider<UserRepository>(
+          create: (_) => dotenv.get('USE_MOCK', fallback: 'false') == 'true'
+              ? UserRepositoryMock()
+              : UserRepository(),
+        ),
+        Provider<ProblemRepository>(
+          create: (_) => dotenv.get('USE_MOCK', fallback: 'false') == 'true'
+              ? ProblemRepositoryMock()
+              : ProblemRepository(),
+        ),
+        Provider<SolutionRepository>(
+          create: (_) => dotenv.get('USE_MOCK', fallback: 'false') == 'true'
+              ? SolutionRepositoryMock()
+              : SolutionRepository(),
+        ),
         ChangeNotifierProvider<AuthController>(
           create: (context) => AuthController(
             Provider.of<UserRepository>(context, listen: false),
+          ),
+        ),
+        ChangeNotifierProvider<HomeProblemsController>(
+          create: (context) => HomeProblemsController(
+            Provider.of<ProblemRepository>(context, listen: false),
           ),
         ),
       ],

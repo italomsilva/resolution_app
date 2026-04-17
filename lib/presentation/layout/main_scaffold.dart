@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart'; 
+import 'package:provider/provider.dart';
+import 'package:resolution_app/presentation/problems/controllers/home_problems_controller.dart';
 
 class MainScaffold extends StatefulWidget {
   final StatefulNavigationShell navigationShell;
@@ -12,9 +14,14 @@ class MainScaffold extends StatefulWidget {
 
 class _MainScaffoldState extends State<MainScaffold> {
   void _onItemTapped(int index) {
+    if (index == 0) {
+      try {
+        Provider.of<HomeProblemsController>(context, listen: false).fetchProblems();
+      } catch (_) {}
+    }
+    
     widget.navigationShell.goBranch(
-      index,
-      initialLocation: index == widget.navigationShell.currentIndex,
+      index, initialLocation: index == widget.navigationShell.currentIndex,
     );
   }
 
