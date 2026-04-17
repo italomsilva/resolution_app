@@ -47,9 +47,9 @@ class _MyProfilePageState extends State<MyProfilePage>
 
   @override
   Widget build(BuildContext context) {
-    final ThemeData theme = Theme.of(context);
+    Theme.of(context);
 
-    return TabBarView_Wrapper(
+    return TabBarViewWrapper(
       tabController: _tabController,
       child: Consumer<MyProfileController>(
         builder: (context, controller, child) => Scaffold(
@@ -102,10 +102,10 @@ class _MyProfilePageState extends State<MyProfilePage>
   }
 }
 
-class TabBarView_Wrapper extends StatelessWidget {
+class TabBarViewWrapper extends StatelessWidget {
   final TabController tabController;
   final Widget child;
-  const TabBarView_Wrapper(
+  const TabBarViewWrapper(
       {required this.tabController, required this.child, super.key});
 
   @override

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 import 'package:resolution_app/presentation/auth/controllers/auth_controller.dart';
 import 'package:resolution_app/repositories/problem_repository.dart';
 

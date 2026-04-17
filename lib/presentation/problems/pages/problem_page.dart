@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:resolution_app/models/enums/solution_reaction.dart';
-import 'package:resolution_app/models/solution.dart';
 import 'package:resolution_app/presentation/commom_widgets/MyFormButton.dart';
 import 'package:resolution_app/presentation/commom_widgets/my_clickable_card.dart';
 import 'package:resolution_app/presentation/commom_widgets/my_confirm_action.dart';

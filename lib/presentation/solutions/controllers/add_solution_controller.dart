@@ -68,6 +68,7 @@ class AddSolutionController extends ChangeNotifier {
     if (value == null || value.isEmpty) {
       return 'Preencha este campo';
     }
+    return null;
   }
 
   @override

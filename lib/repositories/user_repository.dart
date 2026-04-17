@@ -2,7 +2,6 @@ import 'dart:convert';
 
 import 'package:http/http.dart' as http;
 import 'package:resolution_app/dto/user/register_user_request_dto.dart';
-import 'package:resolution_app/models/enums/profile_type.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:resolution_app/models/user.dart';
 
@@ -123,6 +122,7 @@ class UserRepository {
       }
       throw UserException("Cadastro falhou: Erro inesperado no Cadastro $e");
     }
+    return null;
   }
 
   Future<User?> update({

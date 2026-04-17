@@ -116,13 +116,13 @@ class _SolutionFeedbackBarChartState extends State<SolutionFeedbackBarChart> {
         barRods: [
           BarChartRodData(
             toY: item.likes.toDouble(),
-            color: likesColor, // Usa cor local
+            color: likesColor,
             width: barWidth,
             borderRadius: BorderRadius.circular(barRodRadius),
           ),
           BarChartRodData(
             toY: item.dislikes.toDouble(),
-            color: dislikesColor, // Usa cor local
+            color: dislikesColor,
             width: barWidth,
             borderRadius: BorderRadius.circular(barRodRadius),
           ),
@@ -132,42 +132,9 @@ class _SolutionFeedbackBarChartState extends State<SolutionFeedbackBarChart> {
     });
   }
 
-  // 💡 getBottomTitles para exibir "Recente" e "Antigo" nas extremidades
   Widget getBottomTitles(double value, TitleMeta meta) {
     final index = value.toInt();
-    final int lastIndex = widget.data.length - 1; // Último índice da lista
 
-    // // Se é o primeiro item (mais recente, à esquerda)
-    // if (index == 0) {
-    //   return SideTitleWidget(
-    //     meta: meta,
-    //     space: 10,
-    //     child: Text(
-    //       '${widget.data[index].createdAt.day.toString().padLeft(2, '0')}/${widget.data[index].createdAt.month.toString().padLeft(2, '0')}',
-    //       style: Theme.of(context).textTheme.bodySmall?.copyWith(
-    //         color: Theme.of(context).colorScheme.onSurface,
-    //         fontWeight: FontWeight.bold,
-    //       ),
-    //       textAlign: TextAlign.center,
-    //     ),
-    //   );
-    // }
-    // // Se é o último item (mais antigo, à direita)
-    // else if (index == lastIndex) {
-    //   return SideTitleWidget(
-    //     meta: meta,
-    //     space: 10,
-    //     child: Text(
-    //       '${widget.data[index].createdAt.day.toString().padLeft(2, '0')}/${widget.data[index].createdAt.month.toString().padLeft(2, '0')}',
-    //       style: Theme.of(context).textTheme.bodySmall?.copyWith(
-    //         color: Theme.of(context).colorScheme.onSurface,
-    //         fontWeight: FontWeight.bold,
-    //       ),
-    //       textAlign: TextAlign.center,
-    //     ),
-    //   );
-    // }
-    // // Para todos os outros itens, não exibe nada
     return SideTitleWidget(
       meta: meta,
       space: 10,

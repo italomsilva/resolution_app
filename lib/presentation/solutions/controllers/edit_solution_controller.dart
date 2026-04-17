@@ -71,8 +71,6 @@ class EditSolutionController extends ChangeNotifier {
   }
 
   Future<bool> handleSubmit() async {
-    String titleInput = titleController.text;
-    String descriptionInput = descriptionController.text;
     String estimatedCostInput = estimatedCostController.text;
     UpdateSolutionRequestDto updateRequest = UpdateSolutionRequestDto(
       id: solution!.id,
@@ -116,6 +114,7 @@ class EditSolutionController extends ChangeNotifier {
     if (value == null || value.isEmpty) {
       return 'Preencha este campo';
     }
+    return null;
   }
 
   @override

@@ -87,7 +87,6 @@ class AppRouter {
           path: '/problem/:problemId',
           builder: (context, state) {
             final problemId = state.pathParameters['problemId'];
-            final userId = prefs.getString('user_id') ?? '';
             return ChangeNotifierProvider(
               create: (context) {
                 final controller = ProblemController(

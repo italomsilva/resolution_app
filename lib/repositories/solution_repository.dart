@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
 import 'package:resolution_app/dto/solution/create_solution_request_dto.dart';
@@ -36,7 +35,7 @@ class SolutionRepository {
         },
         body: jsonEncode(createRequest.toJson()),
       );
-      final Map<String, dynamic> responseData = jsonDecode(response.body);
+      jsonDecode(response.body);
       if (response.statusCode == 201) {
         return true;
       } else {
@@ -189,6 +188,7 @@ class SolutionRepository {
         rethrow;
       }
     }
+    return null;
   }
 
   Future<bool> updateSolution(

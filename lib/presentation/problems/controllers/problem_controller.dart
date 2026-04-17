@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 import 'package:resolution_app/dto/problem/get_home_problems_response.dart';
 import 'package:resolution_app/dto/solution/get_all_solutions.dart';
 import 'package:resolution_app/dto/solution/react_solution_request.dart';
 import 'package:resolution_app/models/enums/solution_reaction.dart';
-import 'package:resolution_app/models/solution.dart';
 import 'package:resolution_app/presentation/auth/controllers/auth_controller.dart';
 import 'package:resolution_app/repositories/problem_repository.dart';
 import 'package:resolution_app/repositories/solution_repository.dart';

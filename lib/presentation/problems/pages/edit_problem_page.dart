@@ -2,9 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:resolution_app/models/enums/problem_status.dart';
-import 'package:resolution_app/models/problems.dart';
 import 'package:resolution_app/presentation/commom_widgets/MyFormButton.dart';
-import 'package:resolution_app/presentation/problems/controllers/add_problem_controller.dart';
 import 'package:resolution_app/presentation/problems/controllers/edit_problem_controller.dart';
 
 class EditProblemPage extends StatefulWidget {

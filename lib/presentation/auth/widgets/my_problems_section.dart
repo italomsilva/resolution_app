@@ -70,7 +70,7 @@ class _MyProblemsSectionState extends State<MyProblemsSection> {
                               Wrap(
                                 spacing: 12.0,
                                 runSpacing: 8.0,
-                                children: controller.problemStats!.map((
+                                children: controller.problemStats.map((
                                   dataItem,
                                 ) {
                                   return IndicatorGraph(

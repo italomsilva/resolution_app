@@ -97,8 +97,7 @@ class _ProblemStatusDonutChartState extends State<ProblemStatusDonutChart> {
 
   List<PieChartSectionData> _buildChartSections(
       BuildContext context, double size) {
-    final totalValue =
-        widget.data.fold(0.0, (sum, item) => sum + item.count);
+    widget.data.fold(0.0, (sum, item) => sum + item.count);
     final isDark = Theme.of(context).brightness == Brightness.dark;
 
     return List.generate(widget.data.length, (i) {

@@ -105,7 +105,6 @@ class MyProfileController extends ChangeNotifier {
   final GlobalKey<FormState> profileFormKey = GlobalKey<FormState>();
 
   Future<User> loadProfileData() async {
-    final user = _authController.currentUser;
     final userFromDb = await _userRepository.fetchUserById(
       _authController.currentUser!.id,
       _authController.currentUser!.token,
@@ -231,6 +230,7 @@ class MyProfileController extends ChangeNotifier {
     if (value == null || value.isEmpty) {
       return 'Preencha este campo';
     }
+    return null;
   }
 
   @override
