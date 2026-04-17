@@ -11,6 +11,7 @@ import 'package:resolution_app/repositories/mocks/solution_repository_mock.dart'
 import 'package:resolution_app/repositories/user_repository.dart';
 import 'package:resolution_app/repositories/mocks/user_repository_mock.dart';
 import 'package:resolution_app/presentation/problems/controllers/home_problems_controller.dart';
+import 'package:resolution_app/presentation/commom_widgets/theme_controller.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 
@@ -58,9 +59,12 @@ class _AppState extends State<App> {
             Provider.of<ProblemRepository>(context, listen: false),
           ),
         ),
+        ChangeNotifierProvider<ThemeController>(
+          create: (context) => ThemeController(),
+        ),
       ],
-      child: Consumer<AuthController>(
-        builder: (context, authController, child) {
+      child: Consumer2<AuthController, ThemeController>(
+        builder: (context, authController, themeController, child) {
           if (_router == null && !authController.isLoading) {
             AppRouter.initialize(context).then((_) {
               setState(() {
@@ -77,12 +81,12 @@ class _AppState extends State<App> {
           }
 
           return MaterialApp.router(
-            title: 'ResolutionApp', 
+            title: 'ResolutionApp',
             debugShowCheckedModeBanner: false,
             theme: AppTheme.lightTheme,
             darkTheme: AppTheme.darkTheme,
-            themeMode: ThemeMode.system,
-            routerConfig: _router!, 
+            themeMode: themeController.themeMode,
+            routerConfig: _router!,
           );
         },
       ),

@@ -87,6 +87,7 @@ class _MySolutionsSectionState extends State<MySolutionsSection> {
                           vertical: 8,
                         ),
                         child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:resolution_app/presentation/auth/controllers/my_profile_controller.dart';
+import 'package:resolution_app/presentation/commom_widgets/theme_controller.dart';
 import 'package:resolution_app/presentation/commom_widgets/MyFormButton.dart';
 import 'package:resolution_app/presentation/commom_widgets/my_confirm_action.dart';
 import 'package:resolution_app/presentation/commom_widgets/my_confirm_dialog.dart';
@@ -32,18 +33,41 @@ class _MyProfileSectionState extends State<MyProfileSection> {
             padding: const EdgeInsets.all(16.0),
             child: Column(
               children: [
-                Align(
-                  alignment: Alignment.topLeft,
-                  child: IconButton(
-                    onPressed: () {
-                      controller.setEditMode();
-                    },
-                    icon: Icon(
-                      size: theme.textTheme.headlineLarge?.fontSize,
-                      color: theme.primaryColorDark,
-                      controller.editMode ? Icons.close : Icons.edit_outlined,
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    IconButton(
+                      onPressed: () {
+                        controller.setEditMode();
+                      },
+                      icon: Icon(
+                        size: theme.textTheme.headlineLarge?.fontSize,
+                        color: theme.primaryColorDark,
+                        controller.editMode ? Icons.close : Icons.edit_outlined,
+                      ),
                     ),
-                  ),
+                    Consumer<ThemeController>(
+                      builder: (context, themeController, child) {
+                        return Row(
+                          children: [
+                            Icon(
+                              themeController.isDarkMode
+                                  ? Icons.dark_mode
+                                  : Icons.light_mode,
+                              color: theme.primaryColor,
+                            ),
+                            Switch(
+                              value: themeController.isDarkMode,
+                              onChanged: (value) {
+                                themeController.toggleTheme();
+                              },
+                              activeColor: theme.primaryColor,
+                            ),
+                          ],
+                        );
+                      },
+                    ),
+                  ],
                 ),
                 CircleAvatar(
                   radius: 80,
