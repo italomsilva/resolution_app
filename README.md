@@ -77,6 +77,7 @@ Com a API rodando, siga os passos abaixo:
     ```bash
     BASE_BACKEND_URL = (http://sua.url)
     API_KEY_VALUE = (sua apikey)
+    USE_MOCK = ('true' ou false)
     ```
     Atenção: Se sua API está em `http://localhost:PORTA` no arquivo .env do APP declare como `http://10.0.2.2:PORTA`
 
