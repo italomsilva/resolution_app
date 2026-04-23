@@ -26,14 +26,13 @@ class _MyProfilePageState extends State<MyProfilePage>
   }
 
   void _handleTabSelection() {
-    if (_tabController.indexIsChanging) {
-      final controller = Provider.of<MyProfileController>(context, listen: false);
-      if (_tabController.index == 1) {
+    if (!_tabController.indexIsChanging) {
+      final controller =
+          Provider.of<MyProfileController>(context, listen: false);
+      if (_tabController.index == 1 && controller.problems == null) {
         controller.handleSeeProblems();
-      } else if (_tabController.index == 2) {
+      } else if (_tabController.index == 2 && controller.solutions == null) {
         controller.handleSeeSolutions();
-      } else if (_tabController.index == 0) {
-        controller.loadProfileData();
       }
     }
   }
@@ -56,10 +55,6 @@ class _MyProfilePageState extends State<MyProfilePage>
           appBar: AppBar(
             title: Text("Meu Perfil"),
             actions: [
-              IconButton(
-                onPressed: controller.loadProfileData,
-                icon: Icon(Icons.refresh),
-              ),
               IconButton(
                 onPressed: () {
                   controller.handleLogout();

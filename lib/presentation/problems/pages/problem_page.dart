@@ -99,101 +99,105 @@ class _ProblemPageState extends State<ProblemPage> {
           } else if (controller.problem == null) {
             return MyErrorWidget(baseMessage: "Problema não encontrado");
           } else {
-            return Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16),
-              child: SingleChildScrollView(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Row(
-                      children: [
-                        Icon(
-                          Icons.person,
-                          size: 16,
-                          color: theme.primaryColorDark,
-                        ),
-                        const SizedBox(width: 4),
-                        Text(
-                          controller.problem!.userLogin,
-                          style: theme.textTheme.bodySmall?.copyWith(
+            return RefreshIndicator(
+              onRefresh: () async => controller.fetchProblem(widget.problemId),
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16),
+                child: SingleChildScrollView(
+                  physics: const AlwaysScrollableScrollPhysics(),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        children: [
+                          Icon(
+                            Icons.person,
+                            size: 16,
                             color: theme.primaryColorDark,
-                            fontStyle: FontStyle.italic,
                           ),
-                        ),
-                      ],
-                    ),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          controller.problem!.title,
-                          style: theme.textTheme.titleLarge?.copyWith(
-                            color: theme.primaryColor,
-                            fontWeight: FontWeight.bold,
+                          const SizedBox(width: 4),
+                          Text(
+                            controller.problem!.userLogin,
+                            style: theme.textTheme.bodySmall?.copyWith(
+                              color: theme.primaryColorDark,
+                              fontStyle: FontStyle.italic,
+                            ),
                           ),
-                        ),
-                        const SizedBox(height: 8.0),
-                        Text(
-                          controller.problem!.description,
-                          style: theme.textTheme.bodyLarge,
-                        ),
-                        const SizedBox(height: 8.0),
-                        Row(
-                          children: [
-                            Icon(
-                              Icons.location_on,
-                              size: 18,
-                              color: Colors.grey.shade600,
-                            ),
-                            const SizedBox(width: 4),
-                            Text(
-                              controller.problem!.location,
-                              style: theme.textTheme.bodySmall,
-                              overflow: TextOverflow.ellipsis,
-                            ),
-                          ],
-                        ),
-                        const SizedBox(height: 8.0),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(
-                              'Criado em: ${controller.problem!.createdAt.toLocal().toString().split(' ')[0]}',
-                              style: theme.textTheme.bodySmall?.copyWith(
-                                color: Colors.grey.shade700,
-                              ),
-                            ),
-                            Spacer(),
-                            MyContainerProblemStatus(
-                              problemStatus: controller.problem!.status,
-                            ),
-                          ],
-                        ),
-                        SizedBox(height: 16),
-                        controller.isMyProblem
-                            ? SizedBox()
-                            : MyFormButton(
-                                text: "Propor Solução",
-                                onPressed: () {
-                                  context.push(
-                                    "/problem/${controller.problem?.id}/add-solution",
-                                  );
-                                },
-                              ),
-                      ],
-                    ),
-                    SizedBox(height: 16),
-                    Text(
-                      "Soluções Propostas",
-                      style: theme.textTheme.titleLarge?.copyWith(
-                        fontWeight: FontWeight.bold,
+                        ],
                       ),
-                      textAlign: TextAlign.start,
-                    ),
-                    SizedBox(height: 16),
-                    _buildSolutionsList(context, controller),
-                  ],
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            controller.problem!.title,
+                            style: theme.textTheme.titleLarge?.copyWith(
+                              color: theme.primaryColor,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          const SizedBox(height: 8.0),
+                          Text(
+                            controller.problem!.description,
+                            style: theme.textTheme.bodyLarge,
+                          ),
+                          const SizedBox(height: 8.0),
+                          Row(
+                            children: [
+                              Icon(
+                                Icons.location_on,
+                                size: 18,
+                                color: Colors.grey.shade600,
+                              ),
+                              const SizedBox(width: 4),
+                              Text(
+                                controller.problem!.location,
+                                style: theme.textTheme.bodySmall,
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                            ],
+                          ),
+                          const SizedBox(height: 8.0),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                'Criado em: ${controller.problem!.createdAt.toLocal().toString().split(' ')[0]}',
+                                style: theme.textTheme.bodySmall?.copyWith(
+                                  color: Colors.grey.shade700,
+                                ),
+                              ),
+                              Spacer(),
+                              MyContainerProblemStatus(
+                                problemStatus: controller.problem!.status,
+                              ),
+                            ],
+                          ),
+                          SizedBox(height: 16),
+                          controller.isMyProblem
+                              ? SizedBox()
+                              : MyFormButton(
+                                  text: "Propor Solução",
+                                  onPressed: () {
+                                    context.push(
+                                      "/problem/${controller.problem?.id}/add-solution",
+                                    );
+                                  },
+                                ),
+                        ],
+                      ),
+                      SizedBox(height: 16),
+                      Text(
+                        "Soluções Propostas",
+                        style: theme.textTheme.titleLarge?.copyWith(
+                          fontWeight: FontWeight.bold,
+                        ),
+                        textAlign: TextAlign.start,
+                      ),
+                      SizedBox(height: 16),
+                      _buildSolutionsList(context, controller),
+                    ],
+                  ),
                 ),
               ),
             );
@@ -209,8 +213,31 @@ class _ProblemPageState extends State<ProblemPage> {
   ) {
     if (controller.solutionsLoading) {
       return MyLoadingWidget();
-    } else {
-      final solutions = controller.solutions;
+    }
+
+    final solutions = controller.solutions;
+    final theme = Theme.of(context);
+
+    if (solutions.isEmpty) {
+      return RefreshIndicator(
+        onRefresh: () async => controller.fetchProblem(widget.problemId),
+        child: SingleChildScrollView(
+          physics: const AlwaysScrollableScrollPhysics(),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(vertical: 40),
+            child: Center(
+              child: Text(
+                "Ainda não foram propostas soluções para este problema.",
+                textAlign: TextAlign.center,
+                style: theme.textTheme.bodyMedium?.copyWith(
+                  fontStyle: FontStyle.italic,
+                  color: Colors.grey.shade600,
+                ),
+              ),
+            ),
+          ),
+        ),
+      );
     }
     return ListView.builder(
       shrinkWrap: true,

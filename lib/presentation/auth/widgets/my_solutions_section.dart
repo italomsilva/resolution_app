@@ -20,185 +20,210 @@ class _MySolutionsSectionState extends State<MySolutionsSection> {
     return Consumer<MyProfileController>(
       builder: (context, controller, child) {
         final theme = Theme.of(context);
-        return Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
-          child: SingleChildScrollView(
-            child: Column(
-              children: [
-                Card(
-                  child: Padding(
-                    padding: const EdgeInsets.all(16.0),
-                    child: Column(
-                      children: [
-                        Text(
-                          "Estatísticas das minhas Soluções mais recentes",
-                          style: theme.textTheme.titleLarge?.copyWith(
-                            fontWeight: FontWeight.bold,
+        return RefreshIndicator(
+          onRefresh: () async {
+            controller.handleSeeSolutions();
+            controller.loadSolutionStats();
+          },
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
+            child: SingleChildScrollView(
+              physics: const AlwaysScrollableScrollPhysics(),
+              child: Column(
+                children: [
+                  Card(
+                    child: Padding(
+                      padding: const EdgeInsets.all(16.0),
+                      child: Column(
+                        children: [
+                          Text(
+                            "Estatísticas das minhas Soluções mais recentes",
+                            style: theme.textTheme.titleLarge?.copyWith(
+                              fontWeight: FontWeight.bold,
+                            ),
+                            textAlign: TextAlign.center,
                           ),
-                          textAlign: TextAlign.center,
-                        ),
-                        SizedBox(height: 20),
-                        controller.solutionStatsLoading
-                            ? MyLoadingWidget()
-                            : SizedBox(
-                                height: 250,
-                                child: MyLineChart(
-                                  data: controller.dataSolutions,
-                                ),
-                              ),
-                        const SizedBox(height: 30),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            IndicatorGraph(
-                              color: theme.primaryColorDark,
-                              text: 'Likes',
-                            ),
-                            const SizedBox(width: 20),
-                            IndicatorGraph(
-                              color: theme.colorScheme.error,
-                              text: 'Dislikes',
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-                SizedBox(height: 20),
-                controller.seeSolutions == false
-                    ? MyFormButton(
-                        text: "Ver minhas Soluções",
-                        onPressed: controller.handleSeeSolutions,
-                        isLoading: controller.solutionsLoading,
-                      )
-                    : const SizedBox(height: 0),
-                ListView.builder(
-                  shrinkWrap: true,
-                  physics: NeverScrollableScrollPhysics(),
-                  itemCount: controller.solutions?.length,
-                  itemBuilder: (context, index) {
-                    final solution = controller.solutions?[index];
-                    if (solution == null) return null;
-                    return Card(
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 16,
-                          vertical: 8,
-                        ),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Expanded(
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                        solution.problemTitle,
-                                        maxLines: 1,
-                                        overflow: TextOverflow.ellipsis,
-                                        style: theme.textTheme.bodySmall
-                                            ?.copyWith(
-                                              color: theme.primaryColorDark,
-                                            ),
-                                      ),
-                                      Text(
-                                        solution.title,
-                                        maxLines: 1,
-                                        overflow: TextOverflow.ellipsis,
-                                        style: theme.textTheme.titleMedium
-                                            ?.copyWith(
-                                              fontWeight: FontWeight.bold,
-                                            ),
-                                      ),
-                                    ],
+                          SizedBox(height: 20),
+                          controller.solutionStatsLoading
+                              ? MyLoadingWidget()
+                              : SizedBox(
+                                  height: 250,
+                                  child: MyLineChart(
+                                    data: controller.dataSolutions,
                                   ),
                                 ),
-                                (solution.approved == true
-                                    ? Icon(
-                                        Icons.verified,
-                                        color: theme.primaryColor,
-                                      )
-                                    : VerticalDivider()),
-                                IconButton(
-                                  onPressed: () async {
-                                    final Future<bool>
-                                    confirmDelete = myConfirmActionMessage(
-                                      context,
-                                      "Confirmar exclusão",
-                                      "Deseja realmente excluir esta solução? Esta ação não pode ser desfeita",
-                                      "Cancelar",
-                                      "Deletar",
-                                    );
-                                    if (await confirmDelete) {
-                                      final sucess = await controller
-                                          .deleteSolution(solution.id);
-                                      if (sucess) {
-                                        ScaffoldMessenger.of(
-                                          context,
-                                        ).showSnackBar(
-                                          SnackBar(
-                                            content: Text(
-                                              "Solução deletado com sucesso!",
-                                            ),
-                                          ),
-                                        );
-                                        controller.handleSeeSolutions();
-                                        controller.loadSolutionStats();
-                                      }
-                                    }
-                                  },
-                                  icon: Icon(Icons.delete_forever),
-                                  color: theme.colorScheme.error,
-                                ),
-                              ],
-                            ),
-                            Text(
-                              solution.description,
-                              maxLines: 2,
-                              overflow: TextOverflow.ellipsis,
-                              style: theme.textTheme.bodyMedium,
-                            ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Row(
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  children: [
-                                    Icon(
-                                      Icons.thumb_up_alt,
-                                      color: theme.primaryColor,
-                                    ),
-                                    SizedBox(width: 4),
-                                    Text(solution.likes.toString()),
-                                    SizedBox(height: 20, width: 24),
-                                    Icon(
-                                      Icons.thumb_down_alt,
-                                      color: theme.colorScheme.error,
-                                    ),
-                                    SizedBox(width: 4),
-                                    Text(solution.dislikes.toString()),
-                                  ],
-                                ),
-                                Text(
-                                  solution.createdAt.toLocal().toString().split(
-                                    ' ',
-                                  )[0],
-                                  style: theme.textTheme.bodySmall,
-                                ),
-                              ],
-                            ),
-                          ],
+                          const SizedBox(height: 30),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                               IndicatorGraph(
+                                color: theme.primaryColorDark,
+                                text: 'Likes',
+                              ),
+                              const SizedBox(width: 20),
+                              IndicatorGraph(
+                                color: theme.colorScheme.error,
+                                text: 'Dislikes',
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                  SizedBox(height: 20),
+                  controller.seeSolutions == false
+                      ? MyFormButton(
+                          text: "Ver minhas Soluções",
+                          onPressed: controller.handleSeeSolutions,
+                          isLoading: controller.solutionsLoading,
+                        )
+                      : const SizedBox(height: 0),
+                  if (controller.seeSolutions &&
+                      (controller.solutions == null ||
+                          controller.solutions!.isEmpty))
+                    Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 20),
+                      child: Text(
+                        "Você ainda não propôs nenhuma solução.",
+                        style: theme.textTheme.bodyMedium?.copyWith(
+                          fontStyle: FontStyle.italic,
                         ),
                       ),
-                    );
-                  },
-                ),
-              ],
+                    ),
+                  ListView.builder(
+                    shrinkWrap: true,
+                    physics: NeverScrollableScrollPhysics(),
+                    itemCount: controller.solutions?.length ?? 0,
+                    itemBuilder: (context, index) {
+                      final solution = controller.solutions?[index];
+                      if (solution == null) return const SizedBox.shrink();
+                      return Card(
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 16,
+                            vertical: 8,
+                          ),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Expanded(
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          solution.problemTitle,
+                                          maxLines: 1,
+                                          overflow: TextOverflow.ellipsis,
+                                          style: theme.textTheme.bodySmall
+                                              ?.copyWith(
+                                            color: theme.primaryColorDark,
+                                          ),
+                                        ),
+                                        Text(
+                                          solution.title,
+                                          maxLines: 1,
+                                          overflow: TextOverflow.ellipsis,
+                                          style: theme.textTheme.titleMedium
+                                              ?.copyWith(
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                  (solution.approved == true
+                                      ? Icon(
+                                          Icons.verified,
+                                          color: theme.primaryColor,
+                                        )
+                                      : VerticalDivider()),
+                                  IconButton(
+                                    onPressed: () async {
+                                      final Future<bool> confirmDelete =
+                                          myConfirmActionMessage(
+                                        context,
+                                        "Confirmar exclusão",
+                                        "Deseja realmente excluir esta solução? Esta ação não pode ser desfeita",
+                                        "Cancelar",
+                                        "Deletar",
+                                      );
+                                      if (await confirmDelete) {
+                                        final sucess = await controller
+                                            .deleteSolution(solution.id);
+                                        if (sucess) {
+                                          ScaffoldMessenger.of(
+                                            context,
+                                          ).showSnackBar(
+                                            SnackBar(
+                                              content: Text(
+                                                "Solução deletado com sucesso!",
+                                              ),
+                                            ),
+                                          );
+                                          controller.handleSeeSolutions();
+                                          controller.loadSolutionStats();
+                                        }
+                                      }
+                                    },
+                                    icon: Icon(Icons.delete_forever),
+                                    color: theme.colorScheme.error,
+                                  ),
+                                ],
+                              ),
+                              Text(
+                                solution.description,
+                                maxLines: 2,
+                                overflow: TextOverflow.ellipsis,
+                                style: theme.textTheme.bodyMedium,
+                              ),
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Row(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    children: [
+                                      Icon(
+                                        Icons.thumb_up_alt,
+                                        color: theme.primaryColor,
+                                      ),
+                                      SizedBox(width: 4),
+                                      Text(solution.likes.toString()),
+                                      SizedBox(height: 20, width: 24),
+                                      Icon(
+                                        Icons.thumb_down_alt,
+                                        color: theme.colorScheme.error,
+                                      ),
+                                      SizedBox(width: 4),
+                                      Text(solution.dislikes.toString()),
+                                    ],
+                                  ),
+                                  Text(
+                                    solution.createdAt
+                                        .toLocal()
+                                        .toString()
+                                        .split(
+                                          ' ',
+                                        )[0],
+                                    style: theme.textTheme.bodySmall,
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                        ),
+                      );
+                    },
+                  ),
+                ],
+              ),
             ),
           ),
         );

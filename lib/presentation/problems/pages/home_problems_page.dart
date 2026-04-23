@@ -76,16 +76,7 @@ class _HomeProblemsPageState extends State<HomeProblemsPage> with RouteAware {
                     style: TextStyle(fontWeight: FontWeight.bold),
                   ),
             centerTitle: false,
-            actions: [
-              IconButton(
-                icon: Icon(Icons.refresh),
-                onPressed: controller.isLoading
-                    ? null
-                    : () {
-                        controller.fetchProblems();
-                      },
-              ),
-            ],
+            actions: const [],
           ),
           body: Consumer<HomeProblemsController>(
             builder: (context, controller, child) {
@@ -99,11 +90,25 @@ class _HomeProblemsPageState extends State<HomeProblemsPage> with RouteAware {
                   buttonText: "Voltar ao Login",
                 );
               } else if (controller.problems.isEmpty) {
-                return MyErrorWidget(baseMessage: "Nenhum Problema Encontrado");
+                return RefreshIndicator(
+                  onRefresh: controller.fetchProblems,
+                  child: SingleChildScrollView(
+                    physics: const AlwaysScrollableScrollPhysics(),
+                    child: SizedBox(
+                      height: MediaQuery.of(context).size.height * 0.7,
+                      child: MyErrorWidget(
+                        baseMessage: "Nenhum Problema Encontrado",
+                      ),
+                    ),
+                  ),
+                );
               } else {
-                return ListView.builder(
-                  itemCount: displayList.length,
-                  itemBuilder: (context, index) {
+                return RefreshIndicator(
+                  onRefresh: controller.fetchProblems,
+                  child: ListView.builder(
+                    physics: const AlwaysScrollableScrollPhysics(),
+                    itemCount: displayList.length,
+                    itemBuilder: (context, index) {
                     final GetHomeProblemsResponseDto problem =
                         displayList[index];
                     return Card(
@@ -210,7 +215,7 @@ class _HomeProblemsPageState extends State<HomeProblemsPage> with RouteAware {
                       ),
                     );
                   },
-                );
+                ));
               }
             },
           ),

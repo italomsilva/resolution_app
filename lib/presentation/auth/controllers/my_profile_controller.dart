@@ -111,7 +111,6 @@ class MyProfileController extends ChangeNotifier {
     );
 
     if (userFromDb != null) {
-      _authController.login(userFromDb);
       _setUser(userFromDb);
       _isLoading = false;
       _safeNotifyListeners();
