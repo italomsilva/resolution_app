@@ -85,6 +85,17 @@ Com a API rodando, siga os passos abaixo:
     ```bash
     flutter run
     ```
+
+### 👤 Usuários de Teste (Mock Data)
+
+Para testar o aplicativo em modo `MOCK` (`USE_MOCK = 'true'`), você pode utilizar as seguintes credenciais:
+
+| Usuário | Login | Senha | Perfil |
+| :--- | :--- | :--- | :--- |
+| **João Silva** | `joaosilva` | `password123` | Cidadão (Individual) |
+| **Prefeitura** | `prefeitura` | `password123` | Governo (Government) |
+
+---
 ---
 
 ## ⬇️ Download / Acesso Rápido
